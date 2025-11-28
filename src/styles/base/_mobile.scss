@@ -1,0 +1,181 @@
+/**
+ * CATUI Mobile - Mobile Base Styles
+ * @description 모바일 기본 스타일
+ */
+
+// ========================================
+// Full Height Container
+// ========================================
+.full-height {
+  @include full-height;
+}
+
+.min-full-height {
+  @include min-full-height;
+}
+
+// ========================================
+// Safe Area
+// ========================================
+.safe-area-top {
+  @include safe-area-top;
+}
+
+.safe-area-bottom {
+  @include safe-area-bottom;
+}
+
+.safe-area-inset {
+  @include safe-area-inset;
+}
+
+// ========================================
+// Touch Targets
+// ========================================
+.touch-target {
+  @include touch-target;
+}
+
+.touch-target-lg {
+  @include touch-target(48px);
+}
+
+// ========================================
+// Scrolling
+// ========================================
+.scroll-y {
+  @include momentum-scroll;
+}
+
+.no-scrollbar {
+  @include hide-scrollbar;
+}
+
+// ========================================
+// Interaction
+// ========================================
+.no-select {
+  @include no-select;
+}
+
+.no-touch {
+  @include no-touch-action;
+}
+
+// ========================================
+// Layout Utilities
+// ========================================
+.flex-center {
+  @include flex-center;
+}
+
+.flex-between {
+  @include flex-between;
+}
+
+.absolute-fill {
+  @include absolute-fill;
+}
+
+.fixed-top {
+  @include fixed-top;
+  z-index: $z-fixed;
+}
+
+.fixed-bottom {
+  @include fixed-bottom;
+  z-index: $z-fixed;
+}
+
+// ========================================
+// Spacing
+// ========================================
+.p-0 { padding: 0; }
+.p-1 { padding: $spacing-1; }
+.p-2 { padding: $spacing-2; }
+.p-3 { padding: $spacing-3; }
+.p-4 { padding: $spacing-4; }
+.p-5 { padding: $spacing-5; }
+.p-6 { padding: $spacing-6; }
+
+.m-0 { margin: 0; }
+.m-1 { margin: $spacing-1; }
+.m-2 { margin: $spacing-2; }
+.m-3 { margin: $spacing-3; }
+.m-4 { margin: $spacing-4; }
+.m-5 { margin: $spacing-5; }
+.m-6 { margin: $spacing-6; }
+
+.mt-auto { margin-top: auto; }
+.mb-auto { margin-bottom: auto; }
+.ml-auto { margin-left: auto; }
+.mr-auto { margin-right: auto; }
+
+.gap-1 { gap: $spacing-1; }
+.gap-2 { gap: $spacing-2; }
+.gap-3 { gap: $spacing-3; }
+.gap-4 { gap: $spacing-4; }
+
+// ========================================
+// Display
+// ========================================
+.hidden { display: none; }
+.block { display: block; }
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+.grid { display: grid; }
+
+.flex-col { flex-direction: column; }
+.flex-row { flex-direction: row; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-1 { flex: 1; }
+.flex-shrink-0 { flex-shrink: 0; }
+
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-start { justify-content: flex-start; }
+.justify-end { justify-content: flex-end; }
+
+// ========================================
+// Visibility
+// ========================================
+@include mobile-only {
+  .hide-mobile { display: none !important; }
+}
+
+@include tablet-up {
+  .hide-tablet { display: none !important; }
+  .show-mobile { display: none !important; }
+}
+
+// ========================================
+// Border Radius
+// ========================================
+.rounded-none { border-radius: 0; }
+.rounded-sm { border-radius: $border-radius-sm; }
+.rounded { border-radius: $border-radius; }
+.rounded-lg { border-radius: $border-radius-lg; }
+.rounded-xl { border-radius: $border-radius-xl; }
+.rounded-full { border-radius: $border-radius-full; }
+
+// ========================================
+// Shadow
+// ========================================
+.shadow-none { box-shadow: none; }
+.shadow-sm { box-shadow: $shadow-sm; }
+.shadow { box-shadow: $shadow; }
+.shadow-md { box-shadow: $shadow-md; }
+.shadow-lg { box-shadow: $shadow-lg; }
+.shadow-xl { box-shadow: $shadow-xl; }
+
+// ========================================
+// Background
+// ========================================
+.bg-primary { background-color: var(--bg-primary); }
+.bg-secondary { background-color: var(--bg-secondary); }
+.bg-tertiary { background-color: var(--bg-tertiary); }
+.bg-transparent { background-color: transparent; }

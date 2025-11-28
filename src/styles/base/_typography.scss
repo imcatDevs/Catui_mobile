@@ -1,0 +1,67 @@
+/**
+ * CATUI Mobile - Typography
+ * @description 모바일 최적화 타이포그래피
+ */
+
+// Headings
+h1, .h1 {
+  font-size: $font-size-2xl;
+  font-weight: 700;
+  line-height: $line-height-tight;
+}
+
+h2, .h2 {
+  font-size: $font-size-xl;
+  font-weight: 600;
+  line-height: $line-height-tight;
+}
+
+h3, .h3 {
+  font-size: $font-size-lg;
+  font-weight: 600;
+  line-height: $line-height-tight;
+}
+
+h4, .h4 {
+  font-size: $font-size-base;
+  font-weight: 600;
+  line-height: $line-height-base;
+}
+
+// Body text
+.text-xs { font-size: $font-size-xs; }
+.text-sm { font-size: $font-size-sm; }
+.text-base { font-size: $font-size-base; }
+.text-lg { font-size: $font-size-lg; }
+.text-xl { font-size: $font-size-xl; }
+
+// Colors
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.text-danger { color: var(--danger); }
+.text-success { color: var(--success); }
+
+// Alignment
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+// Weight
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+// Utilities
+.truncate {
+  @include text-ellipsis;
+}
+
+.line-clamp-2 {
+  @include text-clamp(2);
+}
+
+.line-clamp-3 {
+  @include text-clamp(3);
+}

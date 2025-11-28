@@ -1,0 +1,174 @@
+/**
+ * CATUI Mobile - Variables
+ * @description 모바일 최적화 CSS 변수
+ */
+
+// ========================================
+// Colors
+// ========================================
+$primary: #667eea !default;
+$primary-dark: #5a67d8 !default;
+$primary-light: #7c8cf0 !default;
+
+$secondary: #764ba2 !default;
+$success: #10b981 !default;
+$warning: #f59e0b !default;
+$danger: #ef4444 !default;
+$info: #3b82f6 !default;
+
+// Neutrals
+$gray-50: #f9fafb !default;
+$gray-100: #f3f4f6 !default;
+$gray-200: #e5e7eb !default;
+$gray-300: #d1d5db !default;
+$gray-400: #9ca3af !default;
+$gray-500: #6b7280 !default;
+$gray-600: #4b5563 !default;
+$gray-700: #374151 !default;
+$gray-800: #1f2937 !default;
+$gray-900: #111827 !default;
+
+// ========================================
+// Typography
+// ========================================
+$font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !default;
+$font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', monospace !default;
+
+$font-size-xs: 0.75rem !default;   // 12px
+$font-size-sm: 0.875rem !default;  // 14px
+$font-size-base: 1rem !default;    // 16px
+$font-size-lg: 1.125rem !default;  // 18px
+$font-size-xl: 1.25rem !default;   // 20px
+$font-size-2xl: 1.5rem !default;   // 24px
+$font-size-3xl: 1.875rem !default; // 30px
+
+$line-height-tight: 1.25 !default;
+$line-height-base: 1.5 !default;
+$line-height-relaxed: 1.75 !default;
+
+// ========================================
+// Spacing
+// ========================================
+$spacing-unit: 0.25rem !default; // 4px
+
+$spacing-0: 0 !default;
+$spacing-1: $spacing-unit !default;       // 4px
+$spacing-2: $spacing-unit * 2 !default;   // 8px
+$spacing-3: $spacing-unit * 3 !default;   // 12px
+$spacing-4: $spacing-unit * 4 !default;   // 16px
+$spacing-5: $spacing-unit * 5 !default;   // 20px
+$spacing-6: $spacing-unit * 6 !default;   // 24px
+$spacing-8: $spacing-unit * 8 !default;   // 32px
+$spacing-10: $spacing-unit * 10 !default; // 40px
+$spacing-12: $spacing-unit * 12 !default; // 48px
+$spacing-16: $spacing-unit * 16 !default; // 64px
+
+// ========================================
+// Borders
+// ========================================
+$border-radius-sm: 0.25rem !default;
+$border-radius: 0.5rem !default;
+$border-radius-lg: 0.75rem !default;
+$border-radius-xl: 1rem !default;
+$border-radius-full: 9999px !default;
+
+// ========================================
+// Shadows
+// ========================================
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05) !default;
+$shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06) !default;
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06) !default;
+$shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05) !default;
+$shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04) !default;
+
+// ========================================
+// Transitions
+// ========================================
+$transition-fast: 150ms !default;
+$transition-base: 200ms !default;
+$transition-slow: 300ms !default;
+$transition-timing: cubic-bezier(0.4, 0, 0.2, 1) !default;
+
+// ========================================
+// Mobile Specific
+// ========================================
+$touch-target-min: 44px !default;  // Apple HIG 권장 최소 터치 영역
+$touch-target-comfortable: 48px !default;
+
+// Breakpoints
+$breakpoint-xs: 320px !default;
+$breakpoint-sm: 375px !default;
+$breakpoint-md: 414px !default;
+$breakpoint-lg: 768px !default;
+$breakpoint-xl: 1024px !default;
+
+// Z-Index
+$z-dropdown: 1000 !default;
+$z-sticky: 1020 !default;
+$z-fixed: 1030 !default;
+$z-modal-backdrop: 1040 !default;
+$z-modal: 1050 !default;
+$z-popover: 1060 !default;
+$z-tooltip: 1070 !default;
+$z-toast: 1080 !default;
+
+// ========================================
+// CSS Custom Properties (Runtime)
+// ========================================
+:root {
+  // Colors
+  --primary: #{$primary};
+  --primary-dark: #{$primary-dark};
+  --primary-light: #{$primary-light};
+  --secondary: #{$secondary};
+  --success: #{$success};
+  --warning: #{$warning};
+  --danger: #{$danger};
+  --info: #{$info};
+
+  // Text
+  --text-primary: #{$gray-900};
+  --text-secondary: #{$gray-600};
+  --text-muted: #{$gray-400};
+  --text-inverse: #ffffff;
+
+  // Background
+  --bg-primary: #ffffff;
+  --bg-secondary: #{$gray-50};
+  --bg-tertiary: #{$gray-100};
+
+  // Border
+  --border-color: #{$gray-200};
+  --border-color-dark: #{$gray-300};
+
+  // Mobile specific (set by JS)
+  --vh: 1vh;
+  --sat: env(safe-area-inset-top);
+  --sar: env(safe-area-inset-right);
+  --sab: env(safe-area-inset-bottom);
+  --sal: env(safe-area-inset-left);
+  
+  // Touch
+  --touch-target-min: #{$touch-target-min};
+  
+  // Transition
+  --transition-fast: #{$transition-fast};
+  --transition-base: #{$transition-base};
+  --transition-slow: #{$transition-slow};
+}
+
+// Dark mode
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-primary: #{$gray-100};
+    --text-secondary: #{$gray-400};
+    --text-muted: #{$gray-500};
+    
+    --bg-primary: #{$gray-900};
+    --bg-secondary: #{$gray-800};
+    --bg-tertiary: #{$gray-700};
+    
+    --border-color: #{$gray-700};
+    --border-color-dark: #{$gray-600};
+  }
+}

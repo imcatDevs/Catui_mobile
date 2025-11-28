@@ -1,0 +1,156 @@
+/**
+ * CATUI Mobile - Touch Components
+ * @description 터치 관련 컴포넌트 스타일
+ */
+
+// ========================================
+// Touch Ripple Effect
+// ========================================
+.touch-ripple {
+  position: relative;
+  overflow: hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.1) 10%, transparent 10%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: translate(-50%, -50%) scale(10);
+    opacity: 0;
+    transition: transform 0.5s, opacity 0.3s;
+  }
+  
+  &:active::after {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+    transition: 0s;
+  }
+}
+
+// ========================================
+// Touch Feedback
+// ========================================
+.touch-feedback {
+  @include no-tap-highlight;
+  transition: transform var(--transition-fast) ease,
+              opacity var(--transition-fast) ease;
+  
+  &:active {
+    transform: scale(0.97);
+    opacity: 0.8;
+  }
+}
+
+// ========================================
+// Swipeable Container
+// ========================================
+.swipeable {
+  @include no-select;
+  touch-action: pan-y;
+  
+  &--horizontal {
+    touch-action: pan-x;
+  }
+  
+  &--locked {
+    touch-action: none;
+  }
+}
+
+// ========================================
+// Draggable
+// ========================================
+.draggable {
+  @include no-select;
+  @include gpu-accelerate;
+  cursor: grab;
+  touch-action: none;
+  
+  &:active {
+    cursor: grabbing;
+  }
+  
+  &--dragging {
+    opacity: 0.8;
+    z-index: 1000;
+  }
+}
+
+// ========================================
+// Pinchable
+// ========================================
+.pinchable {
+  touch-action: none;
+  @include gpu-accelerate;
+  transform-origin: center center;
+}
+
+// ========================================
+// Scrollable with Snap
+// ========================================
+.scroll-snap-x {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  @include hide-scrollbar;
+  
+  > * {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+}
+
+.scroll-snap-y {
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  
+  > * {
+    scroll-snap-align: start;
+  }
+}
+
+// ========================================
+// Long Press Indicator
+// ========================================
+.long-press-indicator {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(var(--primary), 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+    pointer-events: none;
+  }
+  
+  &--active::before {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// ========================================
+// Reduced Motion Support
+// ========================================
+@media (prefers-reduced-motion: reduce) {
+  .touch-ripple::after,
+  .touch-feedback,
+  .draggable {
+    transition: none !important;
+    animation: none !important;
+  }
+}
