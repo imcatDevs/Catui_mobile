@@ -73,8 +73,11 @@ class StateStore {
         if (property === 'unwatch') return self.unwatch.bind(self);
         if (property === 'compute') return self.compute.bind(self);
         if (property === 'batch') return self.batch.bind(self);
+        if (property === 'get') return self.getState.bind(self);
+        if (property === 'set') return self.setState.bind(self);
         if (property === 'getState') return self.getState.bind(self);
         if (property === 'setState') return self.setState.bind(self);
+        if (property === 'subscribe') return self.subscribe.bind(self);
         if (property === 'reset') return self.reset.bind(self);
         if (property === 'destroy') return self.destroy.bind(self);
 
@@ -252,6 +255,33 @@ class StateStore {
   }
 
   /**
+   * 모든 상태 변경 구독 (전역 리스너)
+   * @param {Function} callback - 콜백 (state)
+   * @returns {Function} 구독 취소 함수
+   * 
+   * @example
+   * const unsubscribe = store.subscribe((state) => {
+   *   console.log('State changed:', state);
+   * });
+   */
+  subscribe(callback) {
+    // 특별한 키로 전역 리스너 등록
+    const key = '__global__';
+    if (!this._watchers.has(key)) {
+      this._watchers.set(key, []);
+    }
+    
+    // 래퍼: 전체 상태를 전달
+    const wrapper = () => callback(this.getState());
+    this._watchers.get(key).push(wrapper);
+    
+    // 초기 상태 즉시 전달
+    callback(this.getState());
+    
+    return () => this.unwatch(key, wrapper);
+  }
+
+  /**
    * 전체 상태 설정
    * @param {Object} newState - 새 상태
    * @param {boolean} [merge=true] - 병합 여부
@@ -289,16 +319,29 @@ class StateStore {
    * @private
    */
   _notifyWatchers(key, newValue, oldValue) {
-    if (!this._watchers.has(key)) return;
+    // 키별 watcher 알림
+    if (this._watchers.has(key)) {
+      const callbacks = this._watchers.get(key);
+      callbacks.forEach(callback => {
+        try {
+          callback(newValue, oldValue);
+        } catch (error) {
+          console.error(`Error in watcher for "${key}":`, error);
+        }
+      });
+    }
     
-    const callbacks = this._watchers.get(key);
-    callbacks.forEach(callback => {
-      try {
-        callback(newValue, oldValue);
-      } catch (error) {
-        console.error(`Error in watcher for "${key}":`, error);
-      }
-    });
+    // 전역 subscriber 알림
+    if (this._watchers.has('__global__')) {
+      const globalCallbacks = this._watchers.get('__global__');
+      globalCallbacks.forEach(callback => {
+        try {
+          callback();
+        } catch (error) {
+          console.error('Error in global subscriber:', error);
+        }
+      });
+    }
   }
 
   /**

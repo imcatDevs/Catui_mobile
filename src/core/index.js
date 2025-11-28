@@ -545,53 +545,94 @@ class CATUIMobileCore {
 }
 
 // 전역 인스턴스 생성
-const CATUI = new CATUIMobileCore();
+const coreInstance = new CATUIMobileCore();
 
-// 전역 함수로도 사용 가능
-function CATUIFunction(selector) {
-  return CATUI.$(selector);
-}
-
-// CATUIMobileCore의 프로토타입 메서드와 getter를 복사
-const proto = Object.getPrototypeOf(CATUI);
-Object.getOwnPropertyNames(proto).forEach(key => {
-  if (key === 'constructor') return;
-  
-  const descriptor = Object.getOwnPropertyDescriptor(proto, key);
-  
-  if (descriptor.get) {
-    // getter인 경우
-    Object.defineProperty(CATUIFunction, key, {
-      get() {
-        return CATUI[key];
-      }
-    });
-  } else if (typeof descriptor.value === 'function') {
-    // 일반 메서드인 경우
-    CATUIFunction[key] = CATUI[key].bind(CATUI);
+/**
+ * CATUI 전역 함수
+ * jQuery 스타일로 요소 선택 가능하면서 모든 API에 접근 가능
+ * 
+ * @param {string|HTMLElement} selector - 선택자
+ * @returns {DOMElement}
+ * 
+ * @example
+ * CATUI('#app').addClass('active');
+ * CATUI.touch('#swipe').on('swipeleft', handler);
+ * CATUI.device.isMobile;
+ */
+const CATUI = Object.assign(
+  // 함수로서 동작 (selector)
+  function(selector) {
+    return coreInstance.$(selector);
+  },
+  // 모든 메서드 바인딩
+  {
+    // Core API
+    $: (sel) => coreInstance.$(sel),
+    create: (tag, attrs) => coreInstance.create(tag, attrs),
+    use: (...args) => coreInstance.use(...args),
+    ready: (cb) => coreInstance.ready(cb),
+    
+    // Event Bus
+    on: (...args) => coreInstance.on(...args),
+    once: (...args) => coreInstance.once(...args),
+    off: (...args) => coreInstance.off(...args),
+    emit: (...args) => coreInstance.emit(...args),
+    
+    // Security
+    escape: (str) => coreInstance.escape(str),
+    sanitize: (html) => coreInstance.sanitize(html),
+    validatePath: (path) => coreInstance.validatePath(path),
+    
+    // Utils
+    isString: (v) => coreInstance.isString(v),
+    isNumber: (v) => coreInstance.isNumber(v),
+    isArray: (v) => coreInstance.isArray(v),
+    isObject: (v) => coreInstance.isObject(v),
+    isFunction: (v) => coreInstance.isFunction(v),
+    extend: (...args) => coreInstance.extend(...args),
+    clone: (obj) => coreInstance.clone(obj),
+    debounce: (fn, wait) => coreInstance.debounce(fn, wait),
+    throttle: (fn, limit) => coreInstance.throttle(fn, limit),
+    randomId: (prefix) => coreInstance.randomId(prefix),
+    
+    // Mobile API
+    touch: (el, opts) => coreInstance.touch(el, opts),
+    gesture: (el, opts) => coreInstance.gesture(el, opts),
+    pullToRefresh: (el, opts) => coreInstance.pullToRefresh(el, opts),
+    
+    // Destroy
+    destroy: () => coreInstance.destroy()
   }
-});
+);
 
-// 인스턴스 프로퍼티 복사
-Object.keys(CATUI).forEach(key => {
-  if (!CATUIFunction.hasOwnProperty(key)) {
-    Object.defineProperty(CATUIFunction, key, {
-      get() {
-        return CATUI[key];
-      }
-    });
-  }
+// Getter 프로퍼티 정의 (IIFE 빌드 호환)
+Object.defineProperties(CATUI, {
+  version: { get: () => coreInstance.version, enumerable: true },
+  view: { get: () => coreInstance.view, enumerable: true },
+  router: { get: () => coreInstance.router, enumerable: true },
+  api: { get: () => coreInstance.api, enumerable: true },
+  loading: { get: () => coreInstance.loading, enumerable: true },
+  template: { get: () => coreInstance.template, enumerable: true },
+  storage: { get: () => coreInstance.storage, enumerable: true },
+  url: { get: () => coreInstance.url, enumerable: true },
+  state: { get: () => coreInstance.state, enumerable: true },
+  globalState: { get: () => coreInstance.globalState, enumerable: true },
+  form: { get: () => coreInstance.form, enumerable: true },
+  animate: { get: () => coreInstance.animate, enumerable: true },
+  animation: { get: () => coreInstance.animation, enumerable: true },
+  viewport: { get: () => coreInstance.viewport, enumerable: true },
+  device: { get: () => coreInstance.device, enumerable: true },
+  keyboard: { get: () => coreInstance.keyboard, enumerable: true }
 });
 
 // 브라우저 전역에 등록
 if (typeof window !== 'undefined') {
-  window.CATUI = CATUIFunction;
-  // IMCAT 호환성 유지 (선택적)
-  window.IMCAT = CATUIFunction;
+  window.CATUI = CATUI;
+  window.IMCAT = CATUI;
 }
 
 // ES Module default export
-export default CATUIFunction;
+export default CATUI;
 
 // Named exports - 모바일 전용 클래스들
 export { TouchManager, GestureRecognizer, PullToRefresh };

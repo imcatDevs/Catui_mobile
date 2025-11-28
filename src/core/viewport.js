@@ -103,20 +103,27 @@ export class ViewportManager {
    * 100vh 문제 해결 (모바일 주소창 대응)
    */
   fixVhUnit() {
-    const setVh = () => {
+    // 중복 호출 방지
+    if (this._vhHandler) return;
+    
+    this._vhHandler = () => {
       const vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--vh', `${vh}px`);
     };
     
-    setVh();
-    window.addEventListener('resize', setVh);
+    this._vhHandler();
+    window.addEventListener('resize', this._vhHandler);
   }
 
   /**
    * 세이프 에어리어 CSS 변수 설정
    */
   setupSafeAreaVariables() {
+    // 중복 호출 방지
+    if (document.getElementById('catui-safe-area-vars')) return;
+    
     const style = document.createElement('style');
+    style.id = 'catui-safe-area-vars';
     style.textContent = `
       :root {
         --sat: env(safe-area-inset-top);
@@ -210,6 +217,13 @@ export class ViewportManager {
   destroy() {
     window.removeEventListener('resize', this._onResize);
     window.removeEventListener('orientationchange', this._onOrientationChange);
+    
+    // fixVhUnit 리스너 제거
+    if (this._vhHandler) {
+      window.removeEventListener('resize', this._vhHandler);
+      this._vhHandler = null;
+    }
+    
     this._handlers.clear();
   }
 }

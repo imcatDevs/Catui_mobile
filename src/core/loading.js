@@ -127,11 +127,14 @@ export class LoadingIndicator {
 
     let innerHTML = '';
 
+    // XSS 방지: message 이스케이프
+    const safeMessage = message ? this._escapeHtml(message) : '';
+    
     if (this.config.style === 'spinner') {
       innerHTML = `
         <div class="imcat-loading-spinner">
           <div class="imcat-spinner"></div>
-          ${message ? `<div class="imcat-loading-message">${message}</div>` : ''}
+          ${safeMessage ? `<div class="imcat-loading-message">${safeMessage}</div>` : ''}
         </div>
       `;
     } else if (this.config.style === 'bar') {
@@ -144,7 +147,7 @@ export class LoadingIndicator {
       innerHTML = `
         <div class="imcat-loading-dots">
           <span></span><span></span><span></span>
-          ${message ? `<div class="imcat-loading-message">${message}</div>` : ''}
+          ${safeMessage ? `<div class="imcat-loading-message">${safeMessage}</div>` : ''}
         </div>
       `;
     }
@@ -156,6 +159,15 @@ export class LoadingIndicator {
 
     // 기본 스타일 추가
     this._addDefaultStyles();
+  }
+
+  /**
+   * HTML 이스케이프 (XSS 방지)
+   * @private
+   */
+  _escapeHtml(str) {
+    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;' };
+    return str.replace(/[&<>"']/g, char => map[char]);
   }
 
   /**

@@ -59,6 +59,13 @@ export class TouchManager {
     this._onTouchMove = this._handleTouchMove.bind(this);
     this._onTouchEnd = this._handleTouchEnd.bind(this);
     this._onTouchCancel = this._handleTouchCancel.bind(this);
+    
+    // 마우스 이벤트 핸들러 (데스크톱 fallback)
+    this._onMouseDown = this._handleMouseDown.bind(this);
+    this._onMouseMove = this._handleMouseMove.bind(this);
+    this._onMouseUp = this._handleMouseUp.bind(this);
+    
+    this._isMouseDown = false;
 
     this._bindEvents();
   }
@@ -68,10 +75,97 @@ export class TouchManager {
    * @private
    */
   _bindEvents() {
+    // 터치 이벤트
     this.element.addEventListener('touchstart', this._onTouchStart, { passive: !this.options.preventScroll });
     this.element.addEventListener('touchmove', this._onTouchMove, { passive: !this.options.preventScroll });
     this.element.addEventListener('touchend', this._onTouchEnd, { passive: true });
     this.element.addEventListener('touchcancel', this._onTouchCancel, { passive: true });
+    
+    // 마우스 이벤트 (데스크톱 fallback)
+    this.element.addEventListener('mousedown', this._onMouseDown);
+    document.addEventListener('mousemove', this._onMouseMove);
+    document.addEventListener('mouseup', this._onMouseUp);
+  }
+  
+  /**
+   * 마우스 다운 핸들러 (데스크톱 fallback)
+   * @private
+   */
+  _handleMouseDown(e) {
+    this._isMouseDown = true;
+    const state = this._touchState;
+    
+    state.startX = e.clientX;
+    state.startY = e.clientY;
+    state.startTime = Date.now();
+    state.isLongPress = false;
+    
+    if (state.longPressTimer) clearTimeout(state.longPressTimer);
+    
+    state.longPressTimer = setTimeout(() => {
+      state.isLongPress = true;
+      this._emit('longpress', { x: state.startX, y: state.startY, target: e.target });
+    }, this.options.longPressTimeout);
+  }
+  
+  /**
+   * 마우스 이동 핸들러 (데스크톱 fallback)
+   * @private
+   */
+  _handleMouseMove(e) {
+    if (!this._isMouseDown) return;
+    
+    const state = this._touchState;
+    if (state.longPressTimer) {
+      clearTimeout(state.longPressTimer);
+      state.longPressTimer = null;
+    }
+    
+    const deltaX = e.clientX - state.startX;
+    const deltaY = e.clientY - state.startY;
+    this._emit('pan', { deltaX, deltaY, x: e.clientX, y: e.clientY });
+  }
+  
+  /**
+   * 마우스 업 핸들러 (데스크톱 fallback)
+   * @private
+   */
+  _handleMouseUp(e) {
+    if (!this._isMouseDown) return;
+    this._isMouseDown = false;
+    
+    const state = this._touchState;
+    const now = Date.now();
+    const duration = now - state.startTime;
+    
+    if (state.longPressTimer) {
+      clearTimeout(state.longPressTimer);
+      state.longPressTimer = null;
+    }
+    
+    if (state.isLongPress) return;
+    
+    const deltaX = e.clientX - state.startX;
+    const deltaY = e.clientY - state.startY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    const velocity = distance / duration;
+    
+    // 스와이프 감지
+    if (distance >= this.options.swipeThreshold && velocity >= this.options.swipeVelocity) {
+      const direction = this._getSwipeDirection(deltaX, deltaY);
+      this._emit('swipe', { direction, deltaX, deltaY, velocity, distance });
+      this._emit(`swipe${direction}`, { deltaX, deltaY, velocity, distance });
+    }
+    // 탭 감지
+    else if (duration < this.options.tapTimeout && distance < 10) {
+      if (now - state.lastTapTime < this.options.doubleTapTimeout) {
+        this._emit('doubletap', { x: e.clientX, y: e.clientY, target: e.target });
+        state.lastTapTime = 0;
+      } else {
+        this._emit('tap', { x: e.clientX, y: e.clientY, target: e.target });
+        state.lastTapTime = now;
+      }
+    }
   }
 
   /**
@@ -318,14 +412,19 @@ export class TouchManager {
    * 리소스 정리
    */
   destroy() {
-    // 이벤트 리스너 제거
+    // 터치 이벤트 리스너 제거
     this.element.removeEventListener('touchstart', this._onTouchStart);
     this.element.removeEventListener('touchmove', this._onTouchMove);
     this.element.removeEventListener('touchend', this._onTouchEnd);
     this.element.removeEventListener('touchcancel', this._onTouchCancel);
+    
+    // 마우스 이벤트 리스너 제거
+    this.element.removeEventListener('mousedown', this._onMouseDown);
+    document.removeEventListener('mousemove', this._onMouseMove);
+    document.removeEventListener('mouseup', this._onMouseUp);
 
     // 타이머 정리
-    if (this._touchState.longPressTimer) {
+    if (this._touchState?.longPressTimer) {
       clearTimeout(this._touchState.longPressTimer);
     }
 
@@ -336,6 +435,7 @@ export class TouchManager {
     this.element = null;
     this.options = null;
     this._touchState = null;
+    this._isMouseDown = false;
   }
 }
 
