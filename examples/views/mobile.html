@@ -1,0 +1,372 @@
+<div class="fade-in">
+  <!-- App Bar -->
+  <div class="card card-overflow">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">web_asset</span>
+        App Bar
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">모바일 앱 헤더 스타일</p>
+      
+      <!-- Default App Bar -->
+      <div class="demo-area mb-3" style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+        <div class="app-bar" style="position: relative; top: auto; left: auto; right: auto;">
+          <div class="app-bar-leading">
+            <span class="app-bar-btn"><span class="material-icons">menu</span></span>
+          </div>
+          <span class="app-bar-title">Page Title</span>
+          <div class="app-bar-trailing">
+            <span class="app-bar-btn"><span class="material-icons">search</span></span>
+            <span class="app-bar-btn"><span class="material-icons">more_vert</span></span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Primary App Bar -->
+      <div class="demo-area" style="border-radius: 8px; overflow: hidden;">
+        <div class="app-bar app-bar-primary" style="position: relative; top: auto; left: auto; right: auto;">
+          <div class="app-bar-leading">
+            <span class="app-bar-btn"><span class="material-icons">arrow_back</span></span>
+          </div>
+          <span class="app-bar-title">Primary Style</span>
+          <div class="app-bar-trailing">
+            <span class="app-bar-btn"><span class="material-icons">share</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">view_carousel</span>
+        Bottom Navigation
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">하단 네비게이션 바</p>
+      <div class="demo-area" style="position: relative; border-radius: 8px; overflow: hidden;">
+        <div class="bottom-nav" style="position: relative;">
+          <a class="bottom-nav-item is-active">
+            <span class="material-icons">home</span>
+            <span class="bottom-nav-label">Home</span>
+          </a>
+          <a class="bottom-nav-item" style="position: relative;">
+            <span class="material-icons">search</span>
+            <span class="bottom-nav-label">Search</span>
+            <span class="bottom-nav-badge">3</span>
+          </a>
+          <a class="bottom-nav-item">
+            <span class="material-icons">favorite</span>
+            <span class="bottom-nav-label">Likes</span>
+          </a>
+          <a class="bottom-nav-item">
+            <span class="material-icons">person</span>
+            <span class="bottom-nav-label">Profile</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Segmented Picker -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">toggle_on</span>
+        Segmented Picker
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">iOS 스타일 세그먼트 선택</p>
+      <div class="segmented-picker" id="segmented-demo" style="width: 100%;">
+        <span class="segmented-option is-active" data-value="day">Day</span>
+        <span class="segmented-option" data-value="week">Week</span>
+        <span class="segmented-option" data-value="month">Month</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">search</span>
+        Search Bar
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="search-bar" id="search-demo">
+        <span class="search-icon"><span class="material-icons">search</span></span>
+        <input type="text" class="search-input" placeholder="Search...">
+        <span class="search-clear"><span class="material-icons">close</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rating Stars -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">star</span>
+        Rating Stars
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">별점 평가</p>
+      <div class="flex flex-col gap-4">
+        <div>
+          <label class="form-label">Interactive</label>
+          <div class="rating" id="rating-demo">
+            <span class="material-icons rating-star is-active">star</span>
+            <span class="material-icons rating-star is-active">star</span>
+            <span class="material-icons rating-star is-active">star</span>
+            <span class="material-icons rating-star">star</span>
+            <span class="material-icons rating-star">star</span>
+          </div>
+          <span class="text-sm text-secondary ml-2" id="rating-value">3/5</span>
+        </div>
+        <div>
+          <label class="form-label">Read Only</label>
+          <div class="rating rating-readonly">
+            <span class="material-icons rating-star is-filled">star</span>
+            <span class="material-icons rating-star is-filled">star</span>
+            <span class="material-icons rating-star is-filled">star</span>
+            <span class="material-icons rating-star is-filled">star</span>
+            <span class="material-icons rating-star">star</span>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="rating rating-sm">
+            <span class="material-icons rating-star is-filled">star</span>
+            <span class="material-icons rating-star is-filled">star</span>
+            <span class="material-icons rating-star is-filled">star</span>
+            <span class="material-icons rating-star">star</span>
+            <span class="material-icons rating-star">star</span>
+          </div>
+          <div class="rating rating-lg">
+            <span class="material-icons rating-star is-filled">star</span>
+            <span class="material-icons rating-star is-filled">star</span>
+            <span class="material-icons rating-star is-filled">star</span>
+            <span class="material-icons rating-star is-filled">star</span>
+            <span class="material-icons rating-star">star</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Range Slider -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">tune</span>
+        Range Slider
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">모바일 최적화 슬라이더</p>
+      <div class="range-slider mb-4">
+        <input type="range" min="0" max="100" value="50" id="range-demo">
+      </div>
+      <div class="flex justify-between text-sm text-secondary">
+        <span>0</span>
+        <span id="range-value">50</span>
+        <span>100</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Label -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">text_fields</span>
+        Floating Label Input
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="flex flex-col gap-4">
+        <div class="floating-label">
+          <input type="text" class="floating-input" placeholder=" ">
+          <span class="floating-label-text">Username</span>
+        </div>
+        <div class="floating-label">
+          <input type="email" class="floating-input" placeholder=" ">
+          <span class="floating-label-text">Email Address</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chip Input -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">label</span>
+        Chip Input
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">태그 입력 (Enter로 추가)</p>
+      <div class="chip-input" id="chip-input-demo">
+        <span class="chip-input-chip">
+          JavaScript
+          <span class="chip-remove"><span class="material-icons">close</span></span>
+        </span>
+        <span class="chip-input-chip">
+          CSS
+          <span class="chip-remove"><span class="material-icons">close</span></span>
+        </span>
+        <input type="text" class="chip-input-field" placeholder="Add tag...">
+      </div>
+    </div>
+  </div>
+
+  <!-- FAB Menu -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">add_circle</span>
+        FAB Menu (Speed Dial)
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">우측 하단 FAB 메뉴</p>
+      <div class="demo-area" style="position: relative; height: 200px; border-radius: 8px;">
+        <div class="fab-menu" id="fab-demo" style="position: absolute;">
+          <div class="fab-actions">
+            <div class="fab-action">
+              <span class="fab-action-label">Share</span>
+              <span class="fab-action-btn"><span class="material-icons">share</span></span>
+            </div>
+            <div class="fab-action">
+              <span class="fab-action-label">Edit</span>
+              <span class="fab-action-btn"><span class="material-icons">edit</span></span>
+            </div>
+            <div class="fab-action">
+              <span class="fab-action-label">Delete</span>
+              <span class="fab-action-btn"><span class="material-icons">delete</span></span>
+            </div>
+          </div>
+          <button class="fab-main">
+            <span class="material-icons">add</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Snap -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">swipe</span>
+        Scroll Snap
+      </h3>
+    </div>
+    <div class="card-body p-0">
+      <div class="scroll-snap scroll-snap-center" style="padding: 1rem;">
+        <div style="display: flex; gap: 1rem;">
+          <div class="card" style="min-width: 250px; flex-shrink: 0;">
+            <div class="card-body">
+              <h4 class="text-lg font-semibold">Card 1</h4>
+              <p class="text-secondary">Swipe to see more cards</p>
+            </div>
+          </div>
+          <div class="card" style="min-width: 250px; flex-shrink: 0;">
+            <div class="card-body">
+              <h4 class="text-lg font-semibold">Card 2</h4>
+              <p class="text-secondary">Snap to center</p>
+            </div>
+          </div>
+          <div class="card" style="min-width: 250px; flex-shrink: 0;">
+            <div class="card-body">
+              <h4 class="text-lg font-semibold">Card 3</h4>
+              <p class="text-secondary">Mobile optimized</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Segmented Picker
+  CATUI('#segmented-demo .segmented-option').on('click', function() {
+    CATUI('#segmented-demo .segmented-option').removeClass('is-active');
+    CATUI(this).addClass('is-active');
+  });
+  
+  // Search Bar
+  const searchInput = document.querySelector('#search-demo .search-input');
+  const searchBar = document.querySelector('#search-demo');
+  
+  searchInput?.addEventListener('input', function() {
+    if (this.value) {
+      searchBar.classList.add('has-value');
+    } else {
+      searchBar.classList.remove('has-value');
+    }
+  });
+  
+  CATUI('#search-demo .search-clear').on('click', function() {
+    searchInput.value = '';
+    searchBar.classList.remove('has-value');
+    searchInput.focus();
+  });
+  
+  // Rating Stars
+  CATUI('#rating-demo .rating-star').on('click', function() {
+    const stars = CATUI('#rating-demo .rating-star').elements;
+    const index = Array.from(stars).indexOf(this);
+    
+    stars.forEach((star, i) => {
+      if (i <= index) {
+        star.classList.add('is-active');
+      } else {
+        star.classList.remove('is-active');
+      }
+    });
+    
+    CATUI('#rating-value').text(`${index + 1}/5`);
+  });
+  
+  // Range Slider
+  const rangeInput = document.querySelector('#range-demo');
+  rangeInput?.addEventListener('input', function() {
+    CATUI('#range-value').text(this.value);
+  });
+  
+  // Chip Input
+  const chipField = document.querySelector('#chip-input-demo .chip-input-field');
+  chipField?.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && this.value.trim()) {
+      const chip = CATUI.create('span', {
+        class: 'chip-input-chip'
+      });
+      chip.html(`${this.value.trim()}<span class="chip-remove"><span class="material-icons">close</span></span>`);
+      CATUI(this).parent().find('.chip-input-chip').last().after(chip) || 
+        CATUI(this).before(chip);
+      this.value = '';
+    }
+  });
+  
+  CATUI('#chip-input-demo').on('click', '.chip-remove', function() {
+    CATUI(this).closest('.chip-input-chip').remove();
+  });
+  
+  // FAB Menu
+  CATUI('#fab-demo .fab-main').on('click', function() {
+    CATUI('#fab-demo').toggleClass('is-open');
+  });
+  
+  console.log('[Mobile] Demo loaded');
+})();
+</script>

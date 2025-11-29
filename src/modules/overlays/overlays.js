@@ -15,7 +15,7 @@ class Overlay {
    */
   constructor(options = {}) {
     this.options = {
-      zIndex: 1050,
+      zIndex: 1300, // $z-index-modal
       closeOnBackdrop: true,
       closeOnEscape: false, // 모바일에서는 기본 비활성
       animation: true,
@@ -205,8 +205,8 @@ class Modal extends Overlay {
       max-width: ${this.options.maxWidth};
       max-height: 90vh;
       background: var(--bg-primary, #fff);
-      border-radius: 12px;
-      box-shadow: 0 20px 25px rgba(0,0,0,0.15);
+      border-radius: var(--radius-lg, 12px);
+      box-shadow: var(--shadow-lg, 0 20px 25px rgba(0,0,0,0.15));
       z-index: ${this.options.zIndex};
       opacity: 0;
       transition: all ${this.options.animationDuration}ms ease;
@@ -223,7 +223,7 @@ class Modal extends Overlay {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 16px;
+        padding: var(--spacing-4, 16px);
         border-bottom: 1px solid var(--border-color, #e5e7eb);
         flex-shrink: 0;
       `;
@@ -232,7 +232,7 @@ class Modal extends Overlay {
         const title = document.createElement('h3');
         title.className = 'catui-modal-title';
         title.textContent = this.options.title;
-        title.style.cssText = 'margin: 0; font-size: 18px; font-weight: 600;';
+        title.style.cssText = 'margin: 0; font-size: var(--font-size-lg, 18px); font-weight: 600; color: var(--text-primary, #111827);';
         header.appendChild(title);
       }
 
@@ -243,15 +243,17 @@ class Modal extends Overlay {
         closeBtn.style.cssText = `
           background: none;
           border: none;
-          font-size: 24px;
+          font-size: var(--icon-size-md, 24px);
           cursor: pointer;
           padding: 0;
-          width: 32px;
-          height: 32px;
+          width: 2.5rem;
+          height: 2.5rem;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: var(--text-secondary, #666);
+          color: var(--text-tertiary, #9CA3AF);
+          border-radius: var(--radius-default, 8px);
+          transition: background 150ms ease;
         `;
         closeBtn.addEventListener('click', () => this.close());
         header.appendChild(closeBtn);
@@ -264,9 +266,10 @@ class Modal extends Overlay {
     const content = document.createElement('div');
     content.className = 'catui-modal-content';
     content.style.cssText = `
-      padding: 16px;
+      padding: var(--spacing-4, 16px);
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      color: var(--text-primary, #111827);
     `;
     content.innerHTML = this.options.content;
     modal.appendChild(content);
@@ -377,10 +380,10 @@ class Toast {
     };
 
     const colors = {
-      success: '#10b981',
-      error: '#ef4444',
-      warning: '#f59e0b',
-      info: '#3b82f6'
+      success: 'var(--success, #22C55E)',
+      error: 'var(--danger, #EF4444)',
+      warning: 'var(--warning, #EAB308)',
+      info: 'var(--primary, #3B82F6)'
     };
 
     toast.style.cssText = `
@@ -388,15 +391,15 @@ class Toast {
       left: 50%;
       ${positions[this.options.position] || positions.bottom}
       transform: translateX(-50%) translateY(20px);
-      padding: 12px 20px;
+      padding: var(--spacing-3, 12px) var(--spacing-5, 20px);
       background: ${colors[this.options.type] || colors.info};
       color: white;
-      border-radius: 8px;
-      font-size: 14px;
-      z-index: 1100;
+      border-radius: var(--radius-default, 8px);
+      font-size: var(--font-size-sm, 14px);
+      z-index: 1500;
       opacity: 0;
-      transition: all 200ms ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all var(--duration-base, 200ms) ease;
+      box-shadow: var(--shadow-lg, 0 4px 12px rgba(0,0,0,0.15));
       max-width: 90%;
       text-align: center;
     `;
@@ -492,10 +495,10 @@ class Drawer extends Overlay {
       background: var(--bg-primary, #fff);
       z-index: ${this.options.zIndex};
       transform: translateX(${translateX});
-      transition: transform ${this.options.animationDuration}ms cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform ${this.options.animationDuration}ms var(--ease-in-out, cubic-bezier(0.4, 0, 0.2, 1));
       display: flex;
       flex-direction: column;
-      box-shadow: ${isLeft ? '4px' : '-4px'} 0 20px rgba(0,0,0,0.15);
+      box-shadow: var(--shadow-lg, ${isLeft ? '4px' : '-4px'} 0 20px rgba(0,0,0,0.15));
     `;
 
     // 헤더
@@ -505,17 +508,17 @@ class Drawer extends Overlay {
       header.style.cssText = `
         display: flex;
         align-items: center;
-        padding: 16px 20px;
+        padding: var(--spacing-4, 16px) var(--spacing-5, 20px);
         border-bottom: 1px solid var(--border-color, #e5e7eb);
         flex-shrink: 0;
-        background: linear-gradient(135deg, var(--primary, #667eea) 0%, var(--secondary, #764ba2) 100%);
+        background: linear-gradient(135deg, var(--primary, #3B82F6) 0%, var(--secondary, #6B7280) 100%);
         color: white;
       `;
 
       const title = document.createElement('h3');
       title.className = 'catui-drawer-title';
       title.textContent = this.options.title;
-      title.style.cssText = 'margin: 0; font-size: 18px; font-weight: 600;';
+      title.style.cssText = 'margin: 0; font-size: var(--font-size-lg, 18px); font-weight: 600;';
       header.appendChild(title);
 
       drawer.appendChild(header);
@@ -601,5 +604,108 @@ class Drawer extends Overlay {
   }
 }
 
-export { Overlay, Modal, Toast, Drawer };
-export default { Overlay, Modal, Toast, Drawer };
+/**
+ * Tooltip 클래스
+ * @class Tooltip
+ */
+class Tooltip {
+  static _activeTooltip = null;
+  
+  /**
+   * 툴팁 표시
+   * @param {HTMLElement} target - 타겟 요소
+   * @param {Object} options - 옵션
+   */
+  static show(target, options = {}) {
+    this.hide();
+    
+    const text = options.text || target.getAttribute('data-tooltip');
+    const pos = options.position || target.getAttribute('data-tooltip-pos') || 'top';
+    
+    if (!text) return;
+    
+    const tooltip = document.createElement('div');
+    tooltip.className = 'catui-tooltip';
+    tooltip.textContent = text;
+    tooltip.style.cssText = `
+      position: fixed;
+      z-index: 1500;
+      padding: var(--spacing-1, 4px) var(--spacing-2, 8px);
+      background: var(--bg-inverse, #111827);
+      color: var(--text-inverse, #fff);
+      font-size: var(--font-size-xs, 12px);
+      border-radius: var(--radius-sm, 4px);
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity var(--duration-fast, 150ms) ease;
+    `;
+    
+    document.body.appendChild(tooltip);
+    
+    // 위치 계산
+    const rect = target.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+    
+    let top, left;
+    
+    switch (pos) {
+      case 'top':
+        top = rect.top - tooltipRect.height - 8;
+        left = rect.left + (rect.width - tooltipRect.width) / 2;
+        break;
+      case 'bottom':
+        top = rect.bottom + 8;
+        left = rect.left + (rect.width - tooltipRect.width) / 2;
+        break;
+      case 'left':
+        top = rect.top + (rect.height - tooltipRect.height) / 2;
+        left = rect.left - tooltipRect.width - 8;
+        break;
+      case 'right':
+        top = rect.top + (rect.height - tooltipRect.height) / 2;
+        left = rect.right + 8;
+        break;
+    }
+    
+    // 화면 경계 체크
+    left = Math.max(8, Math.min(left, window.innerWidth - tooltipRect.width - 8));
+    top = Math.max(8, top);
+    
+    tooltip.style.top = `${top}px`;
+    tooltip.style.left = `${left}px`;
+    
+    // 표시 애니메이션
+    requestAnimationFrame(() => {
+      tooltip.style.opacity = '1';
+    });
+    
+    this._activeTooltip = tooltip;
+  }
+  
+  /**
+   * 툴팁 숨기기
+   */
+  static hide() {
+    if (this._activeTooltip) {
+      this._activeTooltip.remove();
+      this._activeTooltip = null;
+    }
+  }
+  
+  /**
+   * 자동 바인딩 (data-tooltip 속성이 있는 요소들)
+   * @param {string} selector - 선택자 (기본: [data-tooltip])
+   */
+  static init(selector = '[data-tooltip]') {
+    document.querySelectorAll(selector).forEach(el => {
+      el.addEventListener('mouseenter', (e) => this.show(e.currentTarget));
+      el.addEventListener('mouseleave', () => this.hide());
+      el.addEventListener('touchstart', (e) => this.show(e.currentTarget), { passive: true });
+      el.addEventListener('touchend', () => this.hide(), { passive: true });
+    });
+  }
+}
+
+export { Overlay, Modal, Toast, Drawer, Tooltip };
+export default { Overlay, Modal, Toast, Drawer, Tooltip };

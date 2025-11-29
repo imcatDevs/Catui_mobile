@@ -1,0 +1,746 @@
+/**
+ * CATUI Mobile - Mobile Specific Components
+ * @description 모바일 전용 컴포넌트 및 헬퍼
+ */
+
+@use '../abstracts' as *;
+
+// ========================================
+// App Bar (Mobile Header)
+// ========================================
+.app-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $component-navbar-height;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  z-index: $z-index-sticky;
+  display: flex;
+  align-items: center;
+  padding: 0 $spacing-4;
+  @include safe-area-top(padding-top);
+  
+  .app-bar-leading {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    flex-shrink: 0;
+  }
+  
+  .app-bar-title {
+    flex: 1;
+    font-size: $font-size-lg;
+    font-weight: 600;
+    color: var(--text-primary);
+    @include text-ellipsis;
+    text-align: center;
+    padding: 0 $spacing-2;
+  }
+  
+  .app-bar-trailing {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    flex-shrink: 0;
+  }
+  
+  .app-bar-btn {
+    @include touch-target(2.75rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    border-radius: $radius-default;
+    transition: background $duration-fast;
+    @include no-tap-highlight;
+    
+    &:active {
+      background: var(--bg-tertiary);
+    }
+    
+    .material-icons {
+      font-size: $icon-size-md;
+    }
+  }
+  
+  // Transparent variant
+  &.app-bar-transparent {
+    background: transparent;
+    border-bottom: none;
+  }
+  
+  // Colored variant
+  &.app-bar-primary {
+    background: $primary;
+    border-bottom: none;
+    
+    .app-bar-title,
+    .app-bar-btn {
+      color: white;
+    }
+  }
+}
+
+// App content with app-bar
+.has-app-bar {
+  padding-top: calc(#{$component-navbar-height} + var(--sat, 0px));
+}
+
+// ========================================
+// Bottom Navigation (Enhanced)
+// ========================================
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  z-index: $z-index-sticky;
+  display: flex;
+  @include safe-area-bottom(padding-bottom);
+  
+  .bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-2 $spacing-1;
+    min-height: 3.5rem;
+    color: var(--text-tertiary);
+    text-decoration: none;
+    transition: color $duration-fast;
+    @include no-tap-highlight;
+    
+    .material-icons {
+      font-size: $icon-size-md;
+      margin-bottom: $spacing-1;
+    }
+    
+    .bottom-nav-label {
+      font-size: $font-size-xs;
+    }
+    
+    &.is-active {
+      color: $primary;
+    }
+    
+    &:active {
+      color: $primary;
+    }
+  }
+  
+  // With badge
+  .bottom-nav-badge {
+    position: absolute;
+    top: $spacing-1;
+    right: 50%;
+    transform: translateX(100%);
+    min-width: 1rem;
+    height: 1rem;
+    padding: 0 0.25rem;
+    background: $danger;
+    color: white;
+    font-size: 0.625rem;
+    font-weight: 600;
+    border-radius: $radius-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.has-bottom-nav {
+  padding-bottom: calc(3.5rem + var(--sab, 0px));
+}
+
+// ========================================
+// FAB Menu (Speed Dial)
+// ========================================
+.fab-menu {
+  position: fixed;
+  right: $spacing-4;
+  bottom: $spacing-4;
+  z-index: $z-index-sticky;
+  @include safe-area-bottom(bottom, $spacing-4);
+  
+  .fab-main {
+    @include touch-target($component-fab-size-md);
+    background: $primary;
+    color: white;
+    border-radius: $radius-full;
+    box-shadow: $shadow-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform $duration-fast, background $duration-fast;
+    
+    .material-icons {
+      font-size: $icon-size-md;
+      transition: transform $duration-fast;
+    }
+    
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+  
+  .fab-actions {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    padding-bottom: $spacing-3;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: $spacing-3;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(1rem);
+    transition: opacity $duration-fast, transform $duration-fast, visibility $duration-fast;
+  }
+  
+  .fab-action {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+    
+    .fab-action-btn {
+      @include touch-target($component-fab-size-sm);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      border-radius: $radius-full;
+      box-shadow: $shadow-md;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      .material-icons {
+        font-size: $icon-size-sm;
+      }
+    }
+    
+    .fab-action-label {
+      background: var(--bg-primary);
+      padding: $spacing-1 $spacing-3;
+      border-radius: $radius-default;
+      box-shadow: $shadow-sm;
+      font-size: $font-size-sm;
+      white-space: nowrap;
+    }
+  }
+  
+  &.is-open {
+    .fab-main .material-icons {
+      transform: rotate(45deg);
+    }
+    
+    .fab-actions {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+  }
+}
+
+// ========================================
+// Swipe Actions
+// ========================================
+.swipe-actions {
+  position: relative;
+  overflow: hidden;
+  
+  .swipe-content {
+    position: relative;
+    background: var(--bg-primary);
+    z-index: 1;
+    transition: transform $duration-fast $ease-in-out;
+  }
+  
+  .swipe-action-left,
+  .swipe-action-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: stretch;
+  }
+  
+  .swipe-action-left {
+    left: 0;
+    transform: translateX(-100%);
+  }
+  
+  .swipe-action-right {
+    right: 0;
+    transform: translateX(100%);
+  }
+  
+  .swipe-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 $spacing-5;
+    color: white;
+    font-weight: 500;
+    min-width: 4rem;
+    
+    &.swipe-action-delete {
+      background: $danger;
+    }
+    
+    &.swipe-action-archive {
+      background: $warning;
+    }
+    
+    &.swipe-action-share {
+      background: $primary;
+    }
+    
+    &.swipe-action-edit {
+      background: $success;
+    }
+  }
+}
+
+// ========================================
+// Pull Down Indicator
+// ========================================
+.pull-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-4;
+  color: var(--text-tertiary);
+  
+  .material-icons {
+    font-size: $icon-size-lg;
+    transition: transform $duration-fast;
+  }
+  
+  &.is-pulling .material-icons {
+    transform: rotate(180deg);
+  }
+  
+  &.is-loading .material-icons {
+    animation: pull-spin 1s linear infinite;
+  }
+}
+
+@keyframes pull-spin {
+  to { transform: rotate(360deg); }
+}
+
+// ========================================
+// Scroll Snap Container
+// ========================================
+.scroll-snap {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  @include momentum-scroll;
+  scrollbar-width: none; // Firefox
+  
+  &::-webkit-scrollbar {
+    display: none; // Chrome, Safari
+  }
+  
+  > * {
+    scroll-snap-align: start;
+  }
+  
+  &.scroll-snap-center > * {
+    scroll-snap-align: center;
+  }
+}
+
+// ========================================
+// Mobile Card Stack
+// ========================================
+.card-stack {
+  position: relative;
+  height: 400px;
+  
+  .card-stack-item {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
+    border-radius: $radius-lg;
+    box-shadow: $shadow-lg;
+    transition: transform $duration-slow $ease-in-out;
+    @include gpu-accelerate;
+    
+    &:nth-child(1) {
+      z-index: 3;
+    }
+    
+    &:nth-child(2) {
+      z-index: 2;
+      transform: scale(0.95) translateY(1rem);
+    }
+    
+    &:nth-child(3) {
+      z-index: 1;
+      transform: scale(0.9) translateY(2rem);
+    }
+  }
+}
+
+// ========================================
+// Floating Label Input
+// ========================================
+.floating-label {
+  position: relative;
+  
+  .floating-input {
+    width: 100%;
+    padding: $spacing-5 $spacing-3 $spacing-2;
+    border: 1px solid var(--border-color);
+    border-radius: $radius-default;
+    font-size: $font-size-base;
+    background: var(--bg-primary);
+    transition: border-color $duration-fast;
+    
+    &:focus {
+      outline: none;
+      border-color: $primary;
+    }
+    
+    &:focus + .floating-label-text,
+    &:not(:placeholder-shown) + .floating-label-text {
+      top: $spacing-1;
+      font-size: $font-size-xs;
+      color: $primary;
+    }
+  }
+  
+  .floating-label-text {
+    position: absolute;
+    top: 50%;
+    left: $spacing-3;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    font-size: $font-size-base;
+    pointer-events: none;
+    transition: all $duration-fast;
+    background: var(--bg-primary);
+    padding: 0 $spacing-1;
+  }
+}
+
+// ========================================
+// Rating Stars
+// ========================================
+.rating {
+  display: inline-flex;
+  gap: $spacing-1;
+  
+  .rating-star {
+    color: var(--border-color);
+    font-size: $icon-size-md;
+    cursor: pointer;
+    transition: color $duration-fast, transform $duration-fast;
+    @include no-tap-highlight;
+    
+    &.is-active,
+    &.is-filled {
+      color: $warning;
+    }
+    
+    &:hover {
+      transform: scale(1.1);
+    }
+    
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+  
+  &.rating-readonly .rating-star {
+    cursor: default;
+    
+    &:hover, &:active {
+      transform: none;
+    }
+  }
+  
+  &.rating-sm .rating-star {
+    font-size: $icon-size-sm;
+  }
+  
+  &.rating-lg .rating-star {
+    font-size: $icon-size-lg;
+  }
+}
+
+// ========================================
+// Range Slider (Mobile Optimized)
+// ========================================
+.range-slider {
+  position: relative;
+  width: 100%;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  
+  input[type="range"] {
+    width: 100%;
+    height: 0.5rem;
+    appearance: none;
+    background: var(--bg-tertiary);
+    border-radius: $radius-full;
+    outline: none;
+    
+    &::-webkit-slider-thumb {
+      appearance: none;
+      width: 1.5rem;
+      height: 1.5rem;
+      background: $primary;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: $shadow-md;
+      transition: transform $duration-fast;
+      
+      &:active {
+        transform: scale(1.2);
+      }
+    }
+    
+    &::-moz-range-thumb {
+      width: 1.5rem;
+      height: 1.5rem;
+      background: $primary;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: $shadow-md;
+    }
+  }
+  
+  .range-value {
+    position: absolute;
+    top: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: $bg-inverse;
+    color: $text-inverse;
+    padding: $spacing-1 $spacing-2;
+    border-radius: $radius-sm;
+    font-size: $font-size-xs;
+    opacity: 0;
+    transition: opacity $duration-fast;
+  }
+  
+  &:hover .range-value,
+  &:focus-within .range-value {
+    opacity: 1;
+  }
+}
+
+// ========================================
+// Chip Input
+// ========================================
+.chip-input {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-2;
+  padding: $spacing-2;
+  border: 1px solid var(--border-color);
+  border-radius: $radius-default;
+  background: var(--bg-primary);
+  min-height: 2.75rem;
+  
+  &:focus-within {
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+  }
+  
+  .chip-input-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-1;
+    padding: $spacing-1 $spacing-2;
+    background: var(--bg-tertiary);
+    border-radius: $radius-full;
+    font-size: $font-size-sm;
+    
+    .chip-remove {
+      cursor: pointer;
+      opacity: 0.6;
+      
+      &:hover {
+        opacity: 1;
+      }
+      
+      .material-icons {
+        font-size: $icon-size-xs;
+      }
+    }
+  }
+  
+  .chip-input-field {
+    flex: 1;
+    min-width: 5rem;
+    border: none;
+    outline: none;
+    font-size: $font-size-sm;
+    background: transparent;
+  }
+}
+
+// ========================================
+// Search Bar
+// ========================================
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  
+  .search-input {
+    width: 100%;
+    padding: $spacing-3 $spacing-4 $spacing-3 $spacing-10;
+    border: 1px solid var(--border-color);
+    border-radius: $radius-full;
+    font-size: $font-size-base;
+    background: var(--bg-secondary);
+    transition: all $duration-fast;
+    
+    &:focus {
+      outline: none;
+      background: var(--bg-primary);
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    }
+    
+    &::placeholder {
+      color: var(--text-tertiary);
+    }
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: $spacing-3;
+    color: var(--text-tertiary);
+    pointer-events: none;
+    
+    .material-icons {
+      font-size: $icon-size-sm;
+    }
+  }
+  
+  .search-clear {
+    position: absolute;
+    right: $spacing-2;
+    @include touch-target(2rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+    opacity: 0;
+    transition: opacity $duration-fast;
+    
+    .material-icons {
+      font-size: $icon-size-sm;
+    }
+  }
+  
+  &.has-value .search-clear {
+    opacity: 1;
+  }
+}
+
+// ========================================
+// Segmented Picker (iOS Style)
+// ========================================
+.segmented-picker {
+  display: inline-flex;
+  background: var(--bg-tertiary);
+  border-radius: $radius-default;
+  padding: $spacing-1;
+  
+  .segmented-option {
+    flex: 1;
+    padding: $spacing-2 $spacing-4;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    text-align: center;
+    color: var(--text-secondary);
+    border-radius: calc(#{$radius-default} - #{$spacing-1});
+    cursor: pointer;
+    transition: all $duration-fast;
+    @include no-tap-highlight;
+    
+    &.is-active {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      box-shadow: $shadow-sm;
+    }
+  }
+}
+
+// ========================================
+// Dark Mode
+// ========================================
+[data-theme="dark"] {
+  .app-bar {
+    background: $dark-bg-primary;
+    border-color: $dark-border-color;
+    
+    &.app-bar-transparent {
+      background: transparent;
+    }
+  }
+  
+  .bottom-nav {
+    background: $dark-bg-primary;
+    border-color: $dark-border-color;
+  }
+  
+  .fab-menu {
+    .fab-action-btn,
+    .fab-action-label {
+      background: $dark-bg-secondary;
+    }
+  }
+  
+  .swipe-content {
+    background: $dark-bg-primary;
+  }
+  
+  .floating-input {
+    background: $dark-bg-primary;
+    border-color: $dark-border-color;
+  }
+  
+  .floating-label-text {
+    background: $dark-bg-primary;
+  }
+  
+  .chip-input {
+    background: $dark-bg-primary;
+    border-color: $dark-border-color;
+    
+    .chip-input-chip {
+      background: $dark-bg-tertiary;
+    }
+  }
+  
+  .search-input {
+    background: $dark-bg-secondary;
+    border-color: $dark-border-color;
+    
+    &:focus {
+      background: $dark-bg-primary;
+    }
+  }
+  
+  .segmented-picker {
+    background: $dark-bg-tertiary;
+    
+    .segmented-option.is-active {
+      background: $dark-bg-secondary;
+    }
+  }
+}

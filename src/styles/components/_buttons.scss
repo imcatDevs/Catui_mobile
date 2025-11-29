@@ -1,0 +1,461 @@
+/**
+ * CATUI Mobile - Button Components
+ * @description 모바일 최적화 버튼 시스템
+ */
+
+@use '../abstracts' as *;
+
+// ========================================
+// Base Button
+// ========================================
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-2;
+  padding: $component-button-size-md-padding-y $component-button-size-md-padding-x;
+  font-size: $component-button-size-md-font-size;
+  font-weight: 500;
+  font-family: inherit;
+  line-height: 1.5;
+  text-decoration: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  border-radius: $component-button-size-md-border-radius;
+  transition: all $duration-fast $ease-in-out;
+  @include no-tap-highlight;
+  @include touch-target;
+  
+  &:focus-visible {
+    outline: 2px solid $border-focus;
+    outline-offset: 2px;
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+  
+  &:disabled,
+  &.is-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+// ========================================
+// Button Variants
+// ========================================
+// Primary
+.btn-primary {
+  background: $component-button-variant-primary-background;
+  color: $component-button-variant-primary-text;
+  
+  &:hover {
+    background: $component-button-variant-primary-background-hover;
+  }
+  
+  &:active {
+    background: $component-button-variant-primary-background-active;
+  }
+}
+
+// Secondary
+.btn-secondary {
+  background: $component-button-variant-secondary-background;
+  color: $component-button-variant-secondary-text;
+  
+  &:hover {
+    background: $component-button-variant-secondary-background-hover;
+  }
+  
+  &:active {
+    background: $component-button-variant-secondary-background-active;
+  }
+}
+
+// Outline
+.btn-outline {
+  background: $component-button-variant-outline-background;
+  border-color: $component-button-variant-outline-border;
+  color: $component-button-variant-outline-text;
+  
+  &:hover {
+    background: $component-button-variant-outline-background-hover;
+  }
+}
+
+// Ghost (텍스트만)
+.btn-ghost {
+  background: $component-button-variant-ghost-background;
+  color: $component-button-variant-ghost-text;
+  
+  &:hover {
+    background: $component-button-variant-ghost-background-hover;
+  }
+}
+
+// Danger
+.btn-danger {
+  background: $component-button-variant-danger-background;
+  color: $component-button-variant-danger-text;
+  
+  &:hover {
+    background: $component-button-variant-danger-background-hover;
+  }
+  
+  &:active {
+    background: $component-button-variant-danger-background-active;
+  }
+}
+
+// Success
+.btn-success {
+  background: $success;
+  color: white;
+  
+  &:hover {
+    background: $success-hover;
+  }
+  
+  &:active {
+    background: $success-active;
+  }
+}
+
+// Warning
+.btn-warning {
+  background: $warning;
+  color: $text-primary;
+  
+  &:hover {
+    background: $warning-hover;
+  }
+  
+  &:active {
+    background: $warning-active;
+  }
+}
+
+// Link style
+.btn-link {
+  background: transparent;
+  color: $primary;
+  padding: 0;
+  min-height: auto;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ========================================
+// Button Sizes
+// ========================================
+.btn-sm {
+  padding: $component-button-size-sm-padding-y $component-button-size-sm-padding-x;
+  font-size: $component-button-size-sm-font-size;
+  border-radius: $component-button-size-sm-border-radius;
+  min-height: 2rem;
+}
+
+.btn-lg {
+  padding: $component-button-size-lg-padding-y $component-button-size-lg-padding-x;
+  font-size: $component-button-size-lg-font-size;
+  border-radius: $component-button-size-lg-border-radius;
+  min-height: 3.25rem;
+}
+
+.btn-xl {
+  padding: $spacing-4 $spacing-8;
+  font-size: $font-size-lg;
+  min-height: 3.75rem;
+}
+
+// ========================================
+// Button Shapes
+// ========================================
+.btn-rounded {
+  border-radius: $radius-full;
+}
+
+.btn-square {
+  border-radius: 0;
+}
+
+.btn-pill {
+  border-radius: $radius-full;
+  padding-left: $spacing-6;
+  padding-right: $spacing-6;
+}
+
+// ========================================
+// Full Width Button
+// ========================================
+.btn-block {
+  display: flex;
+  width: 100%;
+}
+
+// ========================================
+// Icon Button
+// ========================================
+.btn-icon {
+  padding: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-height: auto;
+  
+  .material-icons,
+  .material-icons-outlined {
+    font-size: $icon-size-md;
+  }
+  
+  &.btn-icon-sm {
+    width: $icon-size-lg;
+    height: $icon-size-lg;
+    
+    .material-icons,
+    .material-icons-outlined {
+      font-size: 1.125rem;
+    }
+  }
+  
+  &.btn-icon-lg {
+    width: $component-fab-size-md;
+    height: $component-fab-size-md;
+    
+    .material-icons,
+    .material-icons-outlined {
+      font-size: 1.75rem;
+    }
+  }
+}
+
+// ========================================
+// FAB (Floating Action Button)
+// ========================================
+.btn-fab {
+  position: fixed;
+  bottom: $spacing-6;
+  right: $spacing-4;
+  width: $component-fab-size-md;
+  height: $component-fab-size-md;
+  padding: 0;
+  border-radius: $radius-full;
+  box-shadow: $shadow-lg;
+  z-index: $z-index-sticky;
+  @include safe-area-bottom(bottom, $spacing-6);
+  
+  .material-icons,
+  .material-icons-outlined {
+    font-size: $icon-size-md;
+  }
+  
+  &.btn-fab-sm {
+    width: $component-fab-size-sm;
+    height: $component-fab-size-sm;
+    
+    .material-icons,
+    .material-icons-outlined {
+      font-size: $icon-size-sm;
+    }
+  }
+  
+  &.btn-fab-extended {
+    width: auto;
+    padding: 0 $spacing-5;
+    gap: $spacing-2;
+  }
+  
+  // Position variants
+  &.btn-fab-left {
+    right: auto;
+    left: $spacing-4;
+  }
+  
+  &.btn-fab-center {
+    right: 50%;
+    transform: translateX(50%);
+  }
+}
+
+// ========================================
+// Button Group
+// ========================================
+.btn-group {
+  display: inline-flex;
+  
+  .btn {
+    border-radius: 0;
+    
+    &:first-child {
+      border-radius: $radius-default 0 0 $radius-default;
+    }
+    
+    &:last-child {
+      border-radius: 0 $radius-default $radius-default 0;
+    }
+    
+    &:not(:first-child) {
+      margin-left: -1px;
+    }
+    
+    &:only-child {
+      border-radius: $radius-default;
+    }
+  }
+  
+  // Vertical
+  &.btn-group-vertical {
+    flex-direction: column;
+    
+    .btn {
+      &:first-child {
+        border-radius: $radius-default $radius-default 0 0;
+      }
+      
+      &:last-child {
+        border-radius: 0 0 $radius-default $radius-default;
+      }
+      
+      &:not(:first-child) {
+        margin-left: 0;
+        margin-top: -1px;
+      }
+    }
+  }
+}
+
+// Button toolbar (여러 그룹)
+.btn-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-2;
+}
+
+// ========================================
+// Loading State
+// ========================================
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    width: $icon-size-xs;
+    height: $icon-size-xs;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: btn-spin 0.6s linear infinite;
+  }
+  
+  // 원래 색상 복원
+  &.btn-primary::after { border-color: white; border-right-color: transparent; }
+  &.btn-secondary::after { border-color: $text-primary; border-right-color: transparent; }
+  &.btn-danger::after { border-color: white; border-right-color: transparent; }
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+// ========================================
+// Button with Badge
+// ========================================
+.btn-badge {
+  position: relative;
+  
+  .badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+  }
+}
+
+// ========================================
+// Social Buttons
+// ========================================
+.btn-google {
+  background: #ffffff;
+  color: #757575;
+  border-color: #dadce0;
+  
+  &:hover {
+    background: #f8f9fa;
+  }
+}
+
+.btn-apple {
+  background: #000000;
+  color: #ffffff;
+  
+  &:hover {
+    background: #333333;
+  }
+}
+
+.btn-kakao {
+  background: #FEE500;
+  color: #000000;
+  
+  &:hover {
+    background: #FFEB3B;
+  }
+}
+
+.btn-naver {
+  background: #03C75A;
+  color: #ffffff;
+  
+  &:hover {
+    background: #02b351;
+  }
+}
+
+// ========================================
+// Dark Mode
+// ========================================
+[data-theme="dark"] {
+  .btn-secondary {
+    background: $dark-bg-tertiary;
+    color: $dark-text-primary;
+    
+    &:hover {
+      background: $secondary-600;
+    }
+  }
+  
+  .btn-outline {
+    border-color: $dark-border-color;
+    color: $dark-text-primary;
+    
+    &:hover {
+      background: $dark-bg-tertiary;
+    }
+  }
+  
+  .btn-ghost {
+    color: $dark-text-primary;
+    
+    &:hover {
+      background: $dark-bg-tertiary;
+    }
+  }
+  
+  .btn-google {
+    background: $dark-bg-secondary;
+    color: $dark-text-primary;
+    border-color: $dark-border-color;
+    
+    &:hover {
+      background: $dark-bg-tertiary;
+    }
+  }
+}

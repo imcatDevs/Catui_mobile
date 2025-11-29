@@ -1,0 +1,1317 @@
+/**
+ * CATUI Mobile - Form Components
+ * @description 모바일 최적화 폼 요소 스타일
+ */
+
+@use '../abstracts' as *;
+
+// ========================================
+// Form Container
+// ========================================
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-4;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+.form-row {
+  display: flex;
+  gap: $spacing-3;
+  
+  > * {
+    flex: 1;
+  }
+}
+
+// ========================================
+// Label
+// ========================================
+.form-label {
+  display: block;
+  font-size: $font-size-sm;
+  font-weight: 500;
+  color: var(--text-secondary);
+  
+  &.required::after {
+    content: ' *';
+    color: $danger;
+  }
+}
+
+// ========================================
+// Input & Textarea
+// ========================================
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: $spacing-3;
+  font-size: $font-size-base;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-default;
+  outline: none;
+  transition: border-color $duration-fast $ease-in-out,
+              box-shadow $duration-fast $ease-in-out;
+  @include no-tap-highlight;
+  
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+  
+  // Focus
+  &:focus {
+    border-color: $border-focus;
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+  }
+  
+  // Disabled
+  &:disabled {
+    background: var(--bg-tertiary);
+    color: var(--text-disabled);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  
+  // Read-only
+  &:read-only {
+    background: var(--bg-secondary);
+  }
+  
+  // Validation States
+  &.is-valid {
+    border-color: $success;
+    
+    &:focus {
+      box-shadow: 0 0 0 3px rgba($success, 0.1);
+    }
+  }
+  
+  &.is-invalid {
+    border-color: $danger;
+    
+    &:focus {
+      box-shadow: 0 0 0 3px rgba($danger, 0.1);
+    }
+  }
+}
+
+// Input Sizes
+.form-input-sm {
+  padding: $spacing-2 $spacing-3;
+  font-size: $font-size-sm;
+  height: 36px;
+}
+
+.form-input-lg {
+  padding: $spacing-4 $spacing-5;
+  font-size: $font-size-lg;
+  height: 56px;
+}
+
+// Textarea
+.form-textarea {
+  min-height: 100px;
+  resize: vertical;
+  line-height: $line-height-relaxed;
+}
+
+// ========================================
+// Select
+// ========================================
+.form-select {
+  appearance: none;
+  padding-right: $spacing-10;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $spacing-3 center;
+  background-size: 1rem;
+  cursor: pointer;
+  
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+// ========================================
+// Checkbox
+// ========================================
+.form-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: $component-checkbox-gap;
+  cursor: pointer;
+  @include no-tap-highlight;
+  
+  input[type="checkbox"] {
+    appearance: none;
+    width: $component-checkbox-size-md;
+    height: $component-checkbox-size-md;
+    border: $component-checkbox-border-width solid $component-checkbox-state-default-border;
+    border-radius: $component-checkbox-border-radius;
+    background: $component-checkbox-state-default-background;
+    cursor: pointer;
+    transition: all $duration-fast $ease-in-out;
+    flex-shrink: 0;
+    
+    &:hover {
+      border-color: $component-checkbox-state-hover-border;
+    }
+    
+    &:checked {
+      background: $component-checkbox-state-checked-background;
+      border-color: $component-checkbox-state-checked-border;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 80%;
+    }
+    
+    &:disabled {
+      background: $component-checkbox-state-disabled-background;
+      border-color: $component-checkbox-state-disabled-border;
+      cursor: not-allowed;
+    }
+    
+    &:focus-visible {
+      outline: 2px solid $border-focus;
+      outline-offset: 2px;
+    }
+  }
+  
+  // Sizes
+  &.form-checkbox-sm input[type="checkbox"] {
+    width: $component-checkbox-size-sm;
+    height: $component-checkbox-size-sm;
+  }
+  
+  &.form-checkbox-lg input[type="checkbox"] {
+    width: $component-checkbox-size-lg;
+    height: $component-checkbox-size-lg;
+  }
+}
+
+// ========================================
+// Radio
+// ========================================
+.form-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: $component-radio-gap;
+  cursor: pointer;
+  @include no-tap-highlight;
+  
+  input[type="radio"] {
+    appearance: none;
+    width: $component-radio-size-md;
+    height: $component-radio-size-md;
+    border: $component-radio-border-width solid $component-radio-state-default-border;
+    border-radius: $component-radio-border-radius;
+    background: $component-radio-state-default-background;
+    cursor: pointer;
+    transition: all $duration-fast $ease-in-out;
+    flex-shrink: 0;
+    
+    &:hover {
+      border-color: $component-radio-state-hover-border;
+    }
+    
+    &:checked {
+      border-color: $component-radio-state-checked-border;
+      background: $component-radio-state-checked-background;
+      box-shadow: inset 0 0 0 4px $component-radio-state-checked-dot;
+    }
+    
+    &:disabled {
+      background: $component-radio-state-disabled-background;
+      border-color: $component-radio-state-disabled-border;
+      cursor: not-allowed;
+    }
+    
+    &:focus-visible {
+      outline: 2px solid $border-focus;
+      outline-offset: 2px;
+    }
+  }
+  
+  // Sizes
+  &.form-radio-sm input[type="radio"] {
+    width: $component-radio-size-sm;
+    height: $component-radio-size-sm;
+    
+    &:checked {
+      box-shadow: inset 0 0 0 3px $component-radio-state-checked-dot;
+    }
+  }
+  
+  &.form-radio-lg input[type="radio"] {
+    width: $component-radio-size-lg;
+    height: $component-radio-size-lg;
+    
+    &:checked {
+      box-shadow: inset 0 0 0 5px $component-radio-state-checked-dot;
+    }
+  }
+}
+
+// Radio Group
+.form-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+  
+  &.form-radio-group-horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: $spacing-4;
+  }
+}
+
+// ========================================
+// Switch (Toggle)
+// ========================================
+.form-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-3;
+  cursor: pointer;
+  @include no-tap-highlight;
+  
+  input[type="checkbox"] {
+    appearance: none;
+    position: relative;
+    width: $component-switch-width-md;
+    height: $component-switch-height-md;
+    background: $component-switch-state-off-background;
+    border-radius: $component-switch-border-radius;
+    cursor: pointer;
+    transition: background $duration-fast $ease-in-out;
+    flex-shrink: 0;
+    
+    // Thumb (knob)
+    &::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: calc(#{$component-switch-height-md} - 4px);
+      height: calc(#{$component-switch-height-md} - 4px);
+      background: $component-switch-state-off-thumb;
+      border-radius: 50%;
+      transition: transform $duration-fast $ease-in-out;
+      box-shadow: $shadow-sm;
+    }
+    
+    &:checked {
+      background: $component-switch-state-on-background;
+      
+      &::after {
+        transform: translateX(calc(#{$component-switch-width-md} - #{$component-switch-height-md}));
+      }
+    }
+    
+    &:disabled {
+      background: $component-switch-state-disabled-background;
+      cursor: not-allowed;
+      
+      &::after {
+        background: $component-switch-state-disabled-thumb;
+      }
+    }
+    
+    &:focus-visible {
+      outline: 2px solid $border-focus;
+      outline-offset: 2px;
+    }
+  }
+  
+  // Sizes
+  &.form-switch-sm input[type="checkbox"] {
+    width: $component-switch-width-sm;
+    height: $component-switch-height-sm;
+    
+    &::after {
+      width: calc(#{$component-switch-height-sm} - 4px);
+      height: calc(#{$component-switch-height-sm} - 4px);
+    }
+    
+    &:checked::after {
+      transform: translateX(calc(#{$component-switch-width-sm} - #{$component-switch-height-sm}));
+    }
+  }
+  
+  &.form-switch-lg input[type="checkbox"] {
+    width: $component-switch-width-lg;
+    height: $component-switch-height-lg;
+    
+    &::after {
+      width: calc(#{$component-switch-height-lg} - 4px);
+      height: calc(#{$component-switch-height-lg} - 4px);
+    }
+    
+    &:checked::after {
+      transform: translateX(calc(#{$component-switch-width-lg} - #{$component-switch-height-lg}));
+    }
+  }
+}
+
+// ========================================
+// Input Group (with icons or buttons)
+// ========================================
+.input-group {
+  display: flex;
+  align-items: stretch;
+  
+  .form-input {
+    flex: 1;
+    border-radius: 0;
+    
+    &:first-child {
+      border-radius: $radius-default 0 0 $radius-default;
+    }
+    
+    &:last-child {
+      border-radius: 0 $radius-default $radius-default 0;
+    }
+    
+    &:only-child {
+      border-radius: $radius-default;
+    }
+  }
+  
+  .input-group-text,
+  .input-group-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 $spacing-3;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: $font-size-sm;
+    white-space: nowrap;
+    
+    &:first-child {
+      border-right: none;
+      border-radius: $radius-default 0 0 $radius-default;
+    }
+    
+    &:last-child {
+      border-left: none;
+      border-radius: 0 $radius-default $radius-default 0;
+    }
+  }
+  
+  .input-group-btn {
+    cursor: pointer;
+    transition: background $duration-fast;
+    
+    &:hover {
+      background: var(--bg-secondary);
+    }
+    
+    &:active {
+      background: var(--border-color);
+    }
+  }
+}
+
+// ========================================
+// Helper Text & Error Message
+// ========================================
+.form-helper {
+  font-size: $font-size-xs;
+  color: var(--text-tertiary);
+  margin-top: $spacing-1;
+}
+
+.form-error {
+  font-size: $font-size-xs;
+  color: $danger;
+  margin-top: $spacing-1;
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+  
+  &:empty {
+    display: none;
+  }
+}
+
+.form-success {
+  font-size: $font-size-xs;
+  color: $success;
+  margin-top: $spacing-1;
+}
+
+// ========================================
+// Floating Label
+// ========================================
+.form-floating {
+  position: relative;
+  
+  .form-input,
+  .form-textarea,
+  .form-select {
+    padding-top: $spacing-5;
+    padding-bottom: $spacing-2;
+    
+    &::placeholder {
+      color: transparent;
+    }
+    
+    &:focus,
+    &:not(:placeholder-shown) {
+      ~ .form-floating-label {
+        top: $spacing-2;
+        font-size: $font-size-xs;
+        color: var(--primary);
+      }
+    }
+  }
+  
+  .form-floating-label {
+    position: absolute;
+    top: 50%;
+    left: $spacing-3;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    font-size: $font-size-base;
+    pointer-events: none;
+    transition: all $duration-fast $ease-in-out;
+    background: var(--bg-primary);
+    padding: 0 $spacing-1;
+  }
+}
+
+// ========================================
+// Character Counter
+// ========================================
+.form-counter {
+  font-size: $font-size-xs;
+  color: var(--text-tertiary);
+  text-align: right;
+  margin-top: $spacing-1;
+  
+  &.is-warning {
+    color: $warning;
+  }
+  
+  &.is-danger {
+    color: $danger;
+  }
+}
+
+// ========================================
+// Dark Mode Support
+// ========================================
+// ========================================
+// Range / Slider
+// ========================================
+.form-range {
+  width: 100%;
+  height: 6px;
+  appearance: none;
+  background: var(--bg-tertiary);
+  border-radius: $radius-full;
+  outline: none;
+  cursor: pointer;
+  @include no-tap-highlight;
+  
+  // Webkit (Chrome, Safari)
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: $primary;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform $duration-fast, box-shadow $duration-fast;
+    box-shadow: $shadow-sm;
+    
+    &:hover {
+      transform: scale(1.1);
+    }
+    
+    &:active {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 4px rgba($primary, 0.2);
+    }
+  }
+  
+  // Firefox
+  &::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: $primary;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: $shadow-sm;
+  }
+  
+  &::-moz-range-track {
+    background: var(--bg-tertiary);
+    border-radius: $radius-full;
+    height: 6px;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    
+    &::-webkit-slider-thumb {
+      background: $secondary;
+    }
+  }
+}
+
+// Range with labels
+.form-range-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+  
+  .form-range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: $font-size-xs;
+    color: var(--text-tertiary);
+  }
+  
+  .form-range-value {
+    text-align: center;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: $primary;
+  }
+}
+
+// ========================================
+// File Input
+// ========================================
+.form-file {
+  position: relative;
+  
+  input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
+  }
+  
+  .form-file-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-2;
+    padding: $spacing-4;
+    background: var(--bg-secondary);
+    border: 2px dashed var(--border-color);
+    border-radius: $radius-default;
+    color: var(--text-secondary);
+    font-size: $font-size-sm;
+    text-align: center;
+    transition: all $duration-fast $ease-in-out;
+    cursor: pointer;
+    
+    .material-icons {
+      font-size: 24px;
+      color: var(--text-tertiary);
+    }
+  }
+  
+  &:hover .form-file-label,
+  &.is-dragover .form-file-label {
+    border-color: $primary;
+    background: rgba($primary, 0.05);
+    color: $primary;
+    
+    .material-icons {
+      color: $primary;
+    }
+  }
+  
+  &.is-invalid .form-file-label {
+    border-color: $danger;
+  }
+}
+
+// File preview
+.form-file-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-2;
+  margin-top: $spacing-3;
+  
+  .file-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    padding: $spacing-2 $spacing-3;
+    background: var(--bg-tertiary);
+    border-radius: $radius-default;
+    font-size: $font-size-sm;
+    
+    .file-name {
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .file-size {
+      color: var(--text-tertiary);
+      font-size: $font-size-xs;
+    }
+    
+    .file-remove {
+      padding: $spacing-1;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      border-radius: $radius-full;
+      transition: all $duration-fast;
+      
+      &:hover {
+        background: rgba($danger, 0.1);
+        color: $danger;
+      }
+    }
+  }
+}
+
+// ========================================
+// Search Input
+// ========================================
+.form-search {
+  position: relative;
+  
+  .form-input {
+    padding-left: 44px;
+    padding-right: 44px;
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    pointer-events: none;
+    font-size: 20px;
+    z-index: 1;
+  }
+  
+  .search-clear {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: $spacing-1;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    border-radius: $radius-full;
+    opacity: 0;
+    transition: opacity $duration-fast;
+    font-size: 20px;
+    z-index: 1;
+    
+    &:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+    }
+  }
+  
+  .form-input:not(:placeholder-shown) ~ .search-clear {
+    opacity: 1;
+  }
+}
+
+// ========================================
+// Password Input (with toggle)
+// ========================================
+.form-password {
+  position: relative;
+  
+  .form-input {
+    padding-right: $spacing-10;
+  }
+  
+  .password-toggle {
+    position: absolute;
+    right: $spacing-2;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: $spacing-2;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    border-radius: $radius-default;
+    transition: color $duration-fast;
+    @include no-tap-highlight;
+    
+    &:hover {
+      color: var(--text-secondary);
+    }
+  }
+}
+
+// ========================================
+// OTP / PIN Input
+// ========================================
+.form-otp {
+  display: flex;
+  gap: $spacing-2;
+  justify-content: center;
+  
+  .otp-input {
+    width: 48px;
+    height: 56px;
+    text-align: center;
+    font-size: $font-size-xl;
+    font-weight: 600;
+    border: 2px solid var(--border-color);
+    border-radius: $radius-default;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    outline: none;
+    transition: all $duration-fast $ease-in-out;
+    @include no-tap-highlight;
+    
+    &:focus {
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    }
+    
+    &.is-filled {
+      border-color: $primary;
+      background: rgba($primary, 0.05);
+    }
+    
+    &.is-invalid {
+      border-color: $danger;
+      animation: shake 0.3s ease;
+    }
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+// ========================================
+// Color Input
+// ========================================
+.form-color {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  
+  input[type="color"] {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 2px solid var(--border-color);
+    border-radius: $radius-default;
+    cursor: pointer;
+    overflow: hidden;
+    
+    &::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    
+    &::-webkit-color-swatch {
+      border: none;
+      border-radius: calc(#{$radius-default} - 2px);
+    }
+    
+    &::-moz-color-swatch {
+      border: none;
+    }
+    
+    &:focus {
+      outline: none;
+      border-color: $primary;
+    }
+  }
+  
+  .color-value {
+    font-family: $font-family-mono;
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+  }
+}
+
+// ========================================
+// Date / Time Input
+// ========================================
+.form-date,
+.form-time,
+.form-datetime {
+  position: relative;
+  
+  .form-input {
+    padding-right: $spacing-10;
+    
+    &::-webkit-calendar-picker-indicator {
+      position: absolute;
+      right: $spacing-3;
+      opacity: 0;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+    }
+  }
+  
+  .date-icon {
+    position: absolute;
+    right: $spacing-3;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    pointer-events: none;
+  }
+}
+
+// ========================================
+// Number Input with Stepper
+// ========================================
+.form-number {
+  display: flex;
+  align-items: center;
+  
+  .form-input {
+    text-align: center;
+    border-radius: 0;
+    appearance: textfield;
+    -moz-appearance: textfield;
+    
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      appearance: none;
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+  
+  .number-btn {
+    @include touch-target(44px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all $duration-fast;
+    @include no-tap-highlight;
+    
+    &:first-child {
+      border-radius: $radius-default 0 0 $radius-default;
+      border-right: none;
+    }
+    
+    &:last-child {
+      border-radius: 0 $radius-default $radius-default 0;
+      border-left: none;
+    }
+    
+    &:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+    
+    &:active {
+      background: var(--border-color);
+    }
+    
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// ========================================
+// Rating (Stars) - Material Icons 사용
+// ========================================
+.form-rating {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  gap: $spacing-1;
+  
+  input[type="radio"] {
+    display: none;
+    
+    &:checked ~ label {
+      color: $warning;
+      
+      .material-icons,
+      .material-icons-outlined {
+        font-variation-settings: 'FILL' 1;
+      }
+    }
+  }
+  
+  label {
+    cursor: pointer;
+    color: var(--border-color);
+    transition: color $duration-fast, transform $duration-fast;
+    @include no-tap-highlight;
+    
+    .material-icons,
+    .material-icons-outlined {
+      font-size: 28px;
+      transition: color $duration-fast;
+    }
+    
+    &:hover,
+    &:hover ~ label {
+      color: $warning;
+    }
+    
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+  
+  &.form-rating-sm label .material-icons,
+  &.form-rating-sm label .material-icons-outlined {
+    font-size: 20px;
+  }
+  
+  &.form-rating-lg label .material-icons,
+  &.form-rating-lg label .material-icons-outlined {
+    font-size: 36px;
+  }
+  
+  &.is-readonly label {
+    pointer-events: none;
+  }
+}
+
+// ========================================
+// Autocomplete / Combobox
+// ========================================
+.form-autocomplete {
+  position: relative;
+  
+  .form-input {
+    padding-right: $component-autocomplete-input-padding-right;
+  }
+  
+  .autocomplete-icon {
+    position: absolute;
+    right: $spacing-3;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    pointer-events: none;
+    transition: transform $duration-fast;
+  }
+  
+  &.is-open .autocomplete-icon {
+    transform: translateY(-50%) rotate(180deg);
+  }
+  
+  .autocomplete-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: $spacing-1;
+    max-height: $component-autocomplete-dropdown-max-height;
+    overflow-y: auto;
+    background: $component-autocomplete-dropdown-background;
+    border: 1px solid $component-autocomplete-dropdown-border;
+    border-radius: $component-autocomplete-dropdown-border-radius;
+    box-shadow: $component-autocomplete-dropdown-shadow;
+    z-index: $z-index-dropdown;
+    display: none;
+    
+    &.is-open {
+      display: block;
+    }
+  }
+  
+  .autocomplete-item {
+    padding: $component-autocomplete-item-padding;
+    cursor: pointer;
+    transition: background $duration-fast;
+    
+    &:hover,
+    &.is-highlighted {
+      background: $component-autocomplete-item-hover;
+    }
+    
+    &.is-selected {
+      background: $component-autocomplete-item-selected;
+    }
+    
+    mark {
+      background: transparent;
+      font-weight: $component-autocomplete-highlight-font-weight;
+      color: $component-autocomplete-highlight-color;
+    }
+  }
+  
+  .autocomplete-empty {
+    padding: $spacing-4;
+    text-align: center;
+    color: var(--text-tertiary);
+    font-size: $font-size-sm;
+  }
+}
+
+// ========================================
+// Multi-Select Tags
+// ========================================
+.form-multiselect {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $component-multi-select-tag-gap;
+  padding: $spacing-2;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-default;
+  min-height: 44px;
+  cursor: text;
+  transition: border-color $duration-fast;
+  
+  &:focus-within {
+    border-color: $border-focus;
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+  }
+  
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-1;
+    padding: $component-multi-select-tag-padding;
+    background: $component-multi-select-tag-background;
+    border-radius: $component-multi-select-tag-border-radius;
+    font-size: $component-multi-select-tag-font-size;
+    
+    .tag-remove {
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity $duration-fast;
+      
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+  
+  .multiselect-input {
+    flex: 1;
+    min-width: $component-multi-select-input-min-width;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: $font-size-base;
+    padding: $spacing-1;
+  }
+}
+
+// ========================================
+// Chip Select
+// ========================================
+.form-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-2;
+  
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: $component-chip-gap;
+    padding: $component-chip-padding-y $component-chip-padding-x;
+    background: $component-chip-variant-filled-background;
+    border: 1px solid transparent;
+    border-radius: $component-chip-border-radius;
+    font-size: $component-chip-font-size;
+    color: $component-chip-variant-filled-text;
+    cursor: pointer;
+    transition: all $duration-fast;
+    @include no-tap-highlight;
+    
+    input[type="checkbox"],
+    input[type="radio"] {
+      display: none;
+    }
+    
+    &:hover {
+      background: var(--bg-secondary);
+    }
+    
+    &.is-selected,
+    &:has(input:checked) {
+      background: $component-chip-color-primary-background;
+      color: $component-chip-color-primary-text;
+      border-color: $primary;
+    }
+    
+    &.chip-success.is-selected {
+      background: $component-chip-color-success-background;
+      color: $component-chip-color-success-text;
+      border-color: $success;
+    }
+  }
+}
+
+// ========================================
+// Segmented Control
+// ========================================
+.form-segmented {
+  display: inline-flex;
+  background: $component-segmented-control-background;
+  border-radius: $component-segmented-control-border-radius;
+  padding: $component-segmented-control-padding;
+  
+  .segment {
+    padding: $component-segmented-control-item-padding-y $component-segmented-control-item-padding-x;
+    font-size: $component-segmented-control-item-font-size;
+    color: $component-segmented-control-item-default-text;
+    background: $component-segmented-control-item-default-background;
+    border-radius: $component-segmented-control-item-border-radius;
+    cursor: pointer;
+    transition: all $duration-fast;
+    @include no-tap-highlight;
+    
+    input[type="radio"] {
+      display: none;
+    }
+    
+    &:hover {
+      color: var(--text-primary);
+    }
+    
+    &.is-active,
+    &:has(input:checked) {
+      background: $component-segmented-control-item-active-background;
+      color: $component-segmented-control-item-active-text;
+      box-shadow: $component-segmented-control-item-active-shadow;
+    }
+  }
+}
+
+// ========================================
+// Fieldset & Legend
+// ========================================
+.form-fieldset {
+  border: 1px solid var(--border-color);
+  border-radius: $radius-default;
+  padding: $spacing-4;
+  margin: 0;
+  
+  .form-legend {
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: var(--text-primary);
+    padding: 0 $spacing-2;
+    margin-left: -$spacing-2;
+  }
+}
+
+// ========================================
+// Dark Mode Support
+// ========================================
+[data-theme="dark"] {
+  .form-checkbox input[type="checkbox"],
+  .form-radio input[type="radio"] {
+    background: $dark-bg-secondary;
+    border-color: $dark-border-color;
+    
+    &:hover {
+      border-color: $color-dark-primary-default;
+    }
+    
+    &:checked {
+      background: $color-dark-primary-default;
+      border-color: $color-dark-primary-default;
+    }
+  }
+  
+  .form-radio input[type="radio"]:checked {
+    background: $dark-bg-secondary;
+    box-shadow: inset 0 0 0 4px $color-dark-primary-default;
+  }
+  
+  .form-switch input[type="checkbox"] {
+    background: $secondary-600;
+    
+    &:checked {
+      background: $color-dark-primary-default;
+    }
+  }
+  
+  .form-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  }
+  
+  .form-range {
+    background: $dark-bg-tertiary;
+    
+    &::-webkit-slider-thumb {
+      background: $color-dark-primary-default;
+    }
+    
+    &::-moz-range-thumb {
+      background: $color-dark-primary-default;
+    }
+  }
+  
+  .form-file .form-file-label {
+    background: $dark-bg-secondary;
+    border-color: $dark-border-color;
+  }
+  
+  .otp-input {
+    background: $dark-bg-secondary;
+    border-color: $dark-border-color;
+    
+    &.is-filled {
+      background: rgba($color-dark-primary-default, 0.1);
+    }
+  }
+  
+  .autocomplete-dropdown {
+    background: $dark-bg-secondary;
+    border-color: $dark-border-color;
+  }
+  
+  .form-multiselect {
+    background: $dark-bg-secondary;
+    border-color: $dark-border-color;
+    
+    .tag {
+      background: $dark-bg-tertiary;
+    }
+  }
+  
+  .form-segmented {
+    background: $dark-bg-tertiary;
+    
+    .segment.is-active,
+    .segment:has(input:checked) {
+      background: $dark-bg-secondary;
+    }
+  }
+  
+  .form-fieldset {
+    border-color: $dark-border-color;
+  }
+}

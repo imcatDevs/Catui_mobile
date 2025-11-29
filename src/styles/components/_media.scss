@@ -1,0 +1,469 @@
+/**
+ * CATUI Mobile - Media Components
+ * @description Image, Gallery, Carousel, Icon 등 미디어 요소
+ */
+
+@use '../abstracts' as *;
+
+// ========================================
+// Image
+// ========================================
+.img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.img-fluid {
+  width: 100%;
+  height: auto;
+}
+
+.img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.img-contain {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+// Image with rounded corners
+.img-rounded {
+  border-radius: $radius-default;
+}
+
+.img-circle {
+  border-radius: 50%;
+}
+
+// Image with shadow
+.img-shadow {
+  box-shadow: $shadow-md;
+}
+
+// Image placeholder
+.img-placeholder {
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  
+  .material-icons {
+    font-size: 3rem;
+  }
+}
+
+// ========================================
+// Figure
+// ========================================
+.figure {
+  display: inline-block;
+  margin: 0;
+  
+  img {
+    display: block;
+    border-radius: $radius-default;
+  }
+  
+  .figure-caption {
+    margin-top: $spacing-2;
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+    text-align: center;
+  }
+}
+
+// ========================================
+// Gallery Grid
+// ========================================
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: $spacing-2;
+}
+
+.gallery-item {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: $radius-default;
+  cursor: pointer;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $duration-slow $ease-in-out;
+  }
+  
+  &:hover img {
+    transform: scale(1.05);
+  }
+  
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity $duration-fast;
+    
+    .material-icons {
+      color: white;
+      font-size: $icon-size-lg;
+    }
+  }
+  
+  &:hover .gallery-overlay {
+    opacity: 1;
+  }
+}
+
+// Masonry gallery
+.gallery-masonry {
+  columns: 2;
+  column-gap: $spacing-2;
+  
+  .gallery-item {
+    break-inside: avoid;
+    margin-bottom: $spacing-2;
+    aspect-ratio: auto;
+  }
+}
+
+// ========================================
+// Thumbnail
+// ========================================
+.thumbnail {
+  width: 4rem;
+  height: 4rem;
+  border-radius: $radius-default;
+  overflow: hidden;
+  flex-shrink: 0;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  &.thumbnail-sm {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  &.thumbnail-lg {
+    width: 6rem;
+    height: 6rem;
+  }
+}
+
+// ========================================
+// Icon
+// ========================================
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  .material-icons,
+  .material-icons-outlined {
+    font-size: inherit;
+  }
+}
+
+// Icon sizes
+.icon-xs { font-size: $icon-size-xs; }
+.icon-sm { font-size: $icon-size-sm; }
+.icon-md { font-size: $icon-size-md; }
+.icon-lg { font-size: $icon-size-lg; }
+.icon-xl { font-size: $icon-size-xl; }
+
+// Icon colors
+.icon-primary { color: $primary; }
+.icon-secondary { color: $secondary; }
+.icon-success { color: $success; }
+.icon-warning { color: $warning; }
+.icon-danger { color: $danger; }
+.icon-muted { color: var(--text-tertiary); }
+
+// Icon with background
+.icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: $radius-default;
+  background: var(--bg-tertiary);
+  
+  &.icon-box-sm {
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  &.icon-box-lg {
+    width: 3rem;
+    height: 3rem;
+  }
+  
+  &.icon-box-primary {
+    background: rgba($primary, 0.1);
+    color: $primary;
+  }
+  
+  &.icon-box-success {
+    background: rgba($success, 0.1);
+    color: $success;
+  }
+  
+  &.icon-box-danger {
+    background: rgba($danger, 0.1);
+    color: $danger;
+  }
+  
+  &.icon-box-warning {
+    background: rgba($warning, 0.1);
+    color: $warning;
+  }
+  
+  &.icon-box-circle {
+    border-radius: 50%;
+  }
+}
+
+// ========================================
+// Video
+// ========================================
+.video-container {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: $radius-default;
+  overflow: hidden;
+  
+  video, iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.video-poster {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--bg-tertiary);
+  border-radius: $radius-default;
+  overflow: hidden;
+  cursor: pointer;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .video-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4rem;
+    height: 4rem;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: background $duration-fast;
+    
+    .material-icons {
+      font-size: 2rem;
+      margin-left: 0.25rem;
+    }
+  }
+  
+  &:hover .video-play {
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
+
+// ========================================
+// Audio
+// ========================================
+.audio-player {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-3;
+  background: var(--bg-secondary);
+  border-radius: $radius-default;
+  
+  .audio-btn {
+    @include touch-target(2.5rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $primary;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  
+  .audio-progress {
+    flex: 1;
+    height: 0.25rem;
+    background: var(--border-color);
+    border-radius: $radius-full;
+    overflow: hidden;
+    
+    .audio-progress-bar {
+      height: 100%;
+      background: $primary;
+      width: 0%;
+    }
+  }
+  
+  .audio-time {
+    font-size: $font-size-xs;
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+  }
+}
+
+// ========================================
+// Carousel (Simple)
+// ========================================
+.carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: $radius-default;
+}
+
+.carousel-inner {
+  display: flex;
+  transition: transform $duration-slow $ease-in-out;
+}
+
+.carousel-item {
+  flex: 0 0 100%;
+  min-width: 0;
+  
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+.carousel-indicators {
+  position: absolute;
+  bottom: $spacing-3;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: $spacing-2;
+  
+  .indicator {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background $duration-fast;
+    
+    &.is-active {
+      background: white;
+    }
+  }
+}
+
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.5rem;
+  height: 2.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background $duration-fast;
+  
+  &:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
+  
+  &.carousel-prev {
+    left: $spacing-3;
+  }
+  
+  &.carousel-next {
+    right: $spacing-3;
+  }
+}
+
+// ========================================
+// Ratio (Aspect Ratio Container)
+// ========================================
+.ratio {
+  position: relative;
+  width: 100%;
+  
+  &::before {
+    content: '';
+    display: block;
+  }
+  
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  &.ratio-1x1::before { padding-top: 100%; }
+  &.ratio-4x3::before { padding-top: 75%; }
+  &.ratio-16x9::before { padding-top: 56.25%; }
+  &.ratio-21x9::before { padding-top: 42.857%; }
+}
+
+// ========================================
+// Dark Mode
+// ========================================
+[data-theme="dark"] {
+  .img-placeholder {
+    background: $dark-bg-tertiary;
+  }
+  
+  .gallery-item:hover img {
+    filter: brightness(0.9);
+  }
+  
+  .icon-box {
+    background: $dark-bg-tertiary;
+  }
+  
+  .audio-player {
+    background: $dark-bg-secondary;
+    
+    .audio-progress {
+      background: $dark-border-color;
+    }
+  }
+}

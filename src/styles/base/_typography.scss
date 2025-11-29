@@ -5,59 +5,120 @@
 
 @use '../abstracts' as *;
 
-// Headings
+// ========================================
+// Headings (모바일 최적화 타이포그래피)
+// ========================================
 h1, .h1 {
-  font-size: $font-size-2xl;
-  font-weight: 700;
+  font-size: $font-size-h1;  // 1.625rem (26px)
+  font-weight: $font-weight-bold;
   line-height: $line-height-tight;
+  letter-spacing: $letter-spacing-tight;
 }
 
 h2, .h2 {
-  font-size: $font-size-xl;
-  font-weight: 600;
+  font-size: $font-size-h2;  // 1.375rem (22px)
+  font-weight: $font-weight-semibold;
   line-height: $line-height-tight;
+  letter-spacing: $letter-spacing-tight;
 }
 
 h3, .h3 {
-  font-size: $font-size-lg;
-  font-weight: 600;
-  line-height: $line-height-tight;
+  font-size: $font-size-h3;  // 1.1875rem (19px)
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-snug;
 }
 
 h4, .h4 {
-  font-size: $font-size-base;
-  font-weight: 600;
+  font-size: $font-size-h4;  // 1.0625rem (17px)
+  font-weight: $font-weight-semibold;
   line-height: $line-height-base;
 }
 
-// Body text
-.text-xs { font-size: $font-size-xs; }
-.text-sm { font-size: $font-size-sm; }
-.text-base { font-size: $font-size-base; }
-.text-lg { font-size: $font-size-lg; }
-.text-xl { font-size: $font-size-xl; }
+h5, .h5 {
+  font-size: $font-size-h5;  // 0.9375rem (15px)
+  font-weight: $font-weight-medium;
+  line-height: $line-height-base;
+}
 
-// Colors
+h6, .h6 {
+  font-size: $font-size-h6;  // 0.8125rem (13px)
+  font-weight: $font-weight-medium;
+  line-height: $line-height-base;
+}
+
+// ========================================
+// Body Text Sizes
+// ========================================
+.text-xs { font-size: $font-size-xs; }      // 12px
+.text-sm { font-size: $font-size-sm; }      // 13px
+.text-base { font-size: $font-size-base; }  // 15px
+.text-lg { font-size: $font-size-lg; }      // 17px
+.text-xl { font-size: $font-size-xl; }      // 19px
+.text-2xl { font-size: $font-size-2xl; }    // 22px
+.text-3xl { font-size: $font-size-3xl; }    // 26px
+
+// ========================================
+// Text Colors (CSS 변수 - 테마 변경 지원)
+// ========================================
 .text-primary { color: var(--text-primary); }
 .text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
 .text-muted { color: var(--text-muted); }
-.text-danger { color: var(--danger); }
-.text-success { color: var(--success); }
+.text-disabled { color: var(--text-disabled); }
+.text-inverse { color: var(--text-inverse); }
 
-// Alignment
+// 시맨틱 색상 (CSS 변수)
+.text-success { color: var(--success); }
+.text-warning { color: var(--warning); }
+.text-danger { color: var(--danger); }
+.text-error { color: var(--error); }
+.text-info { color: var(--info); }
+
+// ========================================
+// Text Alignment
+// ========================================
 .text-left { text-align: left; }
 .text-center { text-align: center; }
 .text-right { text-align: right; }
+.text-justify { text-align: justify; }
 
-// Weight
-.font-normal { font-weight: 400; }
-.font-medium { font-weight: 500; }
-.font-semibold { font-weight: 600; }
-.font-bold { font-weight: 700; }
+// ========================================
+// Font Weight
+// ========================================
+.font-light { font-weight: $font-weight-light; }      // 300
+.font-normal { font-weight: $font-weight-normal; }    // 400
+.font-medium { font-weight: $font-weight-medium; }    // 500
+.font-semibold { font-weight: $font-weight-semibold; } // 600
+.font-bold { font-weight: $font-weight-bold; }        // 700
 
-// Utilities
+// ========================================
+// Line Height
+// ========================================
+.leading-none { line-height: $line-height-none; }       // 1
+.leading-tight { line-height: $line-height-tight; }     // 1.25
+.leading-snug { line-height: $line-height-snug; }       // 1.375
+.leading-normal { line-height: $line-height-normal; }   // 1.5
+.leading-relaxed { line-height: $line-height-relaxed; } // 1.625
+.leading-loose { line-height: $line-height-loose; }     // 2
+
+// ========================================
+// Letter Spacing
+// ========================================
+.tracking-tighter { letter-spacing: $letter-spacing-tighter; }  // -0.05em
+.tracking-tight { letter-spacing: $letter-spacing-tight; }      // -0.025em
+.tracking-normal { letter-spacing: $letter-spacing-normal; }    // 0
+.tracking-wide { letter-spacing: $letter-spacing-wide; }        // 0.025em
+.tracking-wider { letter-spacing: $letter-spacing-wider; }      // 0.05em
+
+// ========================================
+// Text Utilities
+// ========================================
 .truncate {
   @include text-ellipsis;
+}
+
+.line-clamp-1 {
+  @include text-clamp(1);
 }
 
 .line-clamp-2 {
@@ -67,3 +128,28 @@ h4, .h4 {
 .line-clamp-3 {
   @include text-clamp(3);
 }
+
+.line-clamp-4 {
+  @include text-clamp(4);
+}
+
+// ========================================
+// Font Family
+// ========================================
+.font-sans { font-family: $font-family-sans; }
+.font-mono { font-family: $font-family-mono; }
+
+// ========================================
+// Text Transform
+// ========================================
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
+.normal-case { text-transform: none; }
+
+// ========================================
+// Text Decoration
+// ========================================
+.underline { text-decoration: underline; }
+.line-through { text-decoration: line-through; }
+.no-underline { text-decoration: none; }

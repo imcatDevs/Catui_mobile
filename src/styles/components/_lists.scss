@@ -1,0 +1,483 @@
+/**
+ * CATUI Mobile - List Components
+ * @description 모바일 최적화 리스트 시스템
+ */
+
+@use '../abstracts' as *;
+
+// ========================================
+// Base List
+// ========================================
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// ========================================
+// List Item
+// ========================================
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-3 $spacing-4;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+  transition: background $duration-fast;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  // Clickable
+  &.list-item-clickable {
+    cursor: pointer;
+    @include no-tap-highlight;
+    
+    &:hover {
+      background: var(--bg-secondary);
+    }
+    
+    &:active {
+      background: var(--bg-tertiary);
+    }
+  }
+  
+  // Selected
+  &.is-selected {
+    background: rgba($primary, 0.05);
+    
+    &:hover {
+      background: rgba($primary, 0.1);
+    }
+  }
+  
+  // Disabled
+  &.is-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+// ========================================
+// List Item Parts
+// ========================================
+.list-item-icon {
+  flex-shrink: 0;
+  color: var(--primary);
+  
+  .material-icons,
+  .material-icons-outlined {
+    font-size: 24px;
+  }
+}
+
+.list-item-avatar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--bg-tertiary);
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.list-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.list-item-title {
+  font-weight: 500;
+  color: var(--text-primary);
+  
+  // Truncate
+  &.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.list-item-subtitle {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  margin-top: $spacing-1;
+  
+  &.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.list-item-meta {
+  font-size: $font-size-xs;
+  color: var(--text-tertiary);
+  margin-top: $spacing-1;
+}
+
+.list-item-action {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+}
+
+.list-item-chevron {
+  color: var(--text-tertiary);
+  
+  .material-icons {
+    font-size: 20px;
+  }
+}
+
+// ========================================
+// List Sizes
+// ========================================
+.list-sm .list-item {
+  padding: $spacing-2 $spacing-3;
+  gap: $spacing-2;
+  
+  .list-item-avatar {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.list-lg .list-item {
+  padding: $spacing-4 $spacing-4;
+  gap: $spacing-4;
+  
+  .list-item-avatar {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+// ========================================
+// List Divider
+// ========================================
+.list-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 0;
+  border: none;
+  
+  // Inset divider
+  &.list-divider-inset {
+    margin-left: 72px; // avatar + gap
+  }
+}
+
+// ========================================
+// List Subheader
+// ========================================
+.list-subheader {
+  padding: $spacing-2 $spacing-4;
+  font-size: $font-size-xs;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--bg-secondary);
+  
+  &.list-subheader-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+}
+
+// ========================================
+// List Group
+// ========================================
+.list-group {
+  border-radius: $radius-default;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  
+  .list-item {
+    &:first-child {
+      border-radius: $radius-default $radius-default 0 0;
+    }
+    
+    &:last-child {
+      border-radius: 0 0 $radius-default $radius-default;
+    }
+  }
+}
+
+// ========================================
+// Action List
+// ========================================
+.list-action {
+  .list-item {
+    cursor: pointer;
+    @include no-tap-highlight;
+    
+    &:hover {
+      background: var(--bg-secondary);
+    }
+    
+    &:active {
+      background: var(--bg-tertiary);
+    }
+  }
+}
+
+// ========================================
+// Menu List (Dropdown style)
+// ========================================
+.list-menu {
+  padding: $spacing-2 0;
+  background: var(--bg-primary);
+  border-radius: $radius-default;
+  box-shadow: $shadow-lg;
+  min-width: 160px;
+  
+  .list-item {
+    padding: $spacing-2 $spacing-4;
+    border-bottom: none;
+    cursor: pointer;
+    
+    &:hover {
+      background: var(--bg-secondary);
+    }
+    
+    &.is-active {
+      background: rgba($primary, 0.1);
+      color: $primary;
+    }
+  }
+  
+  .list-divider {
+    margin: $spacing-2 0;
+  }
+}
+
+// ========================================
+// Checkbox/Radio List
+// ========================================
+.list-selectable {
+  .list-item {
+    cursor: pointer;
+    @include no-tap-highlight;
+    
+    &:hover {
+      background: var(--bg-secondary);
+    }
+  }
+  
+  .list-item-checkbox,
+  .list-item-radio {
+    flex-shrink: 0;
+  }
+}
+
+// ========================================
+// Swipeable List Item
+// ========================================
+.list-item-swipeable {
+  position: relative;
+  overflow: hidden;
+  
+  .list-item-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    transform: translateX(100%);
+    transition: transform $duration-fast $ease-in-out;
+    
+    .list-item-action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      color: white;
+      font-size: $font-size-sm;
+      cursor: pointer;
+      
+      &.action-delete {
+        background: $danger;
+      }
+      
+      &.action-archive {
+        background: $secondary;
+      }
+      
+      &.action-edit {
+        background: $primary;
+      }
+    }
+  }
+  
+  &.is-swiped .list-item-actions {
+    transform: translateX(0);
+  }
+}
+
+// ========================================
+// Virtual List Container
+// ========================================
+.list-virtual {
+  overflow-y: auto;
+  @include momentum-scroll;
+  
+  .list-virtual-item {
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+}
+
+// ========================================
+// Empty List
+// ========================================
+.list-empty {
+  padding: $spacing-8 $spacing-4;
+  text-align: center;
+  color: var(--text-tertiary);
+  
+  .list-empty-icon {
+    font-size: 48px;
+    margin-bottom: $spacing-3;
+    opacity: 0.5;
+  }
+  
+  .list-empty-text {
+    font-size: $font-size-sm;
+  }
+}
+
+// ========================================
+// Loading List
+// ========================================
+.list-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-4;
+  gap: $spacing-2;
+  color: var(--text-secondary);
+  font-size: $font-size-sm;
+}
+
+// ========================================
+// Inset List (with margin)
+// ========================================
+.list-inset {
+  margin: $spacing-4;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  
+  .list-item:first-child {
+    border-radius: $radius-lg $radius-lg 0 0;
+  }
+  
+  .list-item:last-child {
+    border-radius: 0 0 $radius-lg $radius-lg;
+  }
+}
+
+// ========================================
+// Timeline List
+// ========================================
+.list-timeline {
+  position: relative;
+  padding-left: $spacing-8;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border-color);
+  }
+  
+  .list-item {
+    position: relative;
+    padding-left: 0;
+    border-bottom: none;
+    padding-bottom: $spacing-4;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      left: -29px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      background: var(--bg-primary);
+      border: 2px solid $primary;
+      border-radius: 50%;
+    }
+    
+    &:last-child {
+      padding-bottom: 0;
+    }
+  }
+  
+  .list-item-time {
+    font-size: $font-size-xs;
+    color: var(--text-tertiary);
+    margin-bottom: $spacing-1;
+  }
+}
+
+// ========================================
+// Dark Mode
+// ========================================
+[data-theme="dark"] {
+  .list-item {
+    background: $dark-bg-primary;
+    border-color: $dark-border-color;
+    
+    &.list-item-clickable:hover {
+      background: $dark-bg-secondary;
+    }
+    
+    &.list-item-clickable:active {
+      background: $dark-bg-tertiary;
+    }
+  }
+  
+  .list-subheader {
+    background: $dark-bg-secondary;
+  }
+  
+  .list-group {
+    border-color: $dark-border-color;
+  }
+  
+  .list-menu {
+    background: $dark-bg-secondary;
+    
+    .list-item:hover {
+      background: $dark-bg-tertiary;
+    }
+  }
+  
+  .list-divider {
+    background: $dark-border-color;
+  }
+  
+  .list-timeline::before {
+    background: $dark-border-color;
+  }
+  
+  .list-timeline .list-item::before {
+    background: $dark-bg-primary;
+  }
+}

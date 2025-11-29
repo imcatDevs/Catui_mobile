@@ -1,0 +1,516 @@
+<div class="fade-in">
+  <!-- Modal (using Module) -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">open_in_new</span>
+        Modal (Module)
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">CATUI.Overlays.Modal 클래스 사용</p>
+      <div class="flex flex-wrap gap-2">
+        <button class="btn btn-primary" id="modal-module-btn">Open Modal</button>
+        <button class="btn btn-outline" id="modal-confirm-btn">Confirm Dialog</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast (using Module) -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">notifications</span>
+        Toast (Module)
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">CATUI.Overlays.Toast 정적 메서드 사용</p>
+      <div class="flex flex-wrap gap-2">
+        <button class="btn btn-success" id="toast-success">Success</button>
+        <button class="btn btn-danger" id="toast-error">Error</button>
+        <button class="btn btn-warning" id="toast-warning">Warning</button>
+        <button class="btn btn-primary" id="toast-info">Info</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drawer (using Module) -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">menu</span>
+        Drawer (Module)
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">CATUI.Overlays.Drawer 클래스 사용</p>
+      <div class="flex gap-2">
+        <button class="btn btn-primary" id="drawer-left-btn">Left Drawer</button>
+        <button class="btn btn-outline" id="drawer-right-btn">Right Drawer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Sheet (CSS) -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">vertical_align_bottom</span>
+        Bottom Sheet (CSS)
+      </h3>
+    </div>
+    <div class="card-body">
+      <button class="btn btn-primary" id="sheet-btn">Open Bottom Sheet</button>
+    </div>
+  </div>
+
+  <!-- Action Sheet (CSS) -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">more_horiz</span>
+        Action Sheet (iOS Style)
+      </h3>
+    </div>
+    <div class="card-body">
+      <button class="btn btn-primary" id="action-sheet-btn">Open Action Sheet</button>
+    </div>
+  </div>
+
+  <!-- Dropdown -->
+  <div class="card card-overflow">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">arrow_drop_down</span>
+        Dropdown
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="flex gap-4">
+        <div class="dropdown">
+          <button class="btn btn-outline dropdown-trigger" id="dropdown-btn">
+            Dropdown <span class="material-icons">expand_more</span>
+          </button>
+          <div class="dropdown-menu" id="dropdown-menu">
+            <div class="dropdown-header">Actions</div>
+            <div class="dropdown-item">
+              <span class="material-icons">edit</span> Edit
+            </div>
+            <div class="dropdown-item">
+              <span class="material-icons">content_copy</span> Duplicate
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" style="color: var(--danger);">
+              <span class="material-icons">delete</span> Delete
+            </div>
+          </div>
+        </div>
+        
+        <div class="dropdown">
+          <button class="btn btn-outline dropdown-trigger" id="dropdown-btn-2">
+            Right <span class="material-icons">expand_more</span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" id="dropdown-menu-2">
+            <div class="dropdown-item is-active">Option 1</div>
+            <div class="dropdown-item">Option 2</div>
+            <div class="dropdown-item">Option 3</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Snackbar -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">info</span>
+        Snackbar
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="flex gap-2">
+        <button class="btn btn-primary" id="snackbar-btn">Show Snackbar</button>
+        <button class="btn btn-outline" id="snackbar-action-btn">With Action</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tooltip -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">help_outline</span>
+        Tooltip
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="flex gap-4 justify-center">
+        <button class="btn btn-outline" data-tooltip="Tooltip on top" data-tooltip-pos="top">Top</button>
+        <button class="btn btn-outline" data-tooltip="Tooltip on bottom" data-tooltip-pos="bottom">Bottom</button>
+        <button class="btn btn-outline" data-tooltip="Tooltip on left" data-tooltip-pos="left">Left</button>
+        <button class="btn btn-outline" data-tooltip="Tooltip on right" data-tooltip-pos="right">Right</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Utilities Demo -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">build</span>
+        Utility Classes
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label class="form-label">Colors</label>
+        <div class="flex flex-wrap gap-2">
+          <span class="text-brand font-semibold">Brand</span>
+          <span class="text-success font-semibold">Success</span>
+          <span class="text-warning font-semibold">Warning</span>
+          <span class="text-danger font-semibold">Danger</span>
+          <span class="text-muted font-semibold">Muted</span>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Backgrounds</label>
+        <div class="flex flex-wrap gap-2">
+          <span class="bg-brand-light text-brand p-2 rounded">Brand</span>
+          <span class="bg-success-light text-success p-2 rounded">Success</span>
+          <span class="bg-warning-light text-warning p-2 rounded">Warning</span>
+          <span class="bg-danger-light text-danger p-2 rounded">Danger</span>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Typography</label>
+        <p class="text-xs">Extra Small Text</p>
+        <p class="text-sm">Small Text</p>
+        <p class="text-base">Base Text</p>
+        <p class="text-lg font-medium">Large Medium</p>
+        <p class="text-xl font-semibold">XL Semibold</p>
+        <p class="text-2xl font-bold">2XL Bold</p>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Animations</label>
+        <div class="flex gap-4 items-center">
+          <div class="animate-spin icon-lg text-brand">
+            <span class="material-icons">refresh</span>
+          </div>
+          <div class="animate-pulse">
+            <span class="badge badge-primary">Pulse</span>
+          </div>
+          <div class="animate-bounce text-brand">
+            <span class="material-icons">arrow_downward</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Shadows & Borders</label>
+        <div class="flex gap-3">
+          <div class="p-3 shadow-sm rounded bg-primary">shadow-sm</div>
+          <div class="p-3 shadow rounded bg-primary">shadow</div>
+          <div class="p-3 shadow-lg rounded bg-primary">shadow-lg</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal은 CATUI.Overlays.Modal 모듈 사용 -->
+
+<!-- Bottom Sheet (CSS) -->
+<div class="bottom-sheet" id="bottom-sheet">
+  <div class="bottom-sheet-backdrop"></div>
+  <div class="bottom-sheet-content">
+    <div class="bottom-sheet-handle"></div>
+    <div class="bottom-sheet-header">
+      <span class="bottom-sheet-title">Options</span>
+    </div>
+    <div class="bottom-sheet-body">
+      <ul class="list">
+        <li class="list-item list-item-clickable">
+          <span class="list-item-icon"><span class="material-icons">share</span></span>
+          <div class="list-item-content">Share</div>
+        </li>
+        <li class="list-item list-item-clickable">
+          <span class="list-item-icon"><span class="material-icons">link</span></span>
+          <div class="list-item-content">Copy Link</div>
+        </li>
+        <li class="list-item list-item-clickable">
+          <span class="list-item-icon"><span class="material-icons">bookmark_border</span></span>
+          <div class="list-item-content">Save</div>
+        </li>
+        <li class="list-item list-item-clickable">
+          <span class="list-item-icon"><span class="material-icons" style="color: var(--danger);">flag</span></span>
+          <div class="list-item-content" style="color: var(--danger);">Report</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Action Sheet -->
+<div class="action-sheet" id="action-sheet">
+  <div class="action-sheet-backdrop"></div>
+  <div class="action-sheet-content">
+    <div class="action-sheet-group">
+      <div class="action-sheet-title">Choose an action</div>
+      <div class="action-sheet-item">Share via Email</div>
+      <div class="action-sheet-item">Share via Message</div>
+      <div class="action-sheet-item">Copy to Clipboard</div>
+    </div>
+    <div class="action-sheet-group">
+      <div class="action-sheet-item action-sheet-danger">Delete</div>
+    </div>
+    <div class="action-sheet-group">
+      <div class="action-sheet-item action-sheet-primary" id="action-sheet-cancel">Cancel</div>
+    </div>
+  </div>
+</div>
+
+<!-- Snackbar -->
+<div class="snackbar" id="snackbar">
+  <span class="snackbar-text" id="snackbar-text">This is a snackbar message</span>
+</div>
+
+<style>
+.mt-3 { margin-top: 0.75rem; }
+</style>
+
+<script>
+(async function() {
+  // ========================================
+  // Module 로드 (CATUI.use 사용)
+  // ========================================
+  let Overlays = null;
+  try {
+    Overlays = await CATUI.use('overlays');
+    console.log('[Overlays] Module loaded:', Overlays);
+    
+    // ========================================
+    // Modal (Module) - 모듈 로드 성공 시에만 작동
+    // ========================================
+    
+    // 기본 모달
+    CATUI('#modal-module-btn').on('click', () => {
+      const modal = new Overlays.Modal({
+        title: 'Modal Title',
+        content: `
+          <p>This modal is created using <strong>CATUI.use('overlays')</strong> module.</p>
+          <p style="color: var(--text-secondary); font-size: 14px; margin-top: 12px;">
+            Click the backdrop or close button to dismiss.
+          </p>
+        `
+      });
+      modal.open();
+    });
+    
+    // Confirm Dialog
+    CATUI('#modal-confirm-btn').on('click', () => {
+      const modal = new Overlays.Modal({
+        title: 'Confirm Action',
+        content: `
+          <p>Are you sure you want to proceed with this action?</p>
+          <div style="display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end;">
+            <button class="btn btn-secondary" id="confirm-cancel">Cancel</button>
+            <button class="btn btn-primary" id="confirm-ok">Confirm</button>
+          </div>
+        `,
+        showClose: false
+      });
+      modal.open();
+      
+      // Button handlers
+      setTimeout(() => {
+        document.getElementById('confirm-cancel')?.addEventListener('click', () => {
+          modal.close();
+          Overlays.Toast.info('Action cancelled');
+        });
+        document.getElementById('confirm-ok')?.addEventListener('click', () => {
+          modal.close();
+          Overlays.Toast.success('Action confirmed!');
+        });
+      }, 100);
+    });
+    
+    // ========================================
+    // Toast (Module) - Static Methods
+    // ========================================
+    CATUI('#toast-success').on('click', () => {
+      Overlays.Toast.success('Operation completed successfully!');
+    });
+    
+    CATUI('#toast-error').on('click', () => {
+      Overlays.Toast.error('Something went wrong!');
+    });
+    
+    CATUI('#toast-warning').on('click', () => {
+      Overlays.Toast.warning('Please check your input');
+    });
+    
+    CATUI('#toast-info').on('click', () => {
+      Overlays.Toast.info('New update available', { position: 'top' });
+    });
+    
+    // ========================================
+    // Drawer (Module)
+    // ========================================
+    
+    // Left Drawer
+    CATUI('#drawer-left-btn').on('click', () => {
+      const drawer = new Overlays.Drawer({
+        position: 'left',
+        title: 'Menu',
+        content: `
+          <div style="padding: 16px 0;">
+            <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 12px 20px; color: inherit; text-decoration: none;">
+              <span class="material-icons" style="color: var(--primary);">home</span>
+              Home
+            </a>
+            <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 12px 20px; color: inherit; text-decoration: none;">
+              <span class="material-icons" style="color: var(--primary);">settings</span>
+              Settings
+            </a>
+            <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 12px 20px; color: inherit; text-decoration: none;">
+              <span class="material-icons" style="color: var(--primary);">person</span>
+              Profile
+            </a>
+          </div>
+        `
+      });
+      drawer.open();
+    });
+    
+    // Right Drawer
+    CATUI('#drawer-right-btn').on('click', () => {
+      const drawer = new Overlays.Drawer({
+        position: 'right',
+        title: 'Notifications',
+        content: `
+          <div style="padding: 16px;">
+            <div style="padding: 12px; background: var(--bg-secondary); border-radius: 8px; margin-bottom: 8px;">
+              <div style="font-weight: 600;">New message</div>
+              <div style="font-size: 14px; color: var(--text-secondary);">John sent you a message</div>
+            </div>
+            <div style="padding: 12px; background: var(--bg-secondary); border-radius: 8px;">
+              <div style="font-weight: 600;">Update available</div>
+              <div style="font-size: 14px; color: var(--text-secondary);">Version 2.0 is ready</div>
+            </div>
+          </div>
+        `
+      });
+      drawer.open();
+    });
+    
+  } catch (e) {
+    console.error('[Overlays] Module load failed:', e.message);
+  }
+  
+  // ========================================
+  // CSS-based Overlays (모듈 없이 CSS만 사용)
+  // ========================================
+  
+  // Bottom Sheet (CSS)
+  CATUI('#sheet-btn').on('click', () => {
+    CATUI('#bottom-sheet').addClass('is-active');
+  });
+  
+  CATUI('#bottom-sheet .bottom-sheet-backdrop').on('click', () => {
+    CATUI('#bottom-sheet').removeClass('is-active');
+  });
+  
+  CATUI('#bottom-sheet .list-item').on('click', () => {
+    CATUI('#bottom-sheet').removeClass('is-active');
+  });
+  
+  // Action Sheet (CSS)
+  CATUI('#action-sheet-btn').on('click', () => {
+    CATUI('#action-sheet').addClass('is-active');
+  });
+  
+  CATUI('#action-sheet .action-sheet-backdrop, #action-sheet-cancel').on('click', () => {
+    CATUI('#action-sheet').removeClass('is-active');
+  });
+  
+  CATUI('#action-sheet .action-sheet-item').on('click', function() {
+    if (!CATUI(this).hasClass('action-sheet-primary')) {
+      CATUI('#action-sheet').removeClass('is-active');
+    }
+  });
+  
+  // Dropdown (CSS)
+  CATUI('#dropdown-btn').on('click', (e) => {
+    e.stopPropagation();
+    CATUI('#dropdown-menu').toggleClass('is-active');
+    CATUI('#dropdown-menu-2').removeClass('is-active');
+  });
+  
+  CATUI('#dropdown-btn-2').on('click', (e) => {
+    e.stopPropagation();
+    CATUI('#dropdown-menu-2').toggleClass('is-active');
+    CATUI('#dropdown-menu').removeClass('is-active');
+  });
+  
+  document.addEventListener('click', () => {
+    CATUI('.dropdown-menu').removeClass('is-active');
+  });
+  
+  CATUI('.dropdown-item').on('click', () => {
+    CATUI('.dropdown-menu').removeClass('is-active');
+  });
+  
+  // Snackbar (CSS)
+  let snackbarTimeout;
+  
+  function showSnackbar(text, action) {
+    CATUI('#snackbar-text').text(text);
+    CATUI('#snackbar .snackbar-action').remove();
+    
+    if (action) {
+      const actionEl = CATUI.create('span', {
+        class: 'snackbar-action',
+        text: action.text
+      });
+      actionEl.on('click', action.onClick);
+      CATUI('#snackbar').append(actionEl);
+    }
+    
+    CATUI('#snackbar').addClass('is-active');
+    
+    clearTimeout(snackbarTimeout);
+    snackbarTimeout = setTimeout(() => {
+      CATUI('#snackbar').removeClass('is-active');
+    }, 3000);
+  }
+  
+  CATUI('#snackbar-btn').on('click', () => {
+    showSnackbar('This is a simple snackbar message');
+  });
+  
+  CATUI('#snackbar-action-btn').on('click', () => {
+    showSnackbar('Item deleted', {
+      text: 'UNDO',
+      onClick: () => {
+        CATUI('#snackbar').removeClass('is-active');
+        showSnackbar('Item restored');
+      }
+    });
+  });
+  
+  // ========================================
+  // Tooltip (Module 사용)
+  // ========================================
+  if (Overlays && Overlays.Tooltip) {
+    Overlays.Tooltip.init('[data-tooltip]');
+    console.log('[Overlays] Tooltip initialized');
+  }
+  
+  console.log('[Overlays] Demo loaded (Module + CSS)');
+})();
+</script>

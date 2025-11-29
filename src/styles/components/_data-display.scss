@@ -1,0 +1,545 @@
+/**
+ * CATUI Mobile - Data Display Components
+ * @description Avatar, Table, Timeline, Accordion 등 데이터 표시 요소
+ */
+
+@use '../abstracts' as *;
+
+// ========================================
+// Avatar
+// ========================================
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $component-avatar-size-md;
+  height: $component-avatar-size-md;
+  border-radius: $component-avatar-border-radius;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: $font-size-sm;
+  overflow: hidden;
+  flex-shrink: 0;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// Avatar sizes
+.avatar-xs {
+  width: $component-avatar-size-xs;
+  height: $component-avatar-size-xs;
+  font-size: $font-size-xs;
+}
+
+.avatar-sm {
+  width: $component-avatar-size-sm;
+  height: $component-avatar-size-sm;
+  font-size: $font-size-xs;
+}
+
+.avatar-lg {
+  width: $component-avatar-size-lg;
+  height: $component-avatar-size-lg;
+  font-size: $font-size-lg;
+}
+
+.avatar-xl {
+  width: $component-avatar-size-xl;
+  height: $component-avatar-size-xl;
+  font-size: $font-size-xl;
+}
+
+// Avatar shapes
+.avatar-square {
+  border-radius: $radius-default;
+}
+
+// Avatar with status
+.avatar-wrapper {
+  position: relative;
+  display: inline-block;
+  
+  .avatar-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    border: 2px solid var(--bg-primary);
+    
+    &.status-online { background: $success; }
+    &.status-offline { background: var(--text-tertiary); }
+    &.status-busy { background: $danger; }
+    &.status-away { background: $warning; }
+  }
+}
+
+// Avatar group
+.avatar-group {
+  display: flex;
+  
+  .avatar {
+    border: 2px solid var(--bg-primary);
+    margin-left: -0.5rem;
+    
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+  
+  .avatar-more {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+  }
+}
+
+// ========================================
+// Table
+// ========================================
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $font-size-sm;
+  
+  th, td {
+    padding: $spacing-3;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  th {
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+  }
+  
+  td {
+    color: var(--text-primary);
+  }
+  
+  tbody tr:hover {
+    background: var(--bg-secondary);
+  }
+  
+  &.table-striped tbody tr:nth-child(odd) {
+    background: var(--bg-secondary);
+  }
+  
+  &.table-bordered {
+    border: 1px solid var(--border-color);
+    
+    th, td {
+      border: 1px solid var(--border-color);
+    }
+  }
+}
+
+// Responsive table wrapper
+.table-responsive {
+  overflow-x: auto;
+  @include momentum-scroll;
+  
+  .table {
+    min-width: 600px;
+  }
+}
+
+// ========================================
+// Timeline
+// ========================================
+.timeline {
+  position: relative;
+  padding-left: $spacing-8;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0.6875rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border-color);
+  }
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: $spacing-6;
+  
+  &:last-child {
+    padding-bottom: 0;
+  }
+  
+  .timeline-marker {
+    position: absolute;
+    left: -1.9375rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    background: var(--bg-primary);
+    border: 2px solid $primary;
+    border-radius: 50%;
+  }
+  
+  .timeline-content {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: $radius-default;
+    padding: $spacing-3;
+  }
+  
+  .timeline-time {
+    font-size: $font-size-xs;
+    color: var(--text-tertiary);
+    margin-bottom: $spacing-1;
+  }
+  
+  .timeline-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: $spacing-1;
+  }
+  
+  .timeline-text {
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+  }
+}
+
+// ========================================
+// Accordion
+// ========================================
+.accordion {
+  border: 1px solid var(--border-color);
+  border-radius: $radius-default;
+  overflow: hidden;
+}
+
+.accordion-item {
+  border-bottom: 1px solid var(--border-color);
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-4;
+  background: var(--bg-primary);
+  cursor: pointer;
+  transition: background $duration-fast;
+  @include no-tap-highlight;
+  
+  &:hover {
+    background: var(--bg-secondary);
+  }
+  
+  .accordion-title {
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+  
+  .accordion-icon {
+    color: var(--text-tertiary);
+    transition: transform $duration-fast;
+    
+    .material-icons {
+      font-size: $icon-size-sm;
+    }
+  }
+  
+  &.is-active .accordion-icon {
+    transform: rotate(180deg);
+  }
+}
+
+.accordion-body {
+  padding: 0 $spacing-4 $spacing-4;
+  color: var(--text-secondary);
+  font-size: $font-size-sm;
+  line-height: $line-height-relaxed;
+  display: none;
+  
+  &.is-open {
+    display: block;
+  }
+}
+
+// ========================================
+// Collapse
+// ========================================
+.collapse {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height $duration-slow $ease-in-out;
+  
+  &.is-open {
+    max-height: 500px;
+  }
+}
+
+// ========================================
+// Stat Card
+// ========================================
+.stat {
+  text-align: center;
+  padding: $spacing-4;
+  
+  .stat-value {
+    font-size: $font-size-3xl;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+  
+  .stat-label {
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+    margin-top: $spacing-1;
+  }
+  
+  .stat-change {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-1;
+    font-size: $font-size-xs;
+    margin-top: $spacing-2;
+    
+    &.stat-up {
+      color: $success;
+    }
+    
+    &.stat-down {
+      color: $danger;
+    }
+    
+    .material-icons {
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+.stat-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: $spacing-4;
+}
+
+// ========================================
+// Description List
+// ========================================
+.dl {
+  display: grid;
+  gap: $spacing-3;
+}
+
+.dl-item {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-1;
+  
+  dt {
+    font-size: $font-size-sm;
+    color: var(--text-tertiary);
+  }
+  
+  dd {
+    font-weight: 500;
+    color: var(--text-primary);
+    margin: 0;
+  }
+}
+
+// Horizontal
+.dl-horizontal {
+  .dl-item {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: $spacing-3 0;
+    border-bottom: 1px solid var(--border-color);
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+// ========================================
+// Key-Value
+// ========================================
+.kv-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+.kv-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-2 0;
+  
+  .kv-key {
+    color: var(--text-secondary);
+    font-size: $font-size-sm;
+  }
+  
+  .kv-value {
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+}
+
+// ========================================
+// Callout
+// ========================================
+.callout {
+  padding: $spacing-4;
+  border-left: 4px solid $primary;
+  background: var(--bg-secondary);
+  border-radius: 0 $radius-default $radius-default 0;
+  
+  .callout-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: $spacing-1;
+  }
+  
+  .callout-text {
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+  }
+  
+  &.callout-info { border-color: $info; }
+  &.callout-success { border-color: $success; }
+  &.callout-warning { border-color: $warning; }
+  &.callout-danger { border-color: $danger; }
+}
+
+// ========================================
+// Blockquote
+// ========================================
+.blockquote {
+  padding: $spacing-4;
+  border-left: 4px solid var(--border-color);
+  background: var(--bg-secondary);
+  font-style: italic;
+  color: var(--text-secondary);
+  
+  .blockquote-footer {
+    margin-top: $spacing-2;
+    font-size: $font-size-sm;
+    font-style: normal;
+    color: var(--text-tertiary);
+    
+    &::before {
+      content: '— ';
+    }
+  }
+}
+
+// ========================================
+// Code Block
+// ========================================
+.code-block {
+  background: $bg-inverse;
+  color: $text-inverse;
+  padding: $spacing-4;
+  border-radius: $radius-default;
+  font-family: $font-family-mono;
+  font-size: $font-size-sm;
+  overflow-x: auto;
+  @include custom-scrollbar;
+}
+
+.code-inline {
+  background: var(--bg-tertiary);
+  color: $danger;
+  padding: 0.125rem 0.375rem;
+  border-radius: $radius-sm;
+  font-family: $font-family-mono;
+  font-size: 0.875em;
+}
+
+// ========================================
+// Dark Mode
+// ========================================
+[data-theme="dark"] {
+  .avatar {
+    background: $dark-bg-tertiary;
+  }
+  
+  .avatar-wrapper .avatar-status {
+    border-color: $dark-bg-primary;
+  }
+  
+  .avatar-group .avatar {
+    border-color: $dark-bg-primary;
+  }
+  
+  .table {
+    th {
+      background: $dark-bg-tertiary;
+    }
+    
+    tbody tr:hover {
+      background: $dark-bg-secondary;
+    }
+    
+    &.table-striped tbody tr:nth-child(odd) {
+      background: $dark-bg-secondary;
+    }
+  }
+  
+  .timeline::before {
+    background: $dark-border-color;
+  }
+  
+  .timeline-item {
+    .timeline-marker {
+      background: $dark-bg-primary;
+    }
+    
+    .timeline-content {
+      background: $dark-bg-secondary;
+      border-color: $dark-border-color;
+    }
+  }
+  
+  .accordion {
+    border-color: $dark-border-color;
+  }
+  
+  .accordion-item {
+    border-color: $dark-border-color;
+  }
+  
+  .accordion-header {
+    background: $dark-bg-primary;
+    
+    &:hover {
+      background: $dark-bg-secondary;
+    }
+  }
+  
+  .callout {
+    background: $dark-bg-secondary;
+  }
+  
+  .blockquote {
+    background: $dark-bg-secondary;
+    border-color: $dark-border-color;
+  }
+  
+  .code-inline {
+    background: $dark-bg-tertiary;
+  }
+}

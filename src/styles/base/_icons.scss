@@ -3,6 +3,8 @@
  * @description 모바일 최적화 아이콘 폰트
  */
 
+@use '../abstracts' as *;
+
 // Material Icons (Filled)
 @font-face {
   font-family: 'Material Icons';
@@ -56,16 +58,19 @@
   font-family: 'Material Icons Outlined';
 }
 
-// 아이콘 크기 변형
-.icon-sm { font-size: 18px; }
-.icon-md { font-size: 24px; }
-.icon-lg { font-size: 36px; }
-.icon-xl { font-size: 48px; }
+// 아이콘 크기 변형 (모바일 터치 최적화)
+.icon-xs { font-size: $icon-size-xs; }  // 16px
+.icon-sm { font-size: $icon-size-sm; }  // 20px
+.icon-md { font-size: $icon-size-md; }  // 24px
+.icon-lg { font-size: $icon-size-lg; }  // 32px
+.icon-xl { font-size: $icon-size-xl; }  // 48px
 
-// 아이콘 색상 (CSS 변수 사용)
-.icon-primary { color: var(--primary-color, #6366f1); }
-.icon-secondary { color: var(--text-secondary, #6b7280); }
-.icon-success { color: var(--success-color, #22c55e); }
-.icon-warning { color: var(--warning-color, #f59e0b); }
-.icon-error { color: var(--error-color, #ef4444); }
-.icon-muted { color: var(--text-muted, #9ca3af); }
+// 아이콘 색상 (_variables.scss 기반)
+.icon-default { color: $icon-color-default; }
+.icon-primary { color: $icon-color-primary; }
+.icon-secondary { color: $icon-color-secondary; }
+.icon-tertiary { color: $icon-color-tertiary; }
+.icon-success { color: $icon-color-success; }
+.icon-warning { color: $icon-color-warning; }
+.icon-error { color: $icon-color-error; }
+.icon-inverse { color: $icon-color-inverse; }

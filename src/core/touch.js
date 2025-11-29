@@ -516,14 +516,83 @@ export class GestureRecognizer {
     this._onTouchStart = this._handleTouchStart.bind(this);
     this._onTouchMove = this._handleTouchMove.bind(this);
     this._onTouchEnd = this._handleTouchEnd.bind(this);
+    
+    // 마우스 이벤트 핸들러 (데스크톱 fallback)
+    this._onMouseDown = this._handleMouseDown.bind(this);
+    this._onMouseMove = this._handleMouseMove.bind(this);
+    this._onMouseUp = this._handleMouseUp.bind(this);
+    this._isMouseDown = false;
 
     this._bindEvents();
   }
 
   _bindEvents() {
+    // 터치 이벤트
     this.element.addEventListener('touchstart', this._onTouchStart, { passive: false });
     this.element.addEventListener('touchmove', this._onTouchMove, { passive: false });
     this.element.addEventListener('touchend', this._onTouchEnd, { passive: true });
+    
+    // 마우스 이벤트 (데스크톱 fallback)
+    this.element.addEventListener('mousedown', this._onMouseDown);
+    document.addEventListener('mousemove', this._onMouseMove);
+    document.addEventListener('mouseup', this._onMouseUp);
+  }
+  
+  /**
+   * 마우스 다운 핸들러 (데스크톱 fallback)
+   * @private
+   */
+  _handleMouseDown(e) {
+    this._isMouseDown = true;
+    this._state.dragStartX = e.clientX;
+    this._state.dragStartY = e.clientY;
+    this._state.isDragging = false;
+  }
+  
+  /**
+   * 마우스 이동 핸들러 (데스크톱 fallback)
+   * @private
+   */
+  _handleMouseMove(e) {
+    if (!this._isMouseDown) return;
+    
+    const deltaX = e.clientX - this._state.dragStartX;
+    const deltaY = e.clientY - this._state.dragStartY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    
+    if (!this._state.isDragging && distance > this.options.dragThreshold) {
+      this._state.isDragging = true;
+      this._emit('dragstart', {
+        x: this._state.dragStartX,
+        y: this._state.dragStartY
+      });
+    }
+    
+    if (this._state.isDragging) {
+      this._emit('drag', {
+        x: e.clientX,
+        y: e.clientY,
+        deltaX,
+        deltaY
+      });
+    }
+  }
+  
+  /**
+   * 마우스 업 핸들러 (데스크톱 fallback)
+   * @private
+   */
+  _handleMouseUp(e) {
+    if (!this._isMouseDown) return;
+    this._isMouseDown = false;
+    
+    if (this._state.isDragging) {
+      this._emit('dragend', {
+        x: e.clientX,
+        y: e.clientY
+      });
+      this._state.isDragging = false;
+    }
   }
 
   _handleTouchStart(e) {
@@ -626,11 +695,19 @@ export class GestureRecognizer {
   }
 
   destroy() {
+    // 터치 이벤트 리스너 제거
     this.element.removeEventListener('touchstart', this._onTouchStart);
     this.element.removeEventListener('touchmove', this._onTouchMove);
     this.element.removeEventListener('touchend', this._onTouchEnd);
+    
+    // 마우스 이벤트 리스너 제거
+    this.element.removeEventListener('mousedown', this._onMouseDown);
+    document.removeEventListener('mousemove', this._onMouseMove);
+    document.removeEventListener('mouseup', this._onMouseUp);
+    
     this.handlers.clear();
     this.element = null;
+    this._isMouseDown = false;
   }
 }
 

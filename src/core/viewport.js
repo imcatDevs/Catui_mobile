@@ -392,6 +392,10 @@ export class KeyboardManager {
     this._keyboardHeight = 0;
     this._initialViewportHeight = window.innerHeight;
 
+    // 화면 회전 시 초기 높이 갱신 (모바일 필수)
+    this._onOrientationChange = this._handleOrientationChange.bind(this);
+    window.addEventListener('orientationchange', this._onOrientationChange);
+
     if ('visualViewport' in window) {
       this._onViewportResize = this._handleViewportResize.bind(this);
       window.visualViewport.addEventListener('resize', this._onViewportResize);
@@ -400,6 +404,19 @@ export class KeyboardManager {
       this._onResize = this._handleResize.bind(this);
       window.addEventListener('resize', this._onResize);
     }
+  }
+
+  /**
+   * 화면 회전 핸들러 - 초기 높이 재계산
+   * @private
+   */
+  _handleOrientationChange() {
+    // 회전 완료 후 높이 갱신 (회전 애니메이션 대기)
+    setTimeout(() => {
+      if (!this._isKeyboardVisible) {
+        this._initialViewportHeight = window.innerHeight;
+      }
+    }, 300);
   }
 
   /**
@@ -495,6 +512,9 @@ export class KeyboardManager {
   }
 
   destroy() {
+    // 화면 회전 리스너 제거
+    window.removeEventListener('orientationchange', this._onOrientationChange);
+    
     if ('visualViewport' in window) {
       window.visualViewport.removeEventListener('resize', this._onViewportResize);
     } else {

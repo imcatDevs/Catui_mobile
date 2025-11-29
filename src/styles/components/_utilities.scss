@@ -1,0 +1,306 @@
+/**
+ * CATUI Mobile - Utility Classes
+ * @description 유틸리티 헬퍼 클래스
+ */
+
+@use '../abstracts' as *;
+
+// ========================================
+// Color Utilities
+// ========================================
+// Text colors
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-muted { color: var(--text-muted); }
+.text-inverse { color: var(--text-inverse); }
+
+.text-brand { color: $primary; }
+.text-success { color: $success; }
+.text-warning { color: $warning; }
+.text-danger { color: $danger; }
+.text-info { color: $info; }
+
+// Background colors
+.bg-primary { background-color: var(--bg-primary); }
+.bg-secondary { background-color: var(--bg-secondary); }
+.bg-tertiary { background-color: var(--bg-tertiary); }
+.bg-inverse { background-color: var(--bg-inverse); }
+
+.bg-brand { background-color: $primary; }
+.bg-brand-light { background-color: rgba($primary, 0.1); }
+.bg-success { background-color: $success; }
+.bg-success-light { background-color: rgba($success, 0.1); }
+.bg-warning { background-color: $warning; }
+.bg-warning-light { background-color: rgba($warning, 0.1); }
+.bg-danger { background-color: $danger; }
+.bg-danger-light { background-color: rgba($danger, 0.1); }
+
+// ========================================
+// Border Utilities
+// ========================================
+.border { border: 1px solid var(--border-color); }
+.border-0 { border: none; }
+.border-top { border-top: 1px solid var(--border-color); }
+.border-right { border-right: 1px solid var(--border-color); }
+.border-bottom { border-bottom: 1px solid var(--border-color); }
+.border-left { border-left: 1px solid var(--border-color); }
+
+.border-primary { border-color: $primary; }
+.border-success { border-color: $success; }
+.border-warning { border-color: $warning; }
+.border-danger { border-color: $danger; }
+
+.rounded-none { border-radius: 0; }
+.rounded-sm { border-radius: $radius-sm; }
+.rounded { border-radius: $radius-default; }
+.rounded-lg { border-radius: $radius-lg; }
+.rounded-xl { border-radius: $radius-xl; }
+.rounded-full { border-radius: $radius-full; }
+
+// ========================================
+// Shadow Utilities
+// ========================================
+.shadow-none { box-shadow: none; }
+.shadow-sm { box-shadow: $shadow-sm; }
+.shadow { box-shadow: $shadow-md; }
+.shadow-lg { box-shadow: $shadow-lg; }
+
+// ========================================
+// Typography Utilities
+// ========================================
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+.text-xs { font-size: $font-size-xs; }
+.text-sm { font-size: $font-size-sm; }
+.text-base { font-size: $font-size-base; }
+.text-lg { font-size: $font-size-lg; }
+.text-xl { font-size: $font-size-xl; }
+.text-2xl { font-size: $font-size-2xl; }
+.text-3xl { font-size: $font-size-3xl; }
+
+.leading-none { line-height: 1; }
+.leading-tight { line-height: $line-height-tight; }
+.leading-normal { line-height: $line-height-normal; }
+.leading-relaxed { line-height: $line-height-relaxed; }
+
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
+.normal-case { text-transform: none; }
+
+.underline { text-decoration: underline; }
+.line-through { text-decoration: line-through; }
+.no-underline { text-decoration: none; }
+
+.whitespace-nowrap { white-space: nowrap; }
+.whitespace-normal { white-space: normal; }
+.break-words { word-wrap: break-word; }
+.break-all { word-break: break-all; }
+
+// ========================================
+// Opacity
+// ========================================
+.opacity-0 { opacity: 0; }
+.opacity-25 { opacity: 0.25; }
+.opacity-50 { opacity: 0.5; }
+.opacity-75 { opacity: 0.75; }
+.opacity-100 { opacity: 1; }
+
+// ========================================
+// Cursor
+// ========================================
+.cursor-pointer { cursor: pointer; }
+.cursor-not-allowed { cursor: not-allowed; }
+.cursor-default { cursor: default; }
+.cursor-move { cursor: move; }
+
+// ========================================
+// Pointer Events
+// ========================================
+.pointer-events-none { pointer-events: none; }
+.pointer-events-auto { pointer-events: auto; }
+
+// ========================================
+// User Select
+// ========================================
+.select-none { user-select: none; }
+.select-text { user-select: text; }
+.select-all { user-select: all; }
+.select-auto { user-select: auto; }
+
+// ========================================
+// Transition
+// ========================================
+.transition-none { transition: none; }
+.transition { transition: all $duration-base $ease-in-out; }
+.transition-fast { transition: all $duration-fast $ease-in-out; }
+.transition-slow { transition: all $duration-slow $ease-in-out; }
+
+// ========================================
+// Transform
+// ========================================
+.rotate-0 { transform: rotate(0deg); }
+.rotate-45 { transform: rotate(45deg); }
+.rotate-90 { transform: rotate(90deg); }
+.rotate-180 { transform: rotate(180deg); }
+.-rotate-45 { transform: rotate(-45deg); }
+.-rotate-90 { transform: rotate(-90deg); }
+
+.scale-0 { transform: scale(0); }
+.scale-50 { transform: scale(0.5); }
+.scale-75 { transform: scale(0.75); }
+.scale-100 { transform: scale(1); }
+.scale-105 { transform: scale(1.05); }
+.scale-110 { transform: scale(1.1); }
+
+// ========================================
+// Animation
+// ========================================
+.animate-none { animation: none; }
+
+.animate-spin {
+  animation: util-spin 1s linear infinite;
+}
+
+.animate-ping {
+  animation: util-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.animate-pulse {
+  animation: util-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-bounce {
+  animation: util-bounce 1s infinite;
+}
+
+.animate-fade-in {
+  animation: util-fade-in $duration-slow ease;
+}
+
+.animate-slide-up {
+  animation: util-slide-up $duration-slow ease;
+}
+
+.animate-slide-down {
+  animation: util-slide-down $duration-slow ease;
+}
+
+@keyframes util-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes util-ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes util-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes util-bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes util-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes util-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes util-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ========================================
+// Interaction States
+// ========================================
+.hover\:opacity-80:hover { opacity: 0.8; }
+.hover\:opacity-100:hover { opacity: 1; }
+.hover\:scale-105:hover { transform: scale(1.05); }
+
+.active\:scale-95:active { transform: scale(0.95); }
+.active\:opacity-80:active { opacity: 0.8; }
+
+// ========================================
+// Focus Ring
+// ========================================
+.focus-ring {
+  &:focus {
+    outline: 2px solid $primary;
+    outline-offset: 2px;
+  }
+}
+
+.focus-ring-inset {
+  &:focus {
+    outline: 2px solid $primary;
+    outline-offset: -2px;
+  }
+}
+
+// ========================================
+// Screen Reader Only
+// ========================================
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.not-sr-only {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+// ========================================
+// Print Utilities
+// ========================================
+@media print {
+  .print\:hidden { display: none !important; }
+  .print\:block { display: block !important; }
+}

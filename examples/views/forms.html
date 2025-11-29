@@ -1,0 +1,665 @@
+<div class="fade-in">
+  <!-- 기본 입력 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">edit</span>
+      기본 입력
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label required">이름</label>
+      <input type="text" class="form-input" placeholder="이름을 입력하세요">
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">이메일</label>
+      <input type="email" class="form-input" placeholder="email@example.com">
+      <span class="form-helper">업무용 이메일을 입력해주세요</span>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Small</label>
+        <input type="text" class="form-input form-input-sm" placeholder="작은 입력">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Large</label>
+        <input type="text" class="form-input form-input-lg" placeholder="큰 입력">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">비활성화</label>
+      <input type="text" class="form-input" value="수정 불가" disabled>
+    </div>
+  </div>
+
+  <!-- 검색 & 비밀번호 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">search</span>
+      검색 & 비밀번호
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">검색</label>
+      <div class="form-search">
+        <span class="material-icons search-icon">search</span>
+        <input type="text" class="form-input" placeholder="검색어 입력...">
+        <span class="material-icons search-clear">close</span>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">비밀번호</label>
+      <div class="form-password">
+        <input type="password" class="form-input" id="password-input" placeholder="비밀번호 입력">
+        <span class="material-icons password-toggle" id="password-toggle">visibility</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Textarea & Select -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">notes</span>
+      Textarea & Select
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">메시지</label>
+      <textarea class="form-textarea" placeholder="내용을 입력하세요..." rows="3"></textarea>
+      <div class="form-counter"><span id="char-count">0</span>/200</div>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">카테고리</label>
+      <select class="form-select">
+        <option value="">선택하세요</option>
+        <option value="1">일반 문의</option>
+        <option value="2">기술 지원</option>
+        <option value="3">결제 문의</option>
+        <option value="4">기타</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- 체크박스 & 라디오 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">check_box</span>
+      체크박스 & 라디오
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">체크박스</label>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <label class="form-checkbox form-checkbox-sm">
+          <input type="checkbox">
+          <span>Small 체크박스</span>
+        </label>
+        <label class="form-checkbox">
+          <input type="checkbox" checked>
+          <span>Medium 체크박스 (기본)</span>
+        </label>
+        <label class="form-checkbox form-checkbox-lg">
+          <input type="checkbox">
+          <span>Large 체크박스</span>
+        </label>
+        <label class="form-checkbox">
+          <input type="checkbox" disabled>
+          <span>비활성화</span>
+        </label>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">라디오 버튼</label>
+      <div class="form-radio-group">
+        <label class="form-radio">
+          <input type="radio" name="plan" value="free" checked>
+          <span>무료 플랜</span>
+        </label>
+        <label class="form-radio">
+          <input type="radio" name="plan" value="pro">
+          <span>프로 플랜</span>
+        </label>
+        <label class="form-radio">
+          <input type="radio" name="plan" value="enterprise">
+          <span>엔터프라이즈</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 스위치 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">toggle_on</span>
+      스위치 (Toggle)
+    </div>
+    
+    <ul class="list">
+      <li class="list-item">
+        <div class="item-content">
+          <div class="item-label">알림 받기</div>
+          <div class="item-value">푸시 알림을 받습니다</div>
+        </div>
+        <label class="form-switch">
+          <input type="checkbox" checked>
+        </label>
+      </li>
+      <li class="list-item">
+        <div class="item-content">
+          <div class="item-label">다크 모드</div>
+          <div class="item-value">어두운 테마 사용</div>
+        </div>
+        <label class="form-switch">
+          <input type="checkbox" id="theme-switch">
+        </label>
+      </li>
+      <li class="list-item">
+        <div class="item-content">
+          <div class="item-label">자동 저장</div>
+          <div class="item-value">비활성화됨</div>
+        </div>
+        <label class="form-switch">
+          <input type="checkbox" disabled>
+        </label>
+      </li>
+    </ul>
+    
+    <div class="form-group" style="margin-top: 16px;">
+      <label class="form-label">크기</label>
+      <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+        <label class="form-switch form-switch-sm">
+          <input type="checkbox" checked>
+          <span>Small</span>
+        </label>
+        <label class="form-switch">
+          <input type="checkbox" checked>
+          <span>Medium</span>
+        </label>
+        <label class="form-switch form-switch-lg">
+          <input type="checkbox" checked>
+          <span>Large</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Range Slider -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">tune</span>
+      Range Slider
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">볼륨</label>
+      <div class="form-range-wrapper">
+        <input type="range" class="form-range" id="volume-range" min="0" max="100" value="50">
+        <div class="form-range-value" id="volume-value">50%</div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">가격 범위</label>
+      <div class="form-range-wrapper">
+        <input type="range" class="form-range" min="0" max="1000000" step="10000" value="500000">
+        <div class="form-range-labels">
+          <span>₩0</span>
+          <span>₩1,000,000</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Number Stepper -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">exposure</span>
+      숫자 입력
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">수량</label>
+      <div class="form-number" style="max-width: 160px;">
+        <button class="number-btn" id="qty-dec">
+          <span class="material-icons">remove</span>
+        </button>
+        <input type="number" class="form-input" id="qty-input" value="1" min="1" max="99">
+        <button class="number-btn" id="qty-inc">
+          <span class="material-icons">add</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rating -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">star</span>
+      별점 (Rating)
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">평점을 선택하세요</label>
+      <div class="form-rating" id="rating">
+        <input type="radio" name="rating" value="5" id="star5">
+        <label for="star5"><span class="material-icons">star</span></label>
+        <input type="radio" name="rating" value="4" id="star4">
+        <label for="star4"><span class="material-icons">star</span></label>
+        <input type="radio" name="rating" value="3" id="star3">
+        <label for="star3"><span class="material-icons">star</span></label>
+        <input type="radio" name="rating" value="2" id="star2">
+        <label for="star2"><span class="material-icons">star</span></label>
+        <input type="radio" name="rating" value="1" id="star1">
+        <label for="star1"><span class="material-icons">star</span></label>
+      </div>
+      <div class="form-helper" id="rating-text">선택된 평점: 없음</div>
+    </div>
+  </div>
+
+  <!-- 색상 & 날짜 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">palette</span>
+      색상 & 날짜
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">테마 색상</label>
+      <div class="form-color">
+        <input type="color" id="color-picker" value="#3B82F6">
+        <span class="color-value" id="color-value">#3B82F6</span>
+      </div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">날짜</label>
+        <div class="form-date">
+          <input type="date" class="form-input">
+          <span class="material-icons date-icon">calendar_today</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">시간</label>
+        <div class="form-time">
+          <input type="time" class="form-input">
+          <span class="material-icons date-icon">schedule</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 파일 업로드 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">cloud_upload</span>
+      파일 업로드
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">파일 선택</label>
+      <div class="form-file" id="file-dropzone">
+        <input type="file" id="file-input" multiple accept="image/*,.pdf">
+        <div class="form-file-label">
+          <span class="material-icons">cloud_upload</span>
+          <span>파일을 드래그하거나 클릭하세요</span>
+        </div>
+      </div>
+      <div class="form-file-preview" id="file-preview"></div>
+      <span class="form-helper">이미지 또는 PDF 파일만 가능 (최대 10MB)</span>
+    </div>
+  </div>
+
+  <!-- OTP 입력 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">pin</span>
+      OTP / PIN 입력
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">인증 코드 6자리</label>
+      <div class="form-otp" id="otp-container">
+        <input type="text" class="otp-input" maxlength="1" data-index="0">
+        <input type="text" class="otp-input" maxlength="1" data-index="1">
+        <input type="text" class="otp-input" maxlength="1" data-index="2">
+        <input type="text" class="otp-input" maxlength="1" data-index="3">
+        <input type="text" class="otp-input" maxlength="1" data-index="4">
+        <input type="text" class="otp-input" maxlength="1" data-index="5">
+      </div>
+      <span class="form-helper">SMS로 전송된 코드를 입력하세요</span>
+    </div>
+  </div>
+
+  <!-- Chip & Segmented -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">label</span>
+      Chips & Segmented
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">관심 분야 (다중 선택)</label>
+      <div class="form-chips" id="chips-container">
+        <label class="chip">
+          <input type="checkbox" value="design">
+          <span>디자인</span>
+        </label>
+        <label class="chip">
+          <input type="checkbox" value="dev" checked>
+          <span>개발</span>
+        </label>
+        <label class="chip">
+          <input type="checkbox" value="marketing">
+          <span>마케팅</span>
+        </label>
+        <label class="chip">
+          <input type="checkbox" value="business">
+          <span>비즈니스</span>
+        </label>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">보기 모드</label>
+      <div class="form-segmented">
+        <label class="segment">
+          <input type="radio" name="view" value="list" checked>
+          <span>목록</span>
+        </label>
+        <label class="segment">
+          <input type="radio" name="view" value="grid">
+          <span>그리드</span>
+        </label>
+        <label class="segment">
+          <input type="radio" name="view" value="map">
+          <span>지도</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input Group -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">merge</span>
+      Input Group
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">웹사이트</label>
+      <div class="input-group">
+        <span class="input-group-text">https://</span>
+        <input type="text" class="form-input" placeholder="example.com">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">금액</label>
+      <div class="input-group">
+        <input type="number" class="form-input" placeholder="0">
+        <span class="input-group-text">원</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 유효성 검사 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">fact_check</span>
+      유효성 검사
+    </div>
+    
+    <form id="validation-form">
+      <div class="form-group">
+        <label class="form-label required">이메일</label>
+        <input type="email" class="form-input" id="val-email" placeholder="이메일 입력">
+        <span class="form-error" id="val-email-error"></span>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label required">비밀번호</label>
+        <input type="password" class="form-input" id="val-password" placeholder="8자 이상">
+        <span class="form-error" id="val-password-error"></span>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-checkbox">
+          <input type="checkbox" id="val-agree">
+          <span>이용약관에 동의합니다</span>
+        </label>
+        <span class="form-error" id="val-agree-error"></span>
+      </div>
+      
+      <button type="submit" class="btn btn-primary" style="width: 100%;">
+        가입하기
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ========================================
+  // 비밀번호 토글
+  // ========================================
+  const passwordInput = CATUI('#password-input');
+  const passwordToggle = CATUI('#password-toggle');
+  
+  passwordToggle.on('click', () => {
+    const input = passwordInput.get(0);
+    const isPassword = input.type === 'password';
+    input.type = isPassword ? 'text' : 'password';
+    passwordToggle.text(isPassword ? 'visibility_off' : 'visibility');
+  });
+
+  // ========================================
+  // 글자수 카운터
+  // ========================================
+  const textarea = CATUI('.form-textarea');
+  const charCount = CATUI('#char-count');
+  
+  textarea.on('input', () => {
+    const len = textarea.get(0).value.length;
+    charCount.text(len);
+    
+    const counter = charCount.parent();
+    counter.removeClass('is-warning is-danger');
+    if (len > 200) counter.addClass('is-danger');
+    else if (len > 150) counter.addClass('is-warning');
+  });
+
+  // ========================================
+  // 테마 스위치 연동
+  // ========================================
+  const themeSwitch = CATUI('#theme-switch');
+  themeSwitch.get(0).checked = document.documentElement.getAttribute('data-theme') === 'dark';
+  
+  themeSwitch.on('change', () => {
+    const isDark = themeSwitch.get(0).checked;
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    localStorage.setItem('catui-theme', isDark ? 'dark' : 'light');
+  });
+
+  // ========================================
+  // 볼륨 슬라이더
+  // ========================================
+  const volumeRange = CATUI('#volume-range');
+  const volumeValue = CATUI('#volume-value');
+  
+  volumeRange.on('input', () => {
+    volumeValue.text(volumeRange.get(0).value + '%');
+  });
+
+  // ========================================
+  // 수량 스테퍼
+  // ========================================
+  const qtyInput = CATUI('#qty-input');
+  const qtyDec = CATUI('#qty-dec');
+  const qtyInc = CATUI('#qty-inc');
+  
+  qtyDec.on('click', () => {
+    const val = parseInt(qtyInput.get(0).value) || 1;
+    if (val > 1) qtyInput.get(0).value = val - 1;
+  });
+  
+  qtyInc.on('click', () => {
+    const val = parseInt(qtyInput.get(0).value) || 1;
+    if (val < 99) qtyInput.get(0).value = val + 1;
+  });
+
+  // ========================================
+  // 별점
+  // ========================================
+  const ratingText = CATUI('#rating-text');
+  CATUI('#rating').on('change', 'input', (e) => {
+    ratingText.text('선택된 평점: ' + e.target.value + '점');
+  });
+
+  // ========================================
+  // 색상 선택
+  // ========================================
+  const colorPicker = CATUI('#color-picker');
+  const colorValue = CATUI('#color-value');
+  
+  colorPicker.on('input', () => {
+    colorValue.text(colorPicker.get(0).value.toUpperCase());
+  });
+
+  // ========================================
+  // 파일 업로드
+  // ========================================
+  const fileInput = CATUI('#file-input');
+  const fileDropzone = CATUI('#file-dropzone');
+  const filePreview = CATUI('#file-preview');
+  
+  fileInput.on('change', () => {
+    const files = fileInput.get(0).files;
+    renderFilePreview(files);
+  });
+  
+  // 드래그앤드롭
+  const dropzone = fileDropzone.get(0);
+  dropzone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    fileDropzone.addClass('is-dragover');
+  });
+  
+  dropzone.addEventListener('dragleave', () => {
+    fileDropzone.removeClass('is-dragover');
+  });
+  
+  dropzone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    fileDropzone.removeClass('is-dragover');
+    renderFilePreview(e.dataTransfer.files);
+  });
+  
+  function renderFilePreview(files) {
+    filePreview.get(0).innerHTML = '';
+    Array.from(files).forEach((file, i) => {
+      const size = (file.size / 1024).toFixed(1) + 'KB';
+      const item = CATUI.create('div', {
+        class: 'file-item',
+        html: `
+          <span class="file-name">${CATUI.escape(file.name)}</span>
+          <span class="file-size">${size}</span>
+          <span class="material-icons file-remove" data-index="${i}">close</span>
+        `
+      });
+      filePreview.append(item);
+    });
+  }
+
+  // ========================================
+  // OTP 입력
+  // ========================================
+  const otpInputs = document.querySelectorAll('.otp-input');
+  
+  otpInputs.forEach((input, index) => {
+    input.addEventListener('input', (e) => {
+      const value = e.target.value;
+      
+      if (value.length === 1) {
+        input.classList.add('is-filled');
+        if (index < otpInputs.length - 1) {
+          otpInputs[index + 1].focus();
+        }
+      } else {
+        input.classList.remove('is-filled');
+      }
+    });
+    
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !input.value && index > 0) {
+        otpInputs[index - 1].focus();
+      }
+    });
+    
+    // 숫자만 허용
+    input.addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+  });
+
+  // ========================================
+  // 유효성 검사
+  // ========================================
+  const form = CATUI('#validation-form');
+  const valEmail = CATUI('#val-email');
+  const valPassword = CATUI('#val-password');
+  const valAgree = CATUI('#val-agree');
+  
+  function validateEmail(email) {
+    if (!email) return '이메일을 입력하세요';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return '올바른 이메일 형식이 아닙니다';
+    return '';
+  }
+  
+  function validatePassword(password) {
+    if (!password) return '비밀번호를 입력하세요';
+    if (password.length < 8) return '8자 이상 입력하세요';
+    return '';
+  }
+  
+  valEmail.on('blur', () => {
+    const error = validateEmail(valEmail.get(0).value);
+    CATUI('#val-email-error').text(error);
+    valEmail.removeClass('is-valid is-invalid').addClass(error ? 'is-invalid' : 'is-valid');
+  });
+  
+  valPassword.on('blur', () => {
+    const error = validatePassword(valPassword.get(0).value);
+    CATUI('#val-password-error').text(error);
+    valPassword.removeClass('is-valid is-invalid').addClass(error ? 'is-invalid' : 'is-valid');
+  });
+  
+  form.on('submit', (e) => {
+    e.preventDefault();
+    
+    const emailErr = validateEmail(valEmail.get(0).value);
+    const passErr = validatePassword(valPassword.get(0).value);
+    const agreeErr = !valAgree.get(0).checked ? '약관에 동의해주세요' : '';
+    
+    CATUI('#val-email-error').text(emailErr);
+    CATUI('#val-password-error').text(passErr);
+    CATUI('#val-agree-error').text(agreeErr);
+    
+    valEmail.removeClass('is-valid is-invalid').addClass(emailErr ? 'is-invalid' : 'is-valid');
+    valPassword.removeClass('is-valid is-invalid').addClass(passErr ? 'is-invalid' : 'is-valid');
+    
+    if (!emailErr && !passErr && !agreeErr) {
+      CATUI.loading.show('처리 중...');
+      setTimeout(() => {
+        CATUI.loading.hide();
+        alert('폼 제출 성공!');
+      }, 1500);
+    }
+  });
+})();
+</script>

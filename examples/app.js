@@ -5,14 +5,38 @@
 CATUI.ready(async () => {
   console.log('[App] CATUI Mobile v' + CATUI.version);
   
-  // 페이지별 타이틀
-  const titles = {
-    'views/home.html': 'CATUI Mobile',
-    'views/touch.html': '터치 & 제스처',
-    'views/device.html': '디바이스 정보',
-    'views/state.html': '상태 관리',
-    'views/more.html': '더보기'
+  // ========================================
+  // 네비게이션 메뉴 데이터
+  // ========================================
+  const menuItems = [
+    { icon: 'home', label: '홈', nav: 'home' },
+    { icon: 'widgets', label: '컴포넌트', nav: 'components', outlined: true },
+    { icon: 'dashboard', label: '레이아웃', nav: 'layout', outlined: true },
+    { icon: 'edit_note', label: '폼', nav: 'forms', outlined: true },
+    { icon: 'analytics', label: '데이터', nav: 'data', outlined: true },
+    { icon: 'image', label: '미디어', nav: 'media', outlined: true },
+    { icon: 'layers', label: '오버레이', nav: 'overlays', outlined: true },
+    { icon: 'phone_iphone', label: '모바일', nav: 'mobile', outlined: true },
+    { icon: 'touch_app', label: '터치', nav: 'touch', outlined: true },
+    { icon: 'smartphone', label: '디바이스', nav: 'device', outlined: true },
+    { icon: 'data_object', label: '상태', nav: 'state', outlined: true },
+    { icon: 'more_horiz', label: '더보기', nav: 'more', outlined: true }
+  ];
+  
+  // ========================================
+  // 하단 네비게이션 렌더링
+  // ========================================
+  const renderBottomNav = () => {
+    const navHtml = menuItems.map((item, index) => `
+      <a class="nav-item${index === 0 ? ' active' : ''}" catui-href="views/${item.nav}.html" data-nav="${item.nav}">
+        <span class="material-icons${item.outlined ? '-outlined' : ''}">${item.icon}</span>
+        <span>${item.label}</span>
+      </a>
+    `).join('');
+    CATUI('.app-nav').html(navHtml);
   };
+  
+  renderBottomNav();
   
   // ========================================
   // 테마
@@ -35,9 +59,9 @@ CATUI.ready(async () => {
   // ========================================
   CATUI.router.afterLoad((path) => {
     const navKey = path.replace('views/', '').replace('.html', '');
-    CATUI('.nav-item').removeClass('active');
+    // 하단 네비게이션 & Drawer 모두 active 처리
+    CATUI('.nav-item, .drawer-item').removeClass('active');
     CATUI(`[data-nav="${navKey}"]`).addClass('active');
-    CATUI('.header-title').text(titles[path] || 'CATUI Mobile');
   });
   
   // 초기 뷰
@@ -48,14 +72,6 @@ CATUI.ready(async () => {
   // ========================================
   try {
     const Overlays = await CATUI.use('overlays');
-    
-    const menuItems = [
-      { icon: 'home', label: '홈', nav: 'home' },
-      { icon: 'touch_app', label: '터치 & 제스처', nav: 'touch', outlined: true },
-      { icon: 'smartphone', label: '디바이스 정보', nav: 'device', outlined: true },
-      { icon: 'data_object', label: '상태 관리', nav: 'state', outlined: true },
-      { icon: 'more_horiz', label: '더보기', nav: 'more', outlined: true }
-    ];
     
     const drawer = new Overlays.Drawer({
       position: 'left',

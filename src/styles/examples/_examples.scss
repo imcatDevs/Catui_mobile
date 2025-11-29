@@ -93,35 +93,7 @@
   }
 }
 
-// ========================================
-// Cards
-// ========================================
-.card {
-  background: var(--bg-primary);
-  border-radius: $radius-lg;
-  padding: $spacing-4;
-  margin-bottom: $spacing-4;
-  box-shadow: $shadow-sm;
-}
-
-.card-title {
-  font-size: $font-size-lg;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: $spacing-3;
-  display: flex;
-  align-items: center;
-  gap: $spacing-2;
-  
-  .material-icons {
-    color: var(--primary);
-  }
-}
-
-.card-content {
-  color: var(--text-secondary);
-  line-height: $line-height-relaxed;
-}
+// Cards는 _cards.scss로 이동됨
 
 // ========================================
 // Demo Areas
@@ -153,87 +125,35 @@
   font-weight: 600;
   margin: $spacing-4 auto;
   @include gpu-accelerate;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  
+  // DOM 조작 데모용 활성 상태
+  &.touch-active {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 24px rgba($primary, 0.4);
+    background: linear-gradient(135deg, $success, $primary);
+  }
 }
 
-// ========================================
-// Buttons
-// ========================================
-.btn {
-  @include touch-target;
-  padding: $spacing-3 $spacing-6;
-  border-radius: $radius-default;
-  font-size: $font-size-base;
+// Buttons는 _buttons.scss로 이동됨
+
+// Lists는 _lists.scss로 이동됨
+// 예제 전용 item 클래스 유지
+.item-icon {
+  color: var(--primary);
+}
+
+.item-content {
+  flex: 1;
+}
+
+.item-label {
   font-weight: 500;
-  cursor: pointer;
-  border: none;
-  transition: all $transition-duration-fast;
-  @include no-tap-highlight;
-  
-  &:active {
-    transform: scale(0.98);
-  }
 }
 
-.btn-primary {
-  background: var(--primary);
-  color: white;
-}
-
-.btn-secondary {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-}
-
-.btn-outline {
-  background: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-}
-
-.btn-group {
-  display: flex;
-  gap: $spacing-2;
-  flex-wrap: wrap;
-  margin: $spacing-3 0;
-}
-
-// ========================================
-// Lists
-// ========================================
-.list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.list-item {
-  display: flex;
-  align-items: center;
-  gap: $spacing-3;
-  padding: $spacing-3;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-primary);
-  
-  &:last-child {
-    border-bottom: none;
-  }
-  
-  .item-icon {
-    color: var(--primary);
-  }
-  
-  .item-content {
-    flex: 1;
-  }
-  
-  .item-label {
-    font-weight: 500;
-  }
-  
-  .item-value {
-    font-size: $font-size-sm;
-    color: var(--text-secondary);
-  }
+.item-value {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
 }
 
 // ========================================
@@ -377,9 +297,8 @@
   }
 }
 
-// ========================================
-// Drawer (Left Menu)
-// ========================================
+// Drawer는 _overlays.scss로 이동됨
+// 예제 전용 drawer 클래스 유지
 .drawer-nav {
   padding: $spacing-2 0;
   
@@ -399,27 +318,21 @@
     
     .material-icons,
     .material-icons-outlined {
-      font-size: 24px;
+      font-size: $icon-size-md;
       color: var(--primary);
     }
   }
 }
 
-.drawer-footer {
-  margin-top: auto;
-  padding: $spacing-4 $spacing-5;
-  border-top: 1px solid var(--border-color);
+.drawer-info {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  color: var(--text-tertiary);
+  font-size: $font-size-sm;
   
-  .drawer-info {
-    display: flex;
-    align-items: center;
-    gap: $spacing-2;
-    color: var(--text-tertiary);
-    font-size: $font-size-sm;
-    
-    .material-icons-outlined {
-      font-size: 16px;
-    }
+  .material-icons-outlined {
+    font-size: $icon-size-xs;
   }
 }
 
@@ -435,47 +348,4 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-// ========================================
-// Form Elements
-// ========================================
-.form-group {
-  margin-bottom: $spacing-4;
-  
-  .form-label {
-    display: block;
-    font-size: $font-size-sm;
-    font-weight: 500;
-    color: var(--text-secondary);
-    margin-bottom: $spacing-2;
-  }
-  
-  .form-input {
-    width: 100%;
-    padding: $spacing-3;
-    border: 1px solid var(--border-color);
-    border-radius: $radius-default;
-    font-size: $font-size-base;
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    @include no-tap-highlight;
-    
-    &:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-    
-    &.is-invalid {
-      border-color: var(--danger);
-    }
-    
-    &.is-valid {
-      border-color: var(--success);
-    }
-  }
-  
-  .form-error {
-    font-size: $font-size-xs;
-    color: var(--danger);
-    margin-top: $spacing-1;
-  }
-}
+// Form Elements는 _forms.scss로 이동됨
