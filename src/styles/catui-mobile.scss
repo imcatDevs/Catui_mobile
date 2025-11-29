@@ -4,20 +4,25 @@
  */
 
 // ========================================
-// Abstracts
+// Abstracts (변수, 믹스인)
 // ========================================
-@import 'abstracts/variables';
-@import 'abstracts/mixins';
+@use 'abstracts' as *;
 
 // ========================================
 // Base
 // ========================================
-@import 'base/reset';
-@import 'base/typography';
-@import 'base/mobile';
+@use 'base/reset';
+@use 'base/typography';
+@use 'base/mobile';
+@use 'base/icons';
 
 // ========================================
 // Components
 // ========================================
-@import 'components/touch';
-@import 'components/pull-to-refresh';
+@use 'components/touch';
+@use 'components/pull-to-refresh';
+
+// ========================================
+// Examples (개발용)
+// ========================================
+@use 'examples/examples';

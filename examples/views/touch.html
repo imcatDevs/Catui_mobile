@@ -1,0 +1,220 @@
+<div class="fade-in">
+  <!-- 탭 & 롱프레스 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">ads_click</span>
+      탭 & 롱프레스
+    </div>
+    <div class="demo-area" id="tap-area">
+      탭 또는 길게 누르세요
+    </div>
+    <div class="output-log" id="tap-log"></div>
+  </div>
+
+  <!-- 스와이프 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">swipe</span>
+      스와이프
+    </div>
+    <div class="swipe-container">
+      <div class="swipe-card" id="swipe-area">
+        <span class="material-icons" style="font-size: 48px;">swipe</span>
+        <div>좌/우로 스와이프</div>
+        <div class="swipe-hint" id="swipe-hint">← 또는 →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 드래그 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">drag_indicator</span>
+      드래그
+    </div>
+    <div class="demo-area" style="height: 200px; position: relative;">
+      <div class="demo-box" id="drag-box">
+        드래그
+      </div>
+    </div>
+  </div>
+
+  <!-- 핀치 줌 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">pinch</span>
+      핀치 줌
+    </div>
+    <div class="demo-area" id="pinch-area" style="height: 150px;">
+      <div id="pinch-target" style="font-size: 48px; transition: transform 0.1s;">
+        🐱
+      </div>
+      <div id="pinch-info" style="margin-top: 10px;">두 손가락으로 확대/축소</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // CATUI 확인
+  if (typeof CATUI === 'undefined') {
+    console.error('CATUI not loaded');
+    return;
+  }
+  
+  if (typeof CATUI.touch !== 'function') {
+    console.error('CATUI.touch is not available');
+    return;
+  }
+  
+  // ========================================
+  // 탭 & 롱프레스
+  // ========================================
+  const tapArea = CATUI('#tap-area');
+  const tapLog = CATUI('#tap-log');
+  
+  function addLog(logEl, message, type = '') {
+    const item = CATUI.create('div', {
+      class: 'log-item' + (type ? ' log-' + type : ''),
+      text: `[${new Date().toLocaleTimeString()}] ${message}`
+    });
+    logEl.prepend(item);
+    
+    // 최대 10개 유지
+    const children = logEl.find('.log-item');
+    if (children.length > 10) {
+      CATUI(children[children.length - 1]).remove();
+    }
+  }
+  
+  const tapTouch = CATUI.touch(tapArea.get(0));
+  
+  tapTouch.on('tap', (data) => {
+    tapArea.addClass('touch-active');
+    addLog(tapLog, `탭! (${Math.round(data.x)}, ${Math.round(data.y)})`, 'success');
+    setTimeout(() => tapArea.removeClass('touch-active'), 200);
+  });
+  
+  tapTouch.on('doubletap', () => addLog(tapLog, '더블탭!', 'success'));
+  
+  tapTouch.on('longpress', () => {
+    addLog(tapLog, '롱프레스!', 'success');
+    if (navigator.vibrate) navigator.vibrate(50);
+  });
+
+  // ========================================
+  // 스와이프 (iOS 뒤로가기 제스처 방지)
+  // ========================================
+  const swipeArea = CATUI('#swipe-area');
+  const swipeHint = CATUI('#swipe-hint');
+  
+  // iOS edge swipe 방지
+  swipeArea.css({ touchAction: 'none', overscrollBehavior: 'none' });
+  
+  const swipeTouch = CATUI.touch(swipeArea.get(0), {
+    swipeThreshold: 20,
+    preventScroll: true
+  });
+  
+  swipeTouch.on('swipeleft', () => {
+    swipeArea.css({ transform: 'translateX(-20px)' });
+    swipeHint.text('← 왼쪽 스와이프!');
+    setTimeout(() => {
+      swipeArea.css({ transform: '' });
+      swipeHint.text('← 또는 →');
+    }, 300);
+  });
+  
+  swipeTouch.on('swiperight', () => {
+    swipeArea.css({ transform: 'translateX(20px)' });
+    swipeHint.text('오른쪽 스와이프! →');
+    setTimeout(() => {
+      swipeArea.css({ transform: '' });
+      swipeHint.text('← 또는 →');
+    }, 300);
+  });
+  
+  swipeTouch.on('swipeup', () => {
+    swipeHint.text('↑ 위로 스와이프!');
+    setTimeout(() => swipeHint.text('← 또는 →'), 500);
+  });
+  
+  swipeTouch.on('swipedown', () => {
+    swipeHint.text('↓ 아래로 스와이프!');
+    setTimeout(() => swipeHint.text('← 또는 →'), 500);
+  });
+
+  // ========================================
+  // 드래그 (movementX/Y 사용)
+  // ========================================
+  const dragBox = CATUI('#drag-box');
+  let boxX = 0, boxY = 0;
+  let isDragging = false;
+  
+  const dragTouch = CATUI.touch(dragBox.get(0), { preventScroll: true });
+  
+  function startDrag() {
+    isDragging = true;
+    dragBox.css({ transition: 'none', boxShadow: '0 10px 30px rgba(0,0,0,0.3)', cursor: 'grabbing' });
+  }
+  
+  function endDrag() {
+    if (!isDragging) return;
+    isDragging = false;
+    dragBox.css({ transition: 'transform 0.3s, box-shadow 0.3s', boxShadow: '', cursor: 'grab' });
+  }
+  
+  dragBox.on('touchstart', startDrag).on('mousedown', startDrag);
+  dragBox.on('touchend', endDrag).on('mouseup', endDrag);
+  CATUI(document).on('mouseup', endDrag);
+  
+  dragTouch.on('pan', (data) => {
+    if (!isDragging) return;
+    boxX += data.movementX || 0;
+    boxY += data.movementY || 0;
+    
+    const parent = dragBox.get(0).parentElement;
+    const maxX = (parent.offsetWidth - dragBox.get(0).offsetWidth) / 2;
+    const maxY = (parent.offsetHeight - dragBox.get(0).offsetHeight) / 2;
+    
+    boxX = Math.max(-maxX, Math.min(maxX, boxX));
+    boxY = Math.max(-maxY, Math.min(maxY, boxY));
+    
+    dragBox.css({ transform: `translate(${boxX}px, ${boxY}px)` });
+  });
+
+  // ========================================
+  // 핀치 줌
+  // ========================================
+  const pinchArea = CATUI('#pinch-area');
+  const pinchTarget = CATUI('#pinch-target');
+  const pinchInfo = CATUI('#pinch-info');
+  let baseScale = 1;
+  
+  const pinchTouch = CATUI.touch(pinchArea.get(0), { preventScroll: true });
+  
+  pinchTouch.on('pinch', (data) => {
+    const newScale = Math.max(0.5, Math.min(3, baseScale * data.scale));
+    pinchTarget.css({ transform: `scale(${newScale})` });
+    pinchInfo.text(`스케일: ${newScale.toFixed(2)}`);
+  });
+  
+  pinchArea.on('touchend', () => {
+    const transform = pinchTarget.get(0).style.transform;
+    const match = transform.match(/scale\(([\d.]+)\)/);
+    if (match) baseScale = parseFloat(match[1]);
+  });
+
+  // ========================================
+  // 정리
+  // ========================================
+  if (CATUI.view && CATUI.view.registerInstance) {
+    CATUI.view.registerInstance({ destroy: () => {
+      tapTouch.destroy();
+      swipeTouch.destroy();
+      dragTouch.destroy();
+      pinchTouch.destroy();
+    }});
+  }
+})();
+</script>

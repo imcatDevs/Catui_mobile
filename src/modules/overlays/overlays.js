@@ -443,5 +443,163 @@ class Toast {
   }
 }
 
-export { Overlay, Modal, Toast };
-export default { Overlay, Modal, Toast };
+/**
+ * Drawer 클래스 (Left/Right 슬라이드 패널)
+ * @class Drawer
+ * @extends Overlay
+ */
+class Drawer extends Overlay {
+  /**
+   * @constructor
+   * @param {Object} options
+   * @param {string} [options.position='left'] - 위치 (left, right)
+   * @param {string} [options.width='280px'] - 너비
+   * @param {string} [options.title] - 제목
+   * @param {string|HTMLElement} [options.content] - 내용
+   */
+  constructor(options = {}) {
+    super(options);
+    
+    this.options = {
+      position: 'left',
+      width: '280px',
+      title: '',
+      content: '',
+      ...this.options
+    };
+
+    this._element = this._createElement();
+  }
+
+  /**
+   * 요소 생성
+   * @private
+   */
+  _createElement() {
+    const drawer = document.createElement('div');
+    drawer.className = `catui-drawer catui-drawer-${this.options.position}`;
+    
+    const isLeft = this.options.position === 'left';
+    const translateX = isLeft ? '-100%' : '100%';
+    
+    drawer.style.cssText = `
+      position: fixed;
+      top: 0;
+      ${isLeft ? 'left: 0' : 'right: 0'};
+      width: ${this.options.width};
+      max-width: 85vw;
+      height: 100%;
+      background: var(--bg-primary, #fff);
+      z-index: ${this.options.zIndex};
+      transform: translateX(${translateX});
+      transition: transform ${this.options.animationDuration}ms cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: ${isLeft ? '4px' : '-4px'} 0 20px rgba(0,0,0,0.15);
+    `;
+
+    // 헤더
+    if (this.options.title) {
+      const header = document.createElement('div');
+      header.className = 'catui-drawer-header';
+      header.style.cssText = `
+        display: flex;
+        align-items: center;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
+        flex-shrink: 0;
+        background: linear-gradient(135deg, var(--primary, #667eea) 0%, var(--secondary, #764ba2) 100%);
+        color: white;
+      `;
+
+      const title = document.createElement('h3');
+      title.className = 'catui-drawer-title';
+      title.textContent = this.options.title;
+      title.style.cssText = 'margin: 0; font-size: 18px; font-weight: 600;';
+      header.appendChild(title);
+
+      drawer.appendChild(header);
+    }
+
+    // 컨텐츠
+    const content = document.createElement('div');
+    content.className = 'catui-drawer-content';
+    content.style.cssText = `
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    `;
+    
+    if (typeof this.options.content === 'string') {
+      content.innerHTML = this.options.content;
+    } else if (this.options.content instanceof HTMLElement) {
+      content.appendChild(this.options.content);
+    }
+    
+    drawer.appendChild(content);
+
+    return drawer;
+  }
+
+  /**
+   * 열기 (오버라이드)
+   */
+  async open() {
+    if (this._isOpen) return;
+
+    this._backdrop = this._createBackdrop();
+    document.body.appendChild(this._backdrop);
+    document.body.appendChild(this._element);
+    document.body.style.overflow = 'hidden';
+
+    await this._nextFrame();
+    this._backdrop.style.opacity = '1';
+    this._element.style.transform = 'translateX(0)';
+
+    this._isOpen = true;
+  }
+
+  /**
+   * 닫기 (오버라이드)
+   */
+  async close() {
+    if (!this._isOpen) return;
+
+    const isLeft = this.options.position === 'left';
+    const translateX = isLeft ? '-100%' : '100%';
+    
+    this._backdrop.style.opacity = '0';
+    this._element.style.transform = `translateX(${translateX})`;
+
+    await this._wait(this.options.animationDuration);
+
+    this._backdrop?.remove();
+    this._element?.remove();
+    document.body.style.overflow = '';
+
+    this._isOpen = false;
+
+    if (this._onCloseCallback) {
+      this._onCloseCallback();
+    }
+  }
+
+  /**
+   * 컨텐츠 업데이트
+   * @param {string|HTMLElement} content
+   */
+  setContent(content) {
+    const contentEl = this._element.querySelector('.catui-drawer-content');
+    if (contentEl) {
+      if (typeof content === 'string') {
+        contentEl.innerHTML = content;
+      } else if (content instanceof HTMLElement) {
+        contentEl.innerHTML = '';
+        contentEl.appendChild(content);
+      }
+    }
+  }
+}
+
+export { Overlay, Modal, Toast, Drawer };
+export default { Overlay, Modal, Toast, Drawer };

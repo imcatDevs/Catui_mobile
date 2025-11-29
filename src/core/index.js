@@ -605,28 +605,27 @@ const CATUI = Object.assign(
   }
 );
 
-// Getter 프로퍼티 정의 (IIFE 빌드 호환)
-Object.defineProperties(CATUI, {
-  version: { get: () => coreInstance.version, enumerable: true },
-  view: { get: () => coreInstance.view, enumerable: true },
-  router: { get: () => coreInstance.router, enumerable: true },
-  api: { get: () => coreInstance.api, enumerable: true },
-  loading: { get: () => coreInstance.loading, enumerable: true },
-  template: { get: () => coreInstance.template, enumerable: true },
-  storage: { get: () => coreInstance.storage, enumerable: true },
-  url: { get: () => coreInstance.url, enumerable: true },
-  state: { get: () => coreInstance.state, enumerable: true },
-  globalState: { get: () => coreInstance.globalState, enumerable: true },
-  form: { get: () => coreInstance.form, enumerable: true },
-  animate: { get: () => coreInstance.animate, enumerable: true },
-  animation: { get: () => coreInstance.animation, enumerable: true },
-  viewport: { get: () => coreInstance.viewport, enumerable: true },
-  device: { get: () => coreInstance.device, enumerable: true },
-  keyboard: { get: () => coreInstance.keyboard, enumerable: true }
-});
+// 인스턴스 프로퍼티 직접 할당 (IIFE 빌드 호환)
+CATUI.version = coreInstance.version;
+CATUI.view = coreInstance.view;
+CATUI.router = coreInstance.router;
+CATUI.api = coreInstance.api;
+CATUI.loading = coreInstance.loading;
+CATUI.template = coreInstance.template;
+CATUI.storage = coreInstance.storage;
+CATUI.url = coreInstance.url;
+CATUI.state = coreInstance.state;
+CATUI.globalState = coreInstance.globalState;
+CATUI.form = coreInstance.form;
+CATUI.animate = coreInstance.animate;
+CATUI.animation = coreInstance.animation;
+CATUI.viewport = coreInstance.viewport;
+CATUI.device = coreInstance.device;
+CATUI.keyboard = coreInstance.keyboard;
 
-// 브라우저 전역에 등록
-if (typeof window !== 'undefined') {
+// 브라우저 전역에 등록 (ES Module 환경에서만 사용)
+// IIFE 빌드에서는 rollup.config.js의 footer에서 처리
+if (typeof window !== 'undefined' && !window.CATUI) {
   window.CATUI = CATUI;
   window.IMCAT = CATUI;
 }

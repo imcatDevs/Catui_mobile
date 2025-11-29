@@ -1,0 +1,118 @@
+<div class="fade-in">
+  <!-- 환영 카드 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">waving_hand</span>
+      CATUI Mobile에 오신 것을 환영합니다
+    </div>
+    <div class="card-content">
+      모바일 전용, 터치 최적화 UI 프레임워크입니다.
+      아래 기능들을 탭하여 체험해보세요.
+    </div>
+  </div>
+
+  <!-- 기능 목록 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">apps</span>
+      핵심 기능
+    </div>
+    <ul class="list">
+      <li class="list-item" catui-href="views/touch.html">
+        <span class="material-icons item-icon">touch_app</span>
+        <div class="item-content">
+          <div class="item-label">터치 & 제스처</div>
+          <div class="item-value">탭, 스와이프, 핀치, 드래그</div>
+        </div>
+        <span class="material-icons">chevron_right</span>
+      </li>
+      <li class="list-item" catui-href="views/device.html">
+        <span class="material-icons item-icon">smartphone</span>
+        <div class="item-content">
+          <div class="item-label">디바이스 감지</div>
+          <div class="item-value">iOS, Android, 뷰포트</div>
+        </div>
+        <span class="material-icons">chevron_right</span>
+      </li>
+      <li class="list-item" catui-href="views/state.html">
+        <span class="material-icons item-icon">data_object</span>
+        <div class="item-content">
+          <div class="item-label">상태 관리</div>
+          <div class="item-value">반응형 상태, 이벤트 버스</div>
+        </div>
+        <span class="material-icons">chevron_right</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 버전 정보 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">info</span>
+      정보
+    </div>
+    <ul class="list">
+      <li class="list-item">
+        <span class="material-icons item-icon">label</span>
+        <div class="item-content">
+          <div class="item-label">버전</div>
+          <div class="item-value" id="version-info">-</div>
+        </div>
+      </li>
+      <li class="list-item">
+        <span class="material-icons item-icon">devices</span>
+        <div class="item-content">
+          <div class="item-label">플랫폼</div>
+          <div class="item-value" id="platform-info">-</div>
+        </div>
+      </li>
+      <li class="list-item">
+        <span class="material-icons item-icon">aspect_ratio</span>
+        <div class="item-content">
+          <div class="item-label">뷰포트</div>
+          <div class="item-value" id="viewport-info">-</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+(function() {
+  // CATUI 확인
+  if (typeof CATUI === 'undefined') {
+    console.error('CATUI not loaded');
+    return;
+  }
+  
+  // 버전 정보
+  CATUI('#version-info').text(CATUI.version || '1.0.0');
+  
+  // 플랫폼 정보
+  const device = CATUI.device;
+  let platform = '데스크톱';
+  if (device) {
+    if (device.isIOS) platform = 'iOS';
+    else if (device.isAndroid) platform = 'Android';
+    else if (device.isMobile) platform = '모바일';
+  } else {
+    const ua = navigator.userAgent.toLowerCase();
+    if (/iphone|ipad|ipod/.test(ua)) platform = 'iOS';
+    else if (/android/.test(ua)) platform = 'Android';
+    else if (/mobile/.test(ua)) platform = '모바일';
+  }
+  CATUI('#platform-info').text(platform);
+  
+  // 뷰포트 정보
+  const vp = CATUI.viewport;
+  if (vp) {
+    CATUI('#viewport-info').text(`${vp.width} × ${vp.height} (${vp.orientation})`);
+    
+    vp.on('resize', (data) => {
+      CATUI('#viewport-info').text(`${data.width} × ${data.height}`);
+    });
+  } else {
+    CATUI('#viewport-info').text(`${window.innerWidth} × ${window.innerHeight}`);
+  }
+})();
+</script>

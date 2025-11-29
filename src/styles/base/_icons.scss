@@ -1,0 +1,71 @@
+/**
+ * Material Icons - 아이콘 폰트
+ * @description 모바일 최적화 아이콘 폰트
+ */
+
+// Material Icons (Filled)
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/material-icons-v145-latin-regular.woff2') format('woff2');
+}
+
+// Material Icons Outlined
+@font-face {
+  font-family: 'Material Icons Outlined';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/material-icons-outlined-v109-latin-regular.woff2') format('woff2');
+}
+
+// 아이콘 기본 스타일
+.material-icons,
+.material-icons-outlined {
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  
+  // 안티앨리어싱
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  
+  // 터치 최적화
+  user-select: none;
+  -webkit-user-select: none;
+  
+  // 모바일 탭 하이라이트 제거
+  -webkit-tap-highlight-color: transparent;
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+}
+
+.material-icons-outlined {
+  font-family: 'Material Icons Outlined';
+}
+
+// 아이콘 크기 변형
+.icon-sm { font-size: 18px; }
+.icon-md { font-size: 24px; }
+.icon-lg { font-size: 36px; }
+.icon-xl { font-size: 48px; }
+
+// 아이콘 색상 (CSS 변수 사용)
+.icon-primary { color: var(--primary-color, #6366f1); }
+.icon-secondary { color: var(--text-secondary, #6b7280); }
+.icon-success { color: var(--success-color, #22c55e); }
+.icon-warning { color: var(--warning-color, #f59e0b); }
+.icon-error { color: var(--error-color, #ef4444); }
+.icon-muted { color: var(--text-muted, #9ca3af); }

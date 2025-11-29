@@ -3,6 +3,8 @@
  * @description 모바일 최적화 타이포그래피
  */
 
+@use '../abstracts' as *;
+
 // Headings
 h1, .h1 {
   font-size: $font-size-2xl;

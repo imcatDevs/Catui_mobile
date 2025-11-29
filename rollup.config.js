@@ -5,6 +5,21 @@ import babel from '@rollup/plugin-babel';
 const production = !process.env.ROLLUP_WATCH;
 
 // 코어 번들 - CATUI Mobile
+// IIFE 빌드 후 default export 문제 해결 코드
+const iifeFooter = `
+;(function() {
+  if (typeof window !== 'undefined' && window.CATUI && window.CATUI.default) {
+    var d = window.CATUI.default;
+    Object.keys(d).forEach(function(k) { window.CATUI[k] = d[k]; });
+    var origCATUI = window.CATUI;
+    window.CATUI = function(s) { return d(s); };
+    Object.assign(window.CATUI, origCATUI);
+    Object.keys(d).forEach(function(k) { window.CATUI[k] = d[k]; });
+    window.IMCAT = window.CATUI;
+  }
+})();
+`;
+
 const coreConfig = {
   input: 'src/core/index.js',
   output: [
@@ -12,16 +27,23 @@ const coreConfig = {
       file: 'dist/catui-mobile.js',
       format: 'iife',
       name: 'CATUI',
-      sourcemap: !production
+      sourcemap: !production,
+      footer: iifeFooter
     },
     {
       file: 'dist/catui-mobile.min.js',
       format: 'iife',
       name: 'CATUI',
       plugins: [terser()],
-      sourcemap: production
+      sourcemap: production,
+      footer: iifeFooter
     }
   ],
+  // named export 경고 무시 (IIFE에서 window.CATUI로 접근)
+  onwarn(warning, warn) {
+    if (warning.code === 'MIXED_EXPORTS') return;
+    warn(warning);
+  },
   plugins: [
     babel({
       babelHelpers: 'bundled',
@@ -49,7 +71,7 @@ const coreConfig = {
   ]
 };
 
-// 모듈 번들 함수 (각 모듈을 독립적으로 빌드)
+// 모듈 번들 함수 (ESM만 빌드)
 function createModuleConfig(moduleName) {
   return {
     input: `src/modules/${moduleName}/${moduleName}.js`,
@@ -57,6 +79,10 @@ function createModuleConfig(moduleName) {
       file: `dist/modules/${moduleName}/${moduleName}.js`,
       format: 'esm',
       sourcemap: !production
+    },
+    onwarn(warning, warn) {
+      if (warning.code === 'MIXED_EXPORTS') return;
+      warn(warning);
     },
     plugins: [
       babel({

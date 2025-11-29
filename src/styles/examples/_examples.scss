@@ -1,0 +1,481 @@
+/**
+ * CATUI Mobile - Examples Stylesheet
+ * @description 예제 전용 스타일
+ */
+
+@use '../abstracts' as *;
+
+// ========================================
+// App Layout
+// ========================================
+.app {
+  @include min-full-height;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+}
+
+// ========================================
+// Header
+// ========================================
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: $z-index-sticky;
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-3 $spacing-4;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  @include safe-area-top(padding-top, $spacing-3);
+  
+  .header-title {
+    flex: 1;
+    font-size: $font-size-lg;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  
+  .header-icon {
+    @include touch-target(40px);
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: $radius-default;
+    transition: background $transition-duration-fast;
+    
+    &:active {
+      background: var(--bg-tertiary);
+    }
+  }
+}
+
+// ========================================
+// Content
+// ========================================
+.app-content {
+  flex: 1;
+  overflow-y: auto;
+  @include momentum-scroll;
+  padding: $spacing-4;
+}
+
+// ========================================
+// Bottom Nav
+// ========================================
+.app-nav {
+  display: flex;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  @include safe-area-bottom(padding-bottom);
+  
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-1;
+    padding: $spacing-2 $spacing-1;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: $font-size-xs;
+    transition: color $transition-duration-fast;
+    @include no-tap-highlight;
+    
+    .material-icons,
+    .material-icons-outlined {
+      font-size: 24px;
+    }
+    
+    &.active {
+      color: var(--primary);
+    }
+  }
+}
+
+// ========================================
+// Cards
+// ========================================
+.card {
+  background: var(--bg-primary);
+  border-radius: $radius-lg;
+  padding: $spacing-4;
+  margin-bottom: $spacing-4;
+  box-shadow: $shadow-sm;
+}
+
+.card-title {
+  font-size: $font-size-lg;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: $spacing-3;
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  
+  .material-icons {
+    color: var(--primary);
+  }
+}
+
+.card-content {
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+}
+
+// ========================================
+// Demo Areas
+// ========================================
+.demo-area {
+  background: var(--bg-tertiary);
+  border-radius: $radius-default;
+  padding: $spacing-6;
+  margin: $spacing-3 0;
+  text-align: center;
+  color: var(--text-secondary);
+  @include no-select;
+  
+  &.touch-active {
+    background: rgba($primary, 0.1);
+    color: var(--primary);
+  }
+}
+
+.demo-box {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, $primary, $secondary);
+  border-radius: $radius-default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  margin: $spacing-4 auto;
+  @include gpu-accelerate;
+}
+
+// ========================================
+// Buttons
+// ========================================
+.btn {
+  @include touch-target;
+  padding: $spacing-3 $spacing-6;
+  border-radius: $radius-default;
+  font-size: $font-size-base;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all $transition-duration-fast;
+  @include no-tap-highlight;
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-group {
+  display: flex;
+  gap: $spacing-2;
+  flex-wrap: wrap;
+  margin: $spacing-3 0;
+}
+
+// ========================================
+// Lists
+// ========================================
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-3;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  .item-icon {
+    color: var(--primary);
+  }
+  
+  .item-content {
+    flex: 1;
+  }
+  
+  .item-label {
+    font-weight: 500;
+  }
+  
+  .item-value {
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+  }
+}
+
+// ========================================
+// Output / Log
+// ========================================
+.output-log {
+  background: var(--bg-tertiary);
+  border-radius: $radius-default;
+  padding: $spacing-3;
+  font-family: $font-family-mono;
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  max-height: 200px;
+  overflow-y: auto;
+  @include custom-scrollbar;
+  
+  .log-item {
+    padding: $spacing-1 0;
+    border-bottom: 1px solid var(--border-color);
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    &.log-success {
+      color: var(--success);
+    }
+    
+    &.log-error {
+      color: var(--danger);
+    }
+  }
+}
+
+// ========================================
+// Theme Toggle
+// ========================================
+.theme-toggle {
+  @include touch-target(48px);
+  background: var(--bg-tertiary);
+  border-radius: $radius-full;
+  cursor: pointer;
+  
+  .material-icons {
+    font-size: 20px;
+  }
+}
+
+// ========================================
+// Device Info
+// ========================================
+.device-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-2;
+  
+  .info-item {
+    background: var(--bg-tertiary);
+    border-radius: $radius-default;
+    padding: $spacing-3;
+    text-align: center;
+    
+    .info-label {
+      font-size: $font-size-xs;
+      color: var(--text-muted);
+      margin-bottom: $spacing-1;
+    }
+    
+    .info-value {
+      font-size: $font-size-sm;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    &.info-true .info-value {
+      color: var(--success);
+    }
+    
+    &.info-false .info-value {
+      color: var(--text-muted);
+    }
+  }
+}
+
+// ========================================
+// Counter Demo
+// ========================================
+.counter-demo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-4;
+  
+  .counter-value {
+    font-size: $font-size-3xl;
+    font-weight: 700;
+    color: var(--primary);
+    min-width: 80px;
+    text-align: center;
+  }
+  
+  .counter-btn {
+    @include touch-target(48px);
+    background: var(--bg-tertiary);
+    border-radius: $radius-full;
+    border: none;
+    font-size: $font-size-xl;
+    cursor: pointer;
+    
+    &:active {
+      background: var(--border-color);
+    }
+  }
+}
+
+// ========================================
+// Swipe Cards
+// ========================================
+.swipe-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: $radius-lg;
+  
+  .swipe-card {
+    background: linear-gradient(135deg, $primary, $secondary);
+    color: white;
+    padding: $spacing-8 $spacing-4;
+    text-align: center;
+    @include gpu-accelerate;
+    
+    // iOS 뒤로가기 제스처 방지
+    touch-action: none;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: auto;
+    
+    .swipe-hint {
+      opacity: 0.7;
+      font-size: $font-size-sm;
+      margin-top: $spacing-2;
+    }
+  }
+}
+
+// ========================================
+// Drawer (Left Menu)
+// ========================================
+.drawer-nav {
+  padding: $spacing-2 0;
+  
+  .drawer-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-4;
+    padding: $spacing-4 $spacing-5;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: $font-size-base;
+    transition: background 0.2s ease;
+    
+    &:active {
+      background: var(--bg-tertiary);
+    }
+    
+    .material-icons,
+    .material-icons-outlined {
+      font-size: 24px;
+      color: var(--primary);
+    }
+  }
+}
+
+.drawer-footer {
+  margin-top: auto;
+  padding: $spacing-4 $spacing-5;
+  border-top: 1px solid var(--border-color);
+  
+  .drawer-info {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    color: var(--text-tertiary);
+    font-size: $font-size-sm;
+    
+    .material-icons-outlined {
+      font-size: 16px;
+    }
+  }
+}
+
+// ========================================
+// Animation
+// ========================================
+.fade-in {
+  animation: fadeIn $transition-duration-slow ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// ========================================
+// Form Elements
+// ========================================
+.form-group {
+  margin-bottom: $spacing-4;
+  
+  .form-label {
+    display: block;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: $spacing-2;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: $spacing-3;
+    border: 1px solid var(--border-color);
+    border-radius: $radius-default;
+    font-size: $font-size-base;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    @include no-tap-highlight;
+    
+    &:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    &.is-invalid {
+      border-color: var(--danger);
+    }
+    
+    &.is-valid {
+      border-color: var(--success);
+    }
+  }
+  
+  .form-error {
+    font-size: $font-size-xs;
+    color: var(--danger);
+    margin-top: $spacing-1;
+  }
+}

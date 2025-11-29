@@ -1,0 +1,293 @@
+<div class="fade-in">
+  <!-- 기본 애니메이션 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">animation</span>
+      기본 애니메이션
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-outline" data-anim="fadeIn">fadeIn</button>
+      <button class="btn btn-outline" data-anim="fadeOut">fadeOut</button>
+      <button class="btn btn-outline" data-anim="scaleIn">scaleIn</button>
+      <button class="btn btn-outline" data-anim="scaleOut">scaleOut</button>
+    </div>
+    <div class="demo-box" id="anim-target-basic">
+      🐱
+    </div>
+  </div>
+  
+  <!-- 슬라이드 애니메이션 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">swap_horiz</span>
+      슬라이드 애니메이션
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-outline" data-anim="slideDown">slideDown</button>
+      <button class="btn btn-outline" data-anim="slideUp">slideUp</button>
+      <button class="btn btn-outline" data-anim="bounceIn">bounceIn</button>
+      <button class="btn btn-outline" data-anim="bounceOut">bounceOut</button>
+    </div>
+    <div class="demo-box" id="anim-target-slide">
+      🎉
+    </div>
+  </div>
+  
+  <!-- 회전/플립 애니메이션 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">360</span>
+      회전 / 플립
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-outline" data-anim="rotateIn">rotateIn</button>
+      <button class="btn btn-outline" data-anim="rotateOut">rotateOut</button>
+      <button class="btn btn-outline" data-anim="flipIn">flipIn</button>
+      <button class="btn btn-outline" data-anim="flipOut">flipOut</button>
+    </div>
+    <div class="demo-box" id="anim-target-rotate">
+      ⭐
+    </div>
+  </div>
+  
+  <!-- 주의 끌기 애니메이션 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">notifications_active</span>
+      주의 끌기
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-outline" data-anim="shake">shake</button>
+      <button class="btn btn-outline" data-anim="pulse">pulse</button>
+      <button class="btn btn-outline" data-anim="flash">flash</button>
+      <button class="btn btn-outline" data-anim="swing">swing</button>
+      <button class="btn btn-outline" data-anim="wobble">wobble</button>
+      <button class="btn btn-outline" data-anim="tada">tada</button>
+      <button class="btn btn-outline" data-anim="heartBeat">heartBeat</button>
+    </div>
+    <div class="demo-box" id="anim-target-attention">
+      ❤️
+    </div>
+  </div>
+
+  <!-- 로딩 인디케이터 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">hourglass_empty</span>
+      로딩 인디케이터
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" id="loading-show">로딩 표시</button>
+      <button class="btn btn-secondary" id="loading-hide">숨기기</button>
+    </div>
+  </div>
+
+  <!-- 폼 검증 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">fact_check</span>
+      폼 검증
+    </div>
+    <form id="demo-form">
+      <div class="form-group">
+        <label class="form-label">이메일 *</label>
+        <input type="email" name="email" class="form-input" placeholder="이메일 입력">
+        <div class="form-error" id="email-error"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">비밀번호 * (8자 이상)</label>
+        <input type="password" name="password" class="form-input" placeholder="비밀번호 입력">
+        <div class="form-error" id="password-error"></div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%;">
+        검증하기
+      </button>
+    </form>
+  </div>
+
+  <!-- 보안 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">security</span>
+      보안 (XSS 방지)
+    </div>
+    <div class="form-group">
+      <label class="form-label">입력 (HTML 태그 포함)</label>
+      <input type="text" class="form-input" id="xss-input" 
+             value="<script>alert('XSS')</script>">
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-outline" id="xss-escape">escape()</button>
+      <button class="btn btn-outline" id="xss-sanitize">sanitize()</button>
+    </div>
+    <div class="output-log" id="xss-output" style="word-break: break-all;"></div>
+  </div>
+
+  <!-- 링크 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">link</span>
+      관련 링크
+    </div>
+    <ul class="list">
+      <li class="list-item">
+        <span class="material-icons item-icon">description</span>
+        <div class="item-content">
+          <div class="item-label">API 문서</div>
+          <div class="item-value">docs/API.md</div>
+        </div>
+      </li>
+      <li class="list-item">
+        <span class="material-icons item-icon">code</span>
+        <div class="item-content">
+          <div class="item-label">소스 코드</div>
+          <div class="item-value">src/core/</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+(function() {
+  // CATUI 확인
+  if (typeof CATUI === 'undefined') {
+    console.error('CATUI not loaded');
+    return;
+  }
+  
+  // ========================================
+  // 애니메이션 (통합 처리)
+  // ========================================
+  const animTargets = {
+    basic: document.getElementById('anim-target-basic'),
+    slide: document.getElementById('anim-target-slide'),
+    rotate: document.getElementById('anim-target-rotate'),
+    attention: document.getElementById('anim-target-attention')
+  };
+  
+  // 애니메이션 버튼 클릭 핸들러
+  document.querySelectorAll('[data-anim]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const animName = btn.dataset.anim;
+      const card = btn.closest('.card');
+      const target = card.querySelector('.demo-box');
+      
+      if (!target || typeof CATUI.animate !== 'function') {
+        console.warn('Animation not available');
+        return;
+      }
+      
+      try {
+        // 사라지는 애니메이션 후 다시 보이게
+        const hideAnims = ['fadeOut', 'scaleOut', 'slideUp', 'bounceOut', 'rotateOut', 'flipOut'];
+        
+        if (hideAnims.includes(animName)) {
+          await CATUI.animate(target)[animName]();
+          // 다시 보이게
+          setTimeout(() => {
+            target.style.display = '';
+            target.style.opacity = '1';
+            target.style.transform = '';
+          }, 300);
+        } else {
+          // 보이는 애니메이션
+          target.style.display = 'flex';
+          target.style.opacity = '1';
+          target.style.transform = '';
+          await CATUI.animate(target)[animName]();
+        }
+      } catch (e) {
+        console.error(`${animName} error:`, e);
+        // 복구
+        target.style.display = 'flex';
+        target.style.opacity = '1';
+        target.style.transform = '';
+      }
+    });
+  });
+
+  // ========================================
+  // 로딩 인디케이터
+  // ========================================
+  CATUI('#loading-show').on('click', () => {
+    CATUI.loading.show('로딩 중...');
+    setTimeout(() => CATUI.loading.hide(), 2000);
+  });
+  
+  CATUI('#loading-hide').on('click', () => CATUI.loading.hide());
+
+  // ========================================
+  // 폼 검증
+  // ========================================
+  const form = CATUI('#demo-form');
+  const emailInput = CATUI('[name="email"]');
+  const passwordInput = CATUI('[name="password"]');
+  const emailError = CATUI('#email-error');
+  const passwordError = CATUI('#password-error');
+  
+  function validateEmail(value) {
+    if (!value) return '이메일을 입력하세요';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return '올바른 이메일 형식이 아닙니다';
+    return '';
+  }
+  
+  function validatePassword(value) {
+    if (!value) return '비밀번호를 입력하세요';
+    if (value.length < 8) return '비밀번호는 8자 이상이어야 합니다';
+    return '';
+  }
+  
+  emailInput.on('blur', () => {
+    const error = validateEmail(emailInput.get(0).value);
+    emailError.text(error);
+    emailInput.toggleClass('is-invalid', !!error).toggleClass('is-valid', !error && emailInput.get(0).value);
+  });
+  
+  passwordInput.on('blur', () => {
+    const error = validatePassword(passwordInput.get(0).value);
+    passwordError.text(error);
+    passwordInput.toggleClass('is-invalid', !!error).toggleClass('is-valid', !error && passwordInput.get(0).value);
+  });
+  
+  form.on('submit', (e) => {
+    e.preventDefault();
+    
+    const emailErr = validateEmail(emailInput.get(0).value);
+    const passErr = validatePassword(passwordInput.get(0).value);
+    
+    emailError.text(emailErr);
+    passwordError.text(passErr);
+    
+    emailInput.toggleClass('is-invalid', !!emailErr);
+    passwordInput.toggleClass('is-invalid', !!passErr);
+    
+    if (!emailErr && !passErr) {
+      CATUI.loading.show('제출 중...');
+      setTimeout(() => {
+        CATUI.loading.hide();
+        alert('폼 검증 성공!');
+        form.get(0).reset();
+        emailInput.removeClass('is-valid');
+        passwordInput.removeClass('is-valid');
+      }, 1000);
+    }
+  });
+
+  // ========================================
+  // XSS 방지
+  // ========================================
+  const xssInput = CATUI('#xss-input');
+  const xssOutput = CATUI('#xss-output');
+  
+  CATUI('#xss-escape').on('click', () => {
+    const result = CATUI.escape(xssInput.get(0).value);
+    xssOutput.html(`<div class="log-item"><strong>escape():</strong><br>${result}</div>`);
+  });
+  
+  CATUI('#xss-sanitize').on('click', () => {
+    const result = CATUI.sanitize(xssInput.get(0).value);
+    xssOutput.html(`<div class="log-item"><strong>sanitize():</strong><br>${CATUI.escape(result) || '(빈 문자열 - 위험 요소 제거됨)'}</div>`);
+  });
+})();
+</script>

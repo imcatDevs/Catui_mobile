@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#667eea">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>CATUI Mobile Examples</title>
+  <link rel="stylesheet" href="../dist/catui-mobile.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="app-header">
+      <span class="material-icons header-icon" id="menu-btn">menu</span>
+      <h1 class="header-title">CATUI Mobile</h1>
+      <span class="material-icons-outlined header-icon" id="theme-btn">dark_mode</span>
+    </header>
+
+    <!-- Content -->
+    <main class="app-content" id="app-content">
+      <!-- Views loaded here -->
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="app-nav">
+      <a class="nav-item active" catui-href="views/home.html" data-nav="home">
+        <span class="material-icons">home</span>
+        <span>홈</span>
+      </a>
+      <a class="nav-item" catui-href="views/touch.html" data-nav="touch">
+        <span class="material-icons-outlined">touch_app</span>
+        <span>터치</span>
+      </a>
+      <a class="nav-item" catui-href="views/device.html" data-nav="device">
+        <span class="material-icons-outlined">smartphone</span>
+        <span>디바이스</span>
+      </a>
+      <a class="nav-item" catui-href="views/state.html" data-nav="state">
+        <span class="material-icons-outlined">data_object</span>
+        <span>상태</span>
+      </a>
+      <a class="nav-item" catui-href="views/more.html" data-nav="more">
+        <span class="material-icons-outlined">more_horiz</span>
+        <span>더보기</span>
+      </a>
+    </nav>
+  </div>
+
+  <script src="../dist/catui-mobile.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

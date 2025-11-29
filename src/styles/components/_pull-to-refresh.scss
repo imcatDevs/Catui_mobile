@@ -3,6 +3,8 @@
  * @description Pull-to-Refresh 컴포넌트 스타일
  */
 
+@use '../abstracts' as *;
+
 // ========================================
 // Pull to Refresh Indicator
 // ========================================
@@ -19,7 +21,7 @@
   transform: translateY(-100%);
   opacity: 0;
   transition: transform 0.2s ease, opacity 0.2s ease;
-  z-index: $z-fixed;
+  z-index: $layout-fixed-z-index-fixed;
   pointer-events: none;
 }
 

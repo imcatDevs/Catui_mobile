@@ -15,12 +15,12 @@ export class TouchManager {
    */
   static defaults() {
     return {
-      swipeThreshold: 50,        // 스와이프 인식 최소 거리 (px)
-      swipeVelocity: 0.3,        // 스와이프 인식 최소 속도
-      tapTimeout: 200,           // 탭 인식 최대 시간 (ms)
+      swipeThreshold: 30,        // 스와이프 인식 최소 거리 (px)
+      swipeVelocity: 0.1,        // 스와이프 인식 최소 속도
+      tapTimeout: 250,           // 탭 인식 최대 시간 (ms)
       longPressTimeout: 500,     // 롱프레스 인식 시간 (ms)
       doubleTapTimeout: 300,     // 더블탭 인식 시간 (ms)
-      pinchThreshold: 0.1,       // 핀치 인식 최소 스케일 변화
+      pinchThreshold: 0.02,      // 핀치 인식 최소 스케일 변화
       preventScroll: false       // 스크롤 방지 여부
     };
   }
@@ -46,9 +46,12 @@ export class TouchManager {
     this._touchState = {
       startX: 0,
       startY: 0,
+      lastX: 0,           // 이전 위치 (움직임 계산용)
+      lastY: 0,
       startTime: 0,
       lastTapTime: 0,
       isLongPress: false,
+      isSwiping: false,   // 스와이프 중인지
       longPressTimer: null,
       initialDistance: 0,
       initialScale: 1
@@ -97,8 +100,11 @@ export class TouchManager {
     
     state.startX = e.clientX;
     state.startY = e.clientY;
+    state.lastX = e.clientX;
+    state.lastY = e.clientY;
     state.startTime = Date.now();
     state.isLongPress = false;
+    state.isSwiping = false;
     
     if (state.longPressTimer) clearTimeout(state.longPressTimer);
     
@@ -123,7 +129,26 @@ export class TouchManager {
     
     const deltaX = e.clientX - state.startX;
     const deltaY = e.clientY - state.startY;
-    this._emit('pan', { deltaX, deltaY, x: e.clientX, y: e.clientY });
+    const movementX = e.clientX - state.lastX;
+    const movementY = e.clientY - state.lastY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    const duration = Date.now() - state.startTime;
+    const velocity = distance / Math.max(duration, 1);
+    
+    // 실시간 스와이프 감지
+    if (!state.isSwiping && 
+        distance >= this.options.swipeThreshold && 
+        velocity >= this.options.swipeVelocity) {
+      state.isSwiping = true;
+      const direction = this._getSwipeDirection(deltaX, deltaY);
+      this._emit('swipe', { direction, deltaX, deltaY, velocity, distance });
+      this._emit(`swipe${direction}`, { deltaX, deltaY, velocity, distance });
+    }
+    
+    this._emit('pan', { deltaX, deltaY, movementX, movementY, x: e.clientX, y: e.clientY });
+    
+    state.lastX = e.clientX;
+    state.lastY = e.clientY;
   }
   
   /**
@@ -143,21 +168,17 @@ export class TouchManager {
       state.longPressTimer = null;
     }
     
-    if (state.isLongPress) return;
+    if (state.isLongPress || state.isSwiping) {
+      state.isSwiping = false;
+      return;
+    }
     
     const deltaX = e.clientX - state.startX;
     const deltaY = e.clientY - state.startY;
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    const velocity = distance / duration;
     
-    // 스와이프 감지
-    if (distance >= this.options.swipeThreshold && velocity >= this.options.swipeVelocity) {
-      const direction = this._getSwipeDirection(deltaX, deltaY);
-      this._emit('swipe', { direction, deltaX, deltaY, velocity, distance });
-      this._emit(`swipe${direction}`, { deltaX, deltaY, velocity, distance });
-    }
     // 탭 감지
-    else if (duration < this.options.tapTimeout && distance < 10) {
+    if (duration < this.options.tapTimeout && distance < 15) {
       if (now - state.lastTapTime < this.options.doubleTapTimeout) {
         this._emit('doubletap', { x: e.clientX, y: e.clientY, target: e.target });
         state.lastTapTime = 0;
@@ -178,8 +199,11 @@ export class TouchManager {
 
     state.startX = touch.clientX;
     state.startY = touch.clientY;
+    state.lastX = touch.clientX;
+    state.lastY = touch.clientY;
     state.startTime = Date.now();
     state.isLongPress = false;
+    state.isSwiping = false;
 
     // 롱프레스 타이머 시작
     if (state.longPressTimer) {
@@ -233,18 +257,40 @@ export class TouchManager {
       }
     }
 
-    // 스와이프 진행 중
+    // 단일 터치 이동
     if (e.touches.length === 1) {
       const touch = e.touches[0];
-      const deltaX = touch.clientX - state.startX;
+      const deltaX = touch.clientX - state.startX;  // 시작점 대비
       const deltaY = touch.clientY - state.startY;
+      const movementX = touch.clientX - state.lastX;  // 이전 위치 대비
+      const movementY = touch.clientY - state.lastY;
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      const duration = Date.now() - state.startTime;
+      const velocity = distance / Math.max(duration, 1);
 
+      // 실시간 스와이프 감지 (touchMove 중에)
+      if (!state.isSwiping && 
+          distance >= this.options.swipeThreshold && 
+          velocity >= this.options.swipeVelocity) {
+        state.isSwiping = true;
+        const direction = this._getSwipeDirection(deltaX, deltaY);
+        this._emit('swipe', { direction, deltaX, deltaY, velocity, distance });
+        this._emit(`swipe${direction}`, { deltaX, deltaY, velocity, distance });
+      }
+
+      // pan 이벤트
       this._emit('pan', {
-        deltaX,
+        deltaX,       // 시작점 대비 총 이동량
         deltaY,
+        movementX,    // 이전 프레임 대비 이동량
+        movementY,
         x: touch.clientX,
         y: touch.clientY
       });
+
+      // 현재 위치를 이전 위치로 저장
+      state.lastX = touch.clientX;
+      state.lastY = touch.clientY;
     }
 
     if (this.options.preventScroll) {
@@ -267,8 +313,9 @@ export class TouchManager {
       state.longPressTimer = null;
     }
 
-    // 롱프레스였으면 다른 이벤트 무시
-    if (state.isLongPress) {
+    // 롱프레스 또는 이미 스와이프 감지됨
+    if (state.isLongPress || state.isSwiping) {
+      state.isSwiping = false;
       return;
     }
 
@@ -276,22 +323,9 @@ export class TouchManager {
     const deltaX = touch.clientX - state.startX;
     const deltaY = touch.clientY - state.startY;
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    const velocity = distance / duration;
 
-    // 스와이프 감지
-    if (distance >= this.options.swipeThreshold && velocity >= this.options.swipeVelocity) {
-      const direction = this._getSwipeDirection(deltaX, deltaY);
-      this._emit('swipe', {
-        direction,
-        deltaX,
-        deltaY,
-        velocity,
-        distance
-      });
-      this._emit(`swipe${direction}`, { deltaX, deltaY, velocity, distance });
-    }
-    // 탭 감지
-    else if (duration < this.options.tapTimeout && distance < 10) {
+    // 탭 감지 (짧은 터치, 적은 이동)
+    if (duration < this.options.tapTimeout && distance < 15) {
       // 더블탭 체크
       if (now - state.lastTapTime < this.options.doubleTapTimeout) {
         this._emit('doubletap', {

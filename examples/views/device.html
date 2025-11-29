@@ -1,0 +1,202 @@
+<div class="fade-in">
+  <!-- 디바이스 감지 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">smartphone</span>
+      디바이스 정보
+    </div>
+    <div class="device-info" id="device-info">
+      <!-- JS로 채워짐 -->
+    </div>
+  </div>
+
+  <!-- 뷰포트 정보 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">aspect_ratio</span>
+      뷰포트
+    </div>
+    <ul class="list">
+      <li class="list-item">
+        <span class="material-icons item-icon">straighten</span>
+        <div class="item-content">
+          <div class="item-label">크기</div>
+          <div class="item-value" id="viewport-size">-</div>
+        </div>
+      </li>
+      <li class="list-item">
+        <span class="material-icons item-icon">screen_rotation</span>
+        <div class="item-content">
+          <div class="item-label">방향</div>
+          <div class="item-value" id="viewport-orientation">-</div>
+        </div>
+      </li>
+      <li class="list-item">
+        <span class="material-icons item-icon">fit_screen</span>
+        <div class="item-content">
+          <div class="item-label">Safe Area (상/하)</div>
+          <div class="item-value" id="safe-area">-</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 네트워크 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">wifi</span>
+      네트워크
+    </div>
+    <ul class="list">
+      <li class="list-item">
+        <span class="material-icons item-icon">signal_cellular_alt</span>
+        <div class="item-content">
+          <div class="item-label">연결 타입</div>
+          <div class="item-value" id="network-type">-</div>
+        </div>
+      </li>
+      <li class="list-item">
+        <span class="material-icons item-icon">speed</span>
+        <div class="item-content">
+          <div class="item-label">다운링크</div>
+          <div class="item-value" id="network-downlink">-</div>
+        </div>
+      </li>
+      <li class="list-item">
+        <span class="material-icons item-icon">data_saver_on</span>
+        <div class="item-content">
+          <div class="item-label">데이터 절약 모드</div>
+          <div class="item-value" id="network-save">-</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 사용자 선호 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">tune</span>
+      사용자 선호
+    </div>
+    <ul class="list">
+      <li class="list-item">
+        <span class="material-icons item-icon">dark_mode</span>
+        <div class="item-content">
+          <div class="item-label">다크모드 선호</div>
+          <div class="item-value" id="prefers-dark">-</div>
+        </div>
+      </li>
+      <li class="list-item">
+        <span class="material-icons item-icon">animation</span>
+        <div class="item-content">
+          <div class="item-label">모션 감소 선호</div>
+          <div class="item-value" id="prefers-reduced">-</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 키보드 상태 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="material-icons">keyboard</span>
+      가상 키보드
+    </div>
+    <div class="form-group">
+      <label class="form-label">입력 필드 (키보드 테스트)</label>
+      <input type="text" class="form-input" placeholder="여기를 탭하세요">
+    </div>
+    <ul class="list">
+      <li class="list-item">
+        <span class="material-icons item-icon">visibility</span>
+        <div class="item-content">
+          <div class="item-label">키보드 표시</div>
+          <div class="item-value" id="keyboard-visible">숨김</div>
+        </div>
+      </li>
+      <li class="list-item">
+        <span class="material-icons item-icon">height</span>
+        <div class="item-content">
+          <div class="item-label">키보드 높이</div>
+          <div class="item-value" id="keyboard-height">0px</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+(function() {
+  const device = CATUI.device;
+  const viewport = CATUI.viewport;
+  const keyboard = CATUI.keyboard;
+
+  // ========================================
+  // 디바이스 정보 그리드
+  // ========================================
+  const deviceInfo = CATUI('#device-info');
+  
+  const items = [
+    { label: 'iOS', value: device.isIOS },
+    { label: 'Android', value: device.isAndroid },
+    { label: '모바일', value: device.isMobile },
+    { label: '태블릿', value: device.isTablet },
+    { label: '터치', value: device.hasTouch },
+    { label: 'PWA', value: device.isPWA },
+    { label: '픽셀비율', value: device.pixelRatio + 'x', isValue: true }
+  ];
+  
+  deviceInfo.html(items.map(item => `
+    <div class="info-item ${!item.isValue ? (item.value ? 'info-true' : 'info-false') : ''}">
+      <div class="info-label">${item.label}</div>
+      <div class="info-value">${item.isValue ? item.value : (item.value ? '예' : '아니오')}</div>
+    </div>
+  `).join(''));
+
+  // ========================================
+  // 뷰포트 정보
+  // ========================================
+  function updateViewport() {
+    CATUI('#viewport-size').text(`${viewport.width} × ${viewport.height}`);
+    CATUI('#viewport-orientation').text(
+      viewport.orientation === 'portrait' ? '세로 (Portrait)' : '가로 (Landscape)'
+    );
+    const safeArea = viewport.safeAreaInsets;
+    CATUI('#safe-area').text(`${safeArea.top}px / ${safeArea.bottom}px`);
+  }
+  
+  updateViewport();
+  
+  viewport.on('resize', updateViewport);
+  viewport.on('orientationchange', updateViewport);
+
+  // ========================================
+  // 네트워크 정보
+  // ========================================
+  const network = device.networkInfo;
+  CATUI('#network-type').text(network.type || 'unknown');
+  CATUI('#network-downlink').text(network.downlink ? `${network.downlink} Mbps` : '-');
+  CATUI('#network-save').text(network.saveData ? '활성화' : '비활성화');
+
+  // ========================================
+  // 사용자 선호
+  // ========================================
+  CATUI('#prefers-dark').text(device.prefersDarkMode ? '예' : '아니오');
+  CATUI('#prefers-reduced').text(device.prefersReducedMotion ? '예' : '아니오');
+
+  // ========================================
+  // 키보드 상태
+  // ========================================
+  if (keyboard) {
+    keyboard.on('show', (data) => {
+      CATUI('#keyboard-visible').text('표시');
+      CATUI('#keyboard-height').text(data.height + 'px');
+    });
+    
+    keyboard.on('hide', () => {
+      CATUI('#keyboard-visible').text('숨김');
+      CATUI('#keyboard-height').text('0px');
+    });
+  }
+})();
+</script>

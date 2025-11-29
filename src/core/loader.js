@@ -41,9 +41,9 @@ export class ModuleLoader {
     const scripts = document.getElementsByTagName('script');
     for (let script of scripts) {
       const src = script.src;
-      if (src && src.includes('imcat-ui')) {
-        // imcat-ui.js 또는 imcat-ui.min.js의 경로에서 dist 추출
-        const match = src.match(/(.*)\/imcat-ui(\.min)?\.js/);
+      // catui-mobile.js 또는 catui-mobile.min.js 찾기
+      if (src && (src.includes('catui-mobile') || src.includes('imcat-ui'))) {
+        const match = src.match(/(.*)\/(?:catui-mobile|imcat-ui)(\.min)?\.js/);
         if (match) {
           return match[1]; // dist 폴더 경로
         }
@@ -109,26 +109,35 @@ export class ModuleLoader {
       // CSS 로드
       await this._loadModuleCSS(moduleName);
 
-      // JS 모듈 로드
-      const modulePath = `${this.basePath}/${moduleName}/${moduleName}.js`;
-      const module = await import(modulePath);
-
-      // 기본 export 또는 named export
-      const moduleExport = module.default || module[this._capitalize(moduleName)];
-
-      if (!moduleExport) {
-        throw new Error(`Module "${moduleName}" does not have a default or named export`);
-      }
-
+      // ESM 모듈 로드 (현대 브라우저 기본)
+      const esmPath = `${this.basePath}/${moduleName}/${moduleName}.js`;
+      const module = await import(esmPath);
+      const moduleExport = module.default || module;
+      
       // 캐시에 저장
       this.modules.set(moduleName, moduleExport);
-
       return moduleExport;
 
     } catch (error) {
       console.error(`Failed to load module "${moduleName}":`, error);
       throw new Error(`Module "${moduleName}" not found`);
     }
+  }
+  
+  /**
+   * 스크립트 로드
+   * @private
+   * @param {string} url - 스크립트 URL
+   * @returns {Promise<void>}
+   */
+  _loadScript(url) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = url;
+      script.onload = resolve;
+      script.onerror = () => reject(new Error(`Failed to load script: ${url}`));
+      document.head.appendChild(script);
+    });
   }
 
   /**

@@ -3,6 +3,8 @@
  * @description 모바일 기본 스타일
  */
 
+@use '../abstracts' as *;
+
 // ========================================
 // Full Height Container
 // ========================================
@@ -79,12 +81,12 @@
 
 .fixed-top {
   @include fixed-top;
-  z-index: $z-fixed;
+  z-index: $layout-fixed-z-index-fixed;
 }
 
 .fixed-bottom {
   @include fixed-bottom;
-  z-index: $z-fixed;
+  z-index: $layout-fixed-z-index-fixed;
 }
 
 // ========================================
@@ -156,18 +158,18 @@
 // Border Radius
 // ========================================
 .rounded-none { border-radius: 0; }
-.rounded-sm { border-radius: $border-radius-sm; }
-.rounded { border-radius: $border-radius; }
-.rounded-lg { border-radius: $border-radius-lg; }
-.rounded-xl { border-radius: $border-radius-xl; }
-.rounded-full { border-radius: $border-radius-full; }
+.rounded-sm { border-radius: $radius-sm; }
+.rounded { border-radius: $radius-default; }
+.rounded-lg { border-radius: $radius-lg; }
+.rounded-xl { border-radius: $radius-xl; }
+.rounded-full { border-radius: $radius-full; }
 
 // ========================================
 // Shadow
 // ========================================
 .shadow-none { box-shadow: none; }
 .shadow-sm { box-shadow: $shadow-sm; }
-.shadow { box-shadow: $shadow; }
+.shadow { box-shadow: $shadow-default; }
 .shadow-md { box-shadow: $shadow-md; }
 .shadow-lg { box-shadow: $shadow-lg; }
 .shadow-xl { box-shadow: $shadow-xl; }

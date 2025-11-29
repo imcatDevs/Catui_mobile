@@ -94,62 +94,67 @@ class Animator {
   }
 
   /**
-   * 커스텀 애니메이션
+   * 커스텀 애니메이션 (Web Animations API 사용)
    * @param {Object} from - 시작 스타일
    * @param {Object} to - 종료 스타일
    * @param {number} duration - 지속 시간 (ms)
-   * @param {string|Function} easing - 이징 함수
+   * @param {string} easing - CSS 이징 또는 커스텀 이징 이름
    * @returns {Promise}
    */
-  custom(from, to, duration = 300, easing = 'easeInOut') {
-    return new Promise((resolve) => {
-      if (!this.element) {
-        resolve();
-        return;
-      }
-
-      const easingFn = typeof easing === 'function' ? easing : AnimationUtil.easings[easing] || AnimationUtil.easings.linear;
-      
-      // 시작 스타일 적용 (다음 프레임에서)
-      requestAnimationFrame(() => {
-        Object.keys(from).forEach(key => {
-          this.element.style[key] = from[key];
-        });
-        
-        // 리플로우 강제 (브라우저가 from 스타일을 확실히 적용하도록)
-        void this.element.offsetHeight;
-        
-        // 애니메이션 시작
-        const startTime = performance.now();
-        
-        const animate = (currentTime) => {
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const easedProgress = easingFn(progress);
-
-          // 스타일 보간
-          Object.keys(to).forEach(key => {
-            const fromValue = this._parseValue(from[key]);
-            const toValue = this._parseValue(to[key]);
-            
-            if (fromValue.unit && toValue.unit) {
-              const currentValue = fromValue.value + (toValue.value - fromValue.value) * easedProgress;
-              this.element.style[key] = `${currentValue}${toValue.unit}`;
-            } else {
-              this.element.style[key] = to[key];
-            }
-          });
-
-          if (progress < 1) {
-            requestAnimationFrame(animate);
-          } else {
-            resolve();
-          }
-        };
-
-        requestAnimationFrame(animate);
-      });
+  custom(from, to, duration = 300, easing = 'ease-out') {
+    if (!this.element) return Promise.resolve();
+    
+    // 커스텀 이징을 CSS 이징으로 변환
+    const cssEasing = this._toCssEasing(easing);
+    
+    // 시작 스타일 먼저 적용
+    Object.keys(from).forEach(key => {
+      this.element.style[key] = from[key];
     });
+    
+    // 리플로우 강제
+    void this.element.offsetWidth;
+    
+    // Web Animations API 사용
+    const keyframes = [from, to];
+    
+    const animation = this.element.animate(keyframes, {
+      duration,
+      easing: cssEasing,
+      fill: 'forwards'
+    });
+    
+    return animation.finished.then(() => {
+      // 애니메이션 끝난 후 최종 스타일 적용
+      Object.keys(to).forEach(key => {
+        this.element.style[key] = to[key];
+      });
+    }).catch(() => {
+      // 애니메이션 취소된 경우
+    });
+  }
+  
+  /**
+   * 커스텀 이징 이름을 CSS 이징으로 변환
+   * @private
+   */
+  _toCssEasing(easing) {
+    const easingMap = {
+      'linear': 'linear',
+      'ease': 'ease',
+      'ease-in': 'ease-in',
+      'ease-out': 'ease-out',
+      'ease-in-out': 'ease-in-out',
+      'easeIn': 'ease-in',
+      'easeOut': 'ease-out',
+      'easeInOut': 'ease-in-out',
+      'easeInCubic': 'cubic-bezier(0.55, 0.055, 0.675, 0.19)',
+      'easeOutCubic': 'cubic-bezier(0.215, 0.61, 0.355, 1)',
+      'easeInOutCubic': 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+      'easeOutElastic': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+      'easeOutBounce': 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+    };
+    return easingMap[easing] || easing;
   }
 
   /**
@@ -175,7 +180,10 @@ class Animator {
   fadeIn(duration = 300, easing = 'ease-out') {
     if (!this.element) return Promise.resolve();
     
-    this.element.style.display = 'block';
+    // display가 none이면 보이게 (기존 display 유지)
+    if (getComputedStyle(this.element).display === 'none') {
+      this.element.style.display = '';
+    }
     
     const keyframes = [
       { opacity: '0' },
@@ -214,8 +222,10 @@ class Animator {
     if (!this.element) return Promise.resolve();
     
     const element = this.element;
-    const originalDisplay = element.style.display;
-    element.style.display = 'block';
+    // display가 none이면 보이게 (기존 display 유지)
+    if (getComputedStyle(element).display === 'none') {
+      element.style.display = '';
+    }
     const height = element.scrollHeight;
     element.style.height = '0';
     element.style.overflow = 'hidden';
@@ -294,7 +304,10 @@ class Animator {
   scaleIn(duration = 300, easing = 'ease-out') {
     if (!this.element) return Promise.resolve();
     
-    this.element.style.display = 'block';
+    // display가 none이면 보이게 (기존 display 유지)
+    if (getComputedStyle(this.element).display === 'none') {
+      this.element.style.display = '';
+    }
     
     const keyframes = [
       { transform: 'scale(0)', opacity: '0' },
@@ -308,7 +321,7 @@ class Animator {
     });
     
     return animation.finished.then(() => {
-      this.element.style.transform = 'scale(1)';
+      this.element.style.transform = '';
       this.element.style.opacity = '1';
     });
   }
@@ -333,10 +346,13 @@ class Animator {
   bounceIn(duration = 600, easing = 'cubic-bezier(0.68, -0.55, 0.265, 1.55)') {
     if (!this.element) return Promise.resolve();
     
-    this.element.style.display = 'block';
+    // display가 none이면 보이게 (기존 display 유지)
+    if (getComputedStyle(this.element).display === 'none') {
+      this.element.style.display = '';
+    }
     
     const keyframes = [
-      { transform: 'translateY(-100px)', opacity: '0' },
+      { transform: 'translateY(-50px)', opacity: '0' },
       { transform: 'translateY(0)', opacity: '1' }
     ];
     
@@ -347,7 +363,7 @@ class Animator {
     });
     
     return animation.finished.then(() => {
-      this.element.style.transform = 'translateY(0)';
+      this.element.style.transform = '';
       this.element.style.opacity = '1';
     });
   }
@@ -370,12 +386,24 @@ class Animator {
    * Rotate In
    */
   rotateIn(duration = 400, easing = 'easeOut') {
+    if (!this.element) return Promise.resolve();
+    
+    // display가 none이면 보이게
+    if (getComputedStyle(this.element).display === 'none') {
+      this.element.style.display = '';
+    }
+    
     return this.custom(
-      { transform: 'rotate(-180deg) scale(0)', opacity: '0', display: 'block' },
+      { transform: 'rotate(-180deg) scale(0)', opacity: '0' },
       { transform: 'rotate(0deg) scale(1)', opacity: '1' },
       duration,
       easing
-    );
+    ).then(() => {
+      if (this.element) {
+        this.element.style.transform = '';
+        this.element.style.opacity = '1';
+      }
+    });
   }
 
   /**
@@ -396,12 +424,24 @@ class Animator {
    * Flip In
    */
   flipIn(duration = 600, easing = 'easeOut') {
+    if (!this.element) return Promise.resolve();
+    
+    // display가 none이면 보이게
+    if (getComputedStyle(this.element).display === 'none') {
+      this.element.style.display = '';
+    }
+    
     return this.custom(
-      { transform: 'perspective(400px) rotateY(90deg)', opacity: '0', display: 'block' },
+      { transform: 'perspective(400px) rotateY(90deg)', opacity: '0' },
       { transform: 'perspective(400px) rotateY(0deg)', opacity: '1' },
       duration,
       easing
-    );
+    ).then(() => {
+      if (this.element) {
+        this.element.style.transform = '';
+        this.element.style.opacity = '1';
+      }
+    });
   }
 
   /**
@@ -437,7 +477,9 @@ class Animator {
     return this.element.animate(keyframes, {
       duration,
       easing: 'ease-in-out'
-    }).finished;
+    }).finished.then(() => {
+      if (this.element) this.element.style.transform = '';
+    });
   }
 
   /**
@@ -457,7 +499,9 @@ class Animator {
     return this.element.animate(keyframes, {
       duration,
       easing: 'ease-in-out'
-    }).finished;
+    }).finished.then(() => {
+      if (this.element) this.element.style.transform = '';
+    });
   }
 
   /**
@@ -498,7 +542,9 @@ class Animator {
     return this.element.animate(keyframes, {
       duration,
       easing: 'ease-in-out'
-    }).finished;
+    }).finished.then(() => {
+      if (this.element) this.element.style.transform = '';
+    });
   }
 
   /**
@@ -520,7 +566,9 @@ class Animator {
     return this.element.animate(keyframes, {
       duration,
       easing: 'ease-in-out'
-    }).finished;
+    }).finished.then(() => {
+      if (this.element) this.element.style.transform = '';
+    });
   }
 
   /**
@@ -545,7 +593,9 @@ class Animator {
     return this.element.animate(keyframes, {
       duration,
       easing: 'ease-in-out'
-    }).finished;
+    }).finished.then(() => {
+      if (this.element) this.element.style.transform = '';
+    });
   }
 
   /**
@@ -565,7 +615,9 @@ class Animator {
     return this.element.animate(keyframes, {
       duration,
       easing: 'ease-in-out'
-    }).finished;
+    }).finished.then(() => {
+      if (this.element) this.element.style.transform = '';
+    });
   }
 }
 
