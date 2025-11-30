@@ -2,6 +2,7 @@
  * CATUI Mobile - Overlays Module Styles
  * 모달, 토스트, 드로어 등 오버레이 컴포넌트 스타일
  */
+@use '../../styles/abstracts' as *;
 
 // ========================================
 // Overlay Backdrop
@@ -12,10 +13,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1049;
+  background: $bg-overlay;
+  z-index: $z-index-modal - 1;
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity $duration-base $ease-in-out;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -30,12 +31,12 @@
   width: 90%;
   max-width: 400px;
   max-height: 90vh;
-  background: var(--bg-primary, #fff);
-  border-radius: 12px;
-  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
-  z-index: 1050;
+  background: var(--bg-primary, $bg-primary);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-xl;
+  z-index: $z-index-modal;
   opacity: 0;
-  transition: all 0.2s ease;
+  transition: all $duration-base $ease-in-out;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -50,41 +51,41 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
-  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  padding: $spacing-4;
+  border-bottom: 1px solid var(--border-color, $border-color);
   flex-shrink: 0;
 }
 
 .catui-modal-title {
   margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-primary, #111827);
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
 }
 
 .catui-modal-close {
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: $icon-size-lg;
   cursor: pointer;
   padding: 0;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  border-radius: $radius-full;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-secondary, #6b7280);
-  transition: background 0.2s ease;
+  color: var(--text-secondary, $text-secondary);
+  transition: background $duration-base $ease-in-out;
   -webkit-tap-highlight-color: transparent;
   
   &:active {
-    background: var(--bg-tertiary, #f3f4f6);
+    background: var(--bg-tertiary, $bg-tertiary);
   }
 }
 
 .catui-modal-body {
-  padding: 16px;
+  padding: $spacing-4;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   flex: 1;
@@ -92,9 +93,9 @@
 
 .catui-modal-footer {
   display: flex;
-  gap: 8px;
-  padding: 16px;
-  border-top: 1px solid var(--border-color, #e5e7eb);
+  gap: $spacing-2;
+  padding: $spacing-4;
+  border-top: 1px solid var(--border-color, $border-color);
   flex-shrink: 0;
 }
 
@@ -105,17 +106,17 @@
   position: fixed;
   left: 50%;
   transform: translateX(-50%) translateY(100px);
-  padding: 12px 20px;
-  background: var(--text-primary, #111827);
-  color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1100;
+  padding: $spacing-3 $spacing-5;
+  background: var(--text-primary, $text-primary);
+  color: $text-inverse;
+  border-radius: $radius-default;
+  box-shadow: $shadow-lg;
+  z-index: $z-index-tooltip;
   opacity: 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  max-width: calc(100vw - 32px);
+  transition: all $duration-slow $ease-in-out;
+  max-width: calc(100vw - #{$spacing-8});
   text-align: center;
-  font-size: 14px;
+  font-size: $font-size-sm;
   
   &.is-visible {
     opacity: 1;
@@ -135,19 +136,19 @@
   
   // 타입
   &.toast-success {
-    background: #10b981;
+    background: $success;
   }
   
   &.toast-error {
-    background: #ef4444;
+    background: $error;
   }
   
   &.toast-warning {
-    background: #f59e0b;
+    background: $warning;
   }
   
   &.toast-info {
-    background: #3b82f6;
+    background: $primary;
   }
 }
 
@@ -158,11 +159,11 @@
   position: fixed;
   top: 0;
   height: 100%;
-  background: var(--bg-primary, #fff);
-  z-index: 1050;
+  background: var(--bg-primary, $bg-primary);
+  z-index: $z-index-modal;
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform $duration-slow $ease-in-out;
   
   &.catui-drawer-left {
     left: 0;
@@ -184,17 +185,17 @@
 .catui-drawer-header {
   display: flex;
   align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  padding: $spacing-4 $spacing-5;
+  border-bottom: 1px solid var(--border-color, $border-color);
   flex-shrink: 0;
-  background: linear-gradient(135deg, var(--primary, #667eea) 0%, var(--secondary, #764ba2) 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--primary, $primary) 0%, var(--secondary, $secondary) 100%);
+  color: $text-inverse;
 }
 
 .catui-drawer-title {
   margin: 0;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
 }
 
 .catui-drawer-content {
@@ -225,5 +226,179 @@
   
   .catui-toast {
     background: var(--bg-secondary, #374151);
+  }
+}
+
+// ========================================
+// Popover
+// ========================================
+.catui-popover {
+  position: fixed;
+  z-index: $z-index-popover;
+  background: var(--bg-primary, $bg-primary);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-xl;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity $duration-base $ease-out, transform $duration-base $ease-out;
+
+  &.is-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.catui-popover-header {
+  display: flex;
+  align-items: center;
+  padding: $spacing-3 $spacing-4;
+  border-bottom: 1px solid var(--border-color, $border-color);
+}
+
+.catui-popover-title {
+  flex: 1;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-popover-close {
+  display: flex;
+  padding: $spacing-1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-tertiary, $text-tertiary);
+  border-radius: $radius-sm;
+
+  &:hover {
+    background: var(--bg-tertiary, $bg-tertiary);
+  }
+
+  .material-icons {
+    font-size: 18px;
+  }
+}
+
+.catui-popover-body {
+  padding: $spacing-4;
+  color: var(--text-secondary, $text-secondary);
+  font-size: $font-size-sm;
+  line-height: 1.5;
+}
+
+.catui-popover-arrow {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--bg-primary, $bg-primary);
+  transform: rotate(45deg);
+  box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
+}
+
+// ========================================
+// Notice (공지 팝업)
+// ========================================
+.catui-notice-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $bg-overlay;
+  z-index: $z-index-modal;
+  opacity: 0;
+  transition: opacity $duration-slow $ease-in-out;
+
+  &.is-visible {
+    opacity: 1;
+  }
+}
+
+.catui-notice {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: calc(100% - #{$spacing-12});
+  max-width: 360px;
+  background: var(--bg-primary, $bg-primary);
+  border-radius: $radius-xl;
+  overflow: hidden;
+  z-index: $z-index-modal + 1;
+  opacity: 0;
+  transition: opacity $duration-slow $ease-in-out, transform $duration-slow $ease-in-out;
+
+  &.is-visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.catui-notice-image {
+  width: 100%;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.catui-notice-content {
+  padding: $spacing-6;
+}
+
+.catui-notice-title {
+  margin: 0 0 $spacing-3;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-notice-body {
+  font-size: $font-size-sm;
+  line-height: 1.6;
+  color: var(--text-secondary, $text-secondary);
+}
+
+.catui-notice-checkbox {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  margin-top: $spacing-4;
+  cursor: pointer;
+  font-size: $font-size-xs;
+  color: var(--text-tertiary, $text-tertiary);
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary, $primary);
+  }
+}
+
+.catui-notice-footer {
+  padding: 0 $spacing-6 $spacing-6;
+}
+
+.catui-notice-btn {
+  width: 100%;
+  padding: $spacing-3 $spacing-4;
+  background: var(--primary, $primary);
+  color: $text-inverse;
+  border: none;
+  border-radius: $radius-default;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: background $duration-fast $ease-in-out;
+
+  &:hover {
+    background: #2563EB; // primary hover
+  }
+
+  &:active {
+    background: #1D4ED8; // primary active
   }
 }

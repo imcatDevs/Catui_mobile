@@ -1,0 +1,360 @@
+<div class="demo-page">
+  <h1 class="demo-title">Feedback & Loading</h1>
+  <p class="demo-subtitle">Toast, Notification, ProgressTracker, Skeleton, Loading 컴포넌트</p>
+
+  <!-- Toast -->
+  <section class="demo-section">
+    <h2 class="demo-section-title">Toast</h2>
+    
+    <div class="card mb-4">
+      <div class="card-header">토스트 알림 메시지</div>
+      <div class="card-body">
+        <div class="flex flex-wrap gap-2">
+          <button class="btn btn-primary" id="toast-default">기본 토스트</button>
+          <button class="btn btn-success" id="toast-success">성공</button>
+          <button class="btn btn-danger" id="toast-error">에러</button>
+          <button class="btn btn-warning" id="toast-warning">경고</button>
+          <button class="btn btn-outline" id="toast-action">액션 포함</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Notification -->
+  <section class="demo-section">
+    <h2 class="demo-section-title">Notification</h2>
+    
+    <div class="card mb-4">
+      <div class="card-header">알림 센터 (액션 버튼, 자동 닫기)</div>
+      <div class="card-body">
+        <div class="flex flex-wrap gap-2">
+          <button class="btn btn-primary" id="notification-simple">기본 알림</button>
+          <button class="btn btn-success" id="notification-success">성공 알림</button>
+          <button class="btn btn-outline" id="notification-actions">액션 포함</button>
+          <button class="btn btn-secondary" id="notification-clear">전체 닫기</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Progress Tracker -->
+  <section class="demo-section">
+    <h2 class="demo-section-title">Progress Tracker</h2>
+    
+    <div class="card mb-4">
+      <div class="card-header">가로형</div>
+      <div class="card-body">
+        <div id="progress-horizontal" class="mb-4"></div>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary btn-sm" id="progress-prev">이전</button>
+          <button class="btn btn-primary btn-sm" id="progress-next">다음</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">세로형</div>
+      <div class="card-body">
+        <div id="progress-vertical"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skeleton -->
+  <section class="demo-section">
+    <h2 class="demo-section-title">Skeleton</h2>
+    
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div class="card">
+        <div class="card-header">텍스트</div>
+        <div class="card-body">
+          <div id="skeleton-text"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">아바타 + 텍스트</div>
+        <div class="card-body">
+          <div class="flex gap-3 items-start">
+            <div id="skeleton-avatar"></div>
+            <div id="skeleton-text2" style="flex: 1;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">카드</div>
+        <div class="card-body">
+          <div id="skeleton-card"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">리스트</div>
+        <div class="card-body">
+          <div id="skeleton-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" id="skeleton-toggle">로딩 완료 시뮬레이션</button>
+  </section>
+
+  <!-- Loading -->
+  <section class="demo-section">
+    <h2 class="demo-section-title">Loading</h2>
+    
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div class="card" style="position: relative; min-height: 150px;">
+        <div class="card-header">Spinner</div>
+        <div class="card-body">
+          <div id="loading-spinner"></div>
+        </div>
+      </div>
+
+      <div class="card" style="position: relative; min-height: 150px;">
+        <div class="card-header">Dots</div>
+        <div class="card-body">
+          <div id="loading-dots"></div>
+        </div>
+      </div>
+
+      <div class="card" style="position: relative; min-height: 150px;">
+        <div class="card-header">Bar</div>
+        <div class="card-body">
+          <div id="loading-bar"></div>
+        </div>
+      </div>
+
+      <div class="card" style="position: relative; min-height: 150px;">
+        <div class="card-header">Pulse</div>
+        <div class="card-body">
+          <div id="loading-pulse"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" id="loading-fullscreen">전체화면 로딩</button>
+  </section>
+</div>
+
+<script>
+(async function() {
+  // overlays 모듈에서 Toast 가져오기
+  let Toast;
+  try {
+    const Overlays = await CATUI.use('overlays');
+    Toast = Overlays.Toast;
+    console.log('[Overlays] Module loaded, Toast:', Toast);
+  } catch (e) {
+    console.error('[Overlays] Module load failed:', e.message);
+    return;
+  }
+
+  // feedback 모듈에서 나머지 컴포넌트 가져오기
+  let Notification, ProgressTracker, Skeleton, Loading;
+  try {
+    const Feedback = await CATUI.use('feedback');
+    Notification = Feedback.Notification;
+    ProgressTracker = Feedback.ProgressTracker;
+    Skeleton = Feedback.Skeleton;
+    Loading = Feedback.Loading;
+    console.log('[Feedback] Module loaded:', Feedback);
+  } catch (e) {
+    console.error('[Feedback] Module load failed:', e.message);
+    return;
+  }
+
+  // ========== Toast (overlays 모듈) ==========
+  CATUI('#toast-default').on('click', () => {
+    new Toast({ message: '기본 토스트 메시지입니다.' }).show();
+  });
+
+  CATUI('#toast-success').on('click', () => {
+    new Toast({ message: '작업이 성공적으로 완료되었습니다!', type: 'success' }).show();
+  });
+
+  CATUI('#toast-error').on('click', () => {
+    new Toast({ message: '오류가 발생했습니다. 다시 시도해주세요.', type: 'error' }).show();
+  });
+
+  CATUI('#toast-warning').on('click', () => {
+    new Toast({ message: '주의가 필요한 작업입니다.', type: 'warning' }).show();
+  });
+
+  CATUI('#toast-action').on('click', () => {
+    new Toast({ message: '액션이 포함된 토스트입니다.', type: 'info', duration: 5000 }).show();
+  });
+
+  // ========== Notification ==========
+  const notification = new Notification({
+    position: 'top-right',
+    autoCloseDelay: 5000,
+    onClick: (config) => console.log('알림 클릭:', config)
+  });
+
+  CATUI('#notification-simple').on('click', () => {
+    notification.show({
+      title: '새 메시지',
+      message: '홍길동님이 메시지를 보냈습니다.',
+      type: 'info'
+    });
+  });
+
+  CATUI('#notification-success').on('click', () => {
+    notification.show({
+      title: '업로드 완료',
+      message: '파일이 성공적으로 업로드되었습니다.',
+      type: 'success'
+    });
+  });
+
+  CATUI('#notification-actions').on('click', () => {
+    notification.show({
+      title: '친구 요청',
+      message: '김철수님이 친구 요청을 보냈습니다.',
+      avatar: 'https://i.pravatar.cc/100?img=3',
+      actions: [
+        { text: '거절', onClick: () => new Toast({ message: '요청을 거절했습니다.' }).show() },
+        { text: '수락', primary: true, onClick: () => new Toast({ message: '친구가 되었습니다!', type: 'success' }).show() }
+      ]
+    });
+  });
+
+  CATUI('#notification-clear').on('click', () => {
+    notification.dismissAll();
+  });
+
+  // ========== Progress Tracker ==========
+  const progressH = new ProgressTracker({
+    container: '#progress-horizontal',
+    orientation: 'horizontal',
+    steps: [
+      { title: '장바구니', description: '상품 선택' },
+      { title: '배송정보', description: '주소 입력' },
+      { title: '결제', description: '결제 수단' },
+      { title: '완료', description: '주문 확인' }
+    ],
+    currentStep: 1,
+    clickable: true,
+    onStepClick: (step) => {
+      progressH.setStep(step);
+    }
+  });
+
+  new ProgressTracker({
+    container: '#progress-vertical',
+    orientation: 'vertical',
+    steps: [
+      { title: '주문 접수', description: '2024.01.15 10:30', icon: 'shopping_cart' },
+      { title: '결제 완료', description: '2024.01.15 10:32', icon: 'payment' },
+      { title: '배송 준비중', description: '2024.01.15 14:00', icon: 'inventory' },
+      { title: '배송중', description: '진행중...', icon: 'local_shipping' },
+      { title: '배송 완료', description: '-', icon: 'check_circle' }
+    ],
+    currentStep: 3
+  });
+
+  CATUI('#progress-prev').on('click', () => progressH.prev());
+  CATUI('#progress-next').on('click', () => progressH.next());
+
+  // ========== Skeleton ==========
+  const skeletonText = new Skeleton({
+    container: '#skeleton-text',
+    type: 'text',
+    lines: 3
+  });
+
+  const skeletonAvatar = new Skeleton({
+    container: '#skeleton-avatar',
+    type: 'avatar',
+    height: '48px'
+  });
+
+  const skeletonText2 = new Skeleton({
+    container: '#skeleton-text2',
+    type: 'text',
+    lines: 2
+  });
+
+  const skeletonCard = new Skeleton({
+    container: '#skeleton-card',
+    type: 'card'
+  });
+
+  const skeletonList = new Skeleton({
+    container: '#skeleton-list',
+    type: 'list',
+    lines: 3
+  });
+
+  let skeletonVisible = true;
+  CATUI('#skeleton-toggle').on('click', () => {
+    if (skeletonVisible) {
+      skeletonText.hide();
+      skeletonAvatar.hide();
+      skeletonText2.hide();
+      skeletonCard.hide();
+      skeletonList.hide();
+      
+      // 실제 콘텐츠 표시 예시
+      CATUI('#skeleton-text').html('<p>실제 텍스트 콘텐츠가 여기에 표시됩니다. 스켈레톤 로딩이 완료되었습니다.</p>');
+      CATUI('#skeleton-toggle').text('스켈레톤 다시 보기');
+    } else {
+      skeletonText.show();
+      skeletonAvatar.show();
+      skeletonText2.show();
+      skeletonCard.show();
+      skeletonList.show();
+      CATUI('#skeleton-toggle').text('로딩 완료 시뮬레이션');
+    }
+    skeletonVisible = !skeletonVisible;
+  });
+
+  // ========== Loading ==========
+  const loadingSpinner = new Loading({
+    container: '#loading-spinner',
+    type: 'spinner',
+    overlay: false
+  });
+  loadingSpinner.show();
+
+  const loadingDots = new Loading({
+    container: '#loading-dots',
+    type: 'dots',
+    overlay: false
+  });
+  loadingDots.show();
+
+  const loadingBar = new Loading({
+    container: '#loading-bar',
+    type: 'bar',
+    overlay: false
+  });
+  loadingBar.show();
+
+  const loadingPulse = new Loading({
+    container: '#loading-pulse',
+    type: 'pulse',
+    overlay: false
+  });
+  loadingPulse.show();
+
+  CATUI('#loading-fullscreen').on('click', () => {
+    Loading.show({
+      type: 'spinner',
+      text: '로딩중...',
+      overlay: true
+    });
+
+    setTimeout(() => {
+      Loading.setText('거의 완료...');
+    }, 1500);
+
+    setTimeout(() => {
+      Loading.hide();
+      new Toast({ message: '로딩 완료!', type: 'success' }).show();
+    }, 3000);
+  });
+})();
+</script>

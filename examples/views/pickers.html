@@ -1,0 +1,252 @@
+<div class="fade-in">
+  <!-- Pickers Module Info -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">date_range</span>
+        Pickers Module
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-secondary mb-3">
+        <code>CATUI.use('pickers')</code>으로 모듈을 로드하여 사용합니다.
+      </p>
+      <pre class="bg-secondary p-3 rounded text-sm"><code>const Pickers = await CATUI.use('pickers');
+
+// DatePicker, TimePicker, ColorPicker,
+// Countdown, DDay</code></pre>
+    </div>
+  </div>
+
+  <!-- DatePicker -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">calendar_today</span>
+        DatePicker
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">날짜 선택기 (Bottom Sheet 스타일)</p>
+      <div class="form-group">
+        <label class="form-label">날짜 선택</label>
+        <input type="text" class="form-input" id="date-input" placeholder="날짜를 선택하세요" readonly>
+      </div>
+      <p class="text-sm text-secondary mt-2" id="date-output">선택된 날짜: -</p>
+    </div>
+  </div>
+
+  <!-- TimePicker -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">schedule</span>
+        TimePicker
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">시간 선택기</p>
+      <div class="form-group">
+        <label class="form-label">시간 선택</label>
+        <input type="text" class="form-input" id="time-input" placeholder="시간을 선택하세요" readonly>
+      </div>
+      <p class="text-sm text-secondary mt-2" id="time-output">선택된 시간: -</p>
+    </div>
+  </div>
+
+  <!-- ColorPicker -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">palette</span>
+        ColorPicker
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">색상 선택기</p>
+      <div class="flex items-center gap-3">
+        <button id="color-trigger" style="width: 48px; height: 48px; border-radius: 8px; border: 2px solid var(--border-color); cursor: pointer; background: #3B82F6;"></button>
+        <span class="text-secondary" id="color-output">#3B82F6</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Countdown -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">timer</span>
+        Countdown
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">카운트다운 타이머</p>
+      <div id="countdown-demo" class="mb-4"></div>
+      <div class="flex gap-2">
+        <button class="btn btn-outline btn-sm" id="countdown-stop">정지</button>
+        <button class="btn btn-primary btn-sm" id="countdown-start">시작</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DDay -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">event</span>
+        D-Day
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">디데이 카운터</p>
+      <div class="flex flex-col gap-4">
+        <div id="dday-demo" style="background: var(--bg-secondary); border-radius: 12px;"></div>
+        <div id="dday-demo2" style="background: var(--bg-secondary); border-radius: 12px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Usage -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">code</span>
+        사용 예시
+      </h3>
+    </div>
+    <div class="card-body">
+      <pre class="bg-secondary p-3 rounded text-sm" style="overflow-x: auto;"><code>const Pickers = await CATUI.use('pickers');
+
+// DatePicker
+const datePicker = new Pickers.DatePicker({
+  trigger: '#date-input',
+  value: new Date(),
+  format: 'YYYY-MM-DD',
+  onChange: (date, formatted) => {
+    console.log(formatted);
+  }
+});
+
+// TimePicker
+const timePicker = new Pickers.TimePicker({
+  trigger: '#time-input',
+  value: '14:30',
+  is24Hour: true,
+  onChange: (value, h, m) => {
+    console.log(value);
+  }
+});
+
+// ColorPicker
+const colorPicker = new Pickers.ColorPicker({
+  trigger: '#color-btn',
+  value: '#3B82F6',
+  onChange: (color) => {
+    console.log(color);
+  }
+});
+
+// Countdown (5분 후)
+const countdown = new Pickers.Countdown({
+  container: '#countdown',
+  target: new Date(Date.now() + 5 * 60 * 1000),
+  onComplete: () => alert('완료!')
+});
+
+// D-Day
+const dday = new Pickers.DDay({
+  container: '#dday',
+  target: '2025-12-25',
+  title: '크리스마스까지',
+  showTime: true
+});</code></pre>
+    </div>
+  </div>
+</div>
+
+<script>
+(async function() {
+  // Pickers 모듈 로드
+  let Pickers;
+  try {
+    Pickers = await CATUI.use('pickers');
+    console.log('[Pickers] Module loaded:', Pickers);
+  } catch (e) {
+    console.error('[Pickers] Module load failed:', e.message);
+    return;
+  }
+
+  // DatePicker
+  const datePicker = new Pickers.DatePicker({
+    trigger: '#date-input',
+    value: new Date(),
+    format: 'YYYY-MM-DD',
+    locale: 'ko',
+    onChange: (date, formatted) => {
+      CATUI('#date-output').text(`선택된 날짜: ${formatted}`);
+    }
+  });
+
+  // TimePicker
+  const timePicker = new Pickers.TimePicker({
+    trigger: '#time-input',
+    value: '14:30',
+    is24Hour: true,
+    minuteStep: 5,
+    onChange: (value, hours, minutes) => {
+      CATUI('#time-output').text(`선택된 시간: ${value}`);
+    }
+  });
+
+  // ColorPicker
+  const colorPicker = new Pickers.ColorPicker({
+    trigger: '#color-trigger',
+    value: '#3B82F6',
+    onChange: (color) => {
+      CATUI('#color-output').text(color);
+    }
+  });
+
+  // Countdown - 5분 후
+  const targetTime = new Date(Date.now() + 5 * 60 * 1000);
+  const countdown = new Pickers.Countdown({
+    container: '#countdown-demo',
+    target: targetTime,
+    format: 'MM:SS',
+    showLabels: true,
+    labels: { minutes: '분', seconds: '초' },
+    onComplete: () => {
+      console.log('Countdown complete!');
+    }
+  });
+
+  CATUI('#countdown-stop').on('click', () => countdown.stop());
+  CATUI('#countdown-start').on('click', () => countdown.start());
+
+  // D-Day - 새해
+  const newYear = new Date();
+  newYear.setFullYear(newYear.getFullYear() + 1, 0, 1);
+  
+  const dday1 = new Pickers.DDay({
+    container: '#dday-demo',
+    target: newYear,
+    title: '새해까지',
+    showTime: true
+  });
+
+  // D-Day - 크리스마스
+  const christmas = new Date();
+  if (christmas.getMonth() > 11 || (christmas.getMonth() === 11 && christmas.getDate() > 25)) {
+    christmas.setFullYear(christmas.getFullYear() + 1);
+  }
+  christmas.setMonth(11, 25);
+  
+  const dday2 = new Pickers.DDay({
+    container: '#dday-demo2',
+    target: christmas,
+    title: '크리스마스까지'
+  });
+
+  console.log('[Pickers Demo] Loaded');
+})();
+</script>

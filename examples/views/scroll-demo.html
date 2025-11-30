@@ -1,0 +1,374 @@
+<div class="fade-in">
+  <!-- Back to Top -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">arrow_upward</span>
+        Back to Top
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">스크롤을 내리면 우측 하단에 버튼이 나타납니다</p>
+      <div class="flex gap-2">
+        <button class="btn btn-primary btn-sm" id="backtotop-basic">기본</button>
+        <button class="btn btn-outline btn-sm" id="backtotop-progress">진행률 표시</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Progress -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">linear_scale</span>
+        Scroll Progress Bar
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">페이지 상단에 스크롤 진행률 바가 표시됩니다</p>
+      <div class="flex gap-2">
+        <button class="btn btn-primary btn-sm" id="progress-toggle">진행률 바 ON/OFF</button>
+      </div>
+      <div id="progress-value" class="text-sm text-secondary mt-3"></div>
+    </div>
+  </div>
+
+  <!-- Virtual Scroll -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">view_list</span>
+        Virtual Scroll (10,000 items)
+      </h3>
+    </div>
+    <div class="card-body p-0">
+      <div id="virtual-scroll-demo" style="height: 300px;"></div>
+    </div>
+    <div class="card-body" style="border-top: 1px solid var(--border-color);">
+      <div class="flex gap-2">
+        <button class="btn btn-sm btn-outline" id="virtual-top">Top</button>
+        <button class="btn btn-sm btn-outline" id="virtual-500">Go to 500</button>
+        <button class="btn btn-sm btn-outline" id="virtual-5000">Go to 5000</button>
+        <span class="text-sm text-secondary" style="line-height:32px;" id="virtual-range"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Infinite Scroll -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">all_inclusive</span>
+        Infinite Scroll
+      </h3>
+    </div>
+    <div class="card-body p-0">
+      <div id="infinite-scroll-container" style="height: 250px; overflow-y: auto;">
+        <div id="infinite-scroll-content"></div>
+        <div id="infinite-scroll-loader" class="catui-scroll-loading" style="display:none;">
+          <div class="catui-scroll-loading-spinner"></div>
+          로딩 중...
+        </div>
+        <div id="infinite-scroll-end" class="catui-scroll-end" style="display:none;">
+          모든 항목을 불러왔습니다
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Header Demo -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">push_pin</span>
+        Sticky Header (App Header)
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">스크롤 다운 시 헤더가 숨겨지고, 스크롤 업 시 다시 나타납니다</p>
+      <div class="flex gap-2">
+        <button class="btn btn-primary btn-sm" id="sticky-enable">Sticky 활성화</button>
+        <button class="btn btn-outline btn-sm" id="sticky-disable">비활성화</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Parallax Demo -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">layers</span>
+        Parallax Scroll
+      </h3>
+    </div>
+    <div class="card-body" style="height: 200px; overflow: hidden; position: relative; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px;">
+      <div id="parallax-bg" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center;">
+        <span class="material-icons" style="font-size: 80px; color: rgba(255,255,255,0.2);">auto_awesome</span>
+      </div>
+      <div id="parallax-text" style="position: relative; z-index: 1; color: white; text-align: center; padding-top: 60px;">
+        <h2 style="margin: 0; font-size: 24px;">Parallax Effect</h2>
+        <p style="margin: 8px 0 0; opacity: 0.8;">스크롤하면 배경이 다르게 움직입니다</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spacer for scroll testing -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">straighten</span>
+        Scroll Test Area
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary">스크롤 기능을 테스트하기 위한 영역입니다.</p>
+      <div style="height: 500px; background: linear-gradient(to bottom, var(--bg-secondary), var(--bg-tertiary)); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+        <span class="text-secondary">스크롤 테스트 영역</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.p-0 { padding: 0 !important; }
+.mt-3 { margin-top: 0.75rem; }
+
+.virtual-item {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border-color);
+  height: 100%;
+  box-sizing: border-box;
+}
+.virtual-item-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.virtual-item-content {
+  flex: 1;
+}
+.virtual-item-title {
+  font-weight: 500;
+  font-size: 14px;
+}
+.virtual-item-desc {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.infinite-item {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+.infinite-item:last-child {
+  border-bottom: none;
+}
+</style>
+
+<script>
+(async function() {
+  let ScrollModule;
+  try {
+    ScrollModule = await CATUI.use('scroll');
+    console.log('[Scroll] Module loaded:', ScrollModule);
+  } catch (e) {
+    console.error('[Scroll] Module load failed:', e.message);
+    return;
+  }
+
+  const { VirtualScroll, InfiniteScroll, BackToTop, ScrollProgress, StickyHeader, ParallaxScroll } = ScrollModule;
+
+  // ========================================
+  // Back to Top
+  // ========================================
+  let backToTop = null;
+
+  // 스크롤 컨테이너 및 하단 네비게이션 바 높이 고려
+  const scrollContainer = '#app-content';
+  const bottomOffset = 80;
+
+  CATUI('#backtotop-basic').on('click', () => {
+    backToTop?.destroy();
+    backToTop = new BackToTop({
+      container: scrollContainer,
+      threshold: 200,
+      showProgress: false,
+      offset: { bottom: bottomOffset, side: 16 }
+    });
+  });
+
+  CATUI('#backtotop-progress').on('click', () => {
+    backToTop?.destroy();
+    backToTop = new BackToTop({
+      container: scrollContainer,
+      threshold: 200,
+      showProgress: true,
+      offset: { bottom: bottomOffset, side: 16 }
+    });
+  });
+
+  // 기본 활성화
+  backToTop = new BackToTop({ 
+    container: scrollContainer,
+    threshold: 200,
+    offset: { bottom: bottomOffset, side: 16 }
+  });
+
+  // ========================================
+  // Scroll Progress
+  // ========================================
+  let scrollProgress = null;
+
+  CATUI('#progress-toggle').on('click', function() {
+    if (scrollProgress) {
+      scrollProgress.destroy();
+      scrollProgress = null;
+      CATUI(this).text('진행률 바 ON');
+      CATUI('#progress-value').text('');
+    } else {
+      scrollProgress = new ScrollProgress({
+        container: scrollContainer,
+        position: 'top',
+        height: 3,
+        onChange: (progress) => {
+          CATUI('#progress-value').text(`진행률: ${progress.toFixed(1)}%`);
+        }
+      });
+      CATUI(this).text('진행률 바 OFF');
+    }
+  });
+
+  // ========================================
+  // Virtual Scroll (10,000 items)
+  // ========================================
+  const virtualItems = [];
+  for (let i = 0; i < 10000; i++) {
+    virtualItems.push({
+      id: i,
+      name: `사용자 ${i + 1}`,
+      email: `user${i + 1}@example.com`
+    });
+  }
+
+  const virtualScroll = new VirtualScroll({
+    container: '#virtual-scroll-demo',
+    items: virtualItems,
+    itemHeight: 60,
+    buffer: 5,
+    renderItem: (item, index) => `
+      <div class="virtual-item">
+        <div class="virtual-item-avatar">${index + 1}</div>
+        <div class="virtual-item-content">
+          <div class="virtual-item-title">${item.name}</div>
+          <div class="virtual-item-desc">${item.email}</div>
+        </div>
+      </div>
+    `,
+    onScroll: () => {
+      const range = virtualScroll.getVisibleRange();
+      CATUI('#virtual-range').text(`Visible: ${range.start + 1} - ${range.end}`);
+    },
+    onItemClick: (item, index) => {
+      console.log('Clicked:', item, 'at index', index);
+    }
+  });
+
+  // 초기 범위 표시
+  const initialRange = virtualScroll.getVisibleRange();
+  CATUI('#virtual-range').text(`Visible: ${initialRange.start + 1} - ${initialRange.end}`);
+
+  CATUI('#virtual-top').on('click', () => virtualScroll.scrollToTop());
+  CATUI('#virtual-500').on('click', () => virtualScroll.scrollToIndex(499));
+  CATUI('#virtual-5000').on('click', () => virtualScroll.scrollToIndex(4999));
+
+  // ========================================
+  // Infinite Scroll
+  // ========================================
+  let infinitePage = 1;
+  const maxPages = 5;
+  const contentEl = document.getElementById('infinite-scroll-content');
+  const loaderEl = document.getElementById('infinite-scroll-loader');
+  const endEl = document.getElementById('infinite-scroll-end');
+
+  function addInfiniteItems(page) {
+    let html = '';
+    for (let i = 1; i <= 10; i++) {
+      const num = (page - 1) * 10 + i;
+      html += `<div class="infinite-item">아이템 ${num}</div>`;
+    }
+    contentEl.insertAdjacentHTML('beforeend', html);
+  }
+
+  // 초기 데이터
+  addInfiniteItems(1);
+
+  const infiniteScroll = new InfiniteScroll({
+    container: '#infinite-scroll-container',
+    threshold: 100,
+    loadMore: async () => {
+      loaderEl.style.display = 'flex';
+      
+      // 시뮬레이션 딜레이
+      await new Promise(r => setTimeout(r, 800));
+      
+      infinitePage++;
+      
+      if (infinitePage > maxPages) {
+        loaderEl.style.display = 'none';
+        endEl.style.display = 'block';
+        return false;
+      }
+      
+      addInfiniteItems(infinitePage);
+      loaderEl.style.display = 'none';
+      return true;
+    }
+  });
+
+  // ========================================
+  // Sticky Header
+  // ========================================
+  let stickyHeader = null;
+
+  CATUI('#sticky-enable').on('click', () => {
+    if (stickyHeader) return;
+    stickyHeader = new StickyHeader({
+      header: '.app-header',
+      container: scrollContainer,
+      hideOnScroll: true,
+      showOnScrollUp: true,
+      threshold: 50,
+      onHide: () => console.log('Header hidden'),
+      onShow: () => console.log('Header shown')
+    });
+  });
+
+  CATUI('#sticky-disable').on('click', () => {
+    stickyHeader?.destroy();
+    stickyHeader = null;
+  });
+
+  // ========================================
+  // Parallax Scroll
+  // ========================================
+  const parallax = new ParallaxScroll({
+    container: scrollContainer,
+    elements: [
+      { selector: '#parallax-bg', speed: 0.3, direction: 'vertical' },
+      { selector: '#parallax-text', speed: -0.1, direction: 'vertical' }
+    ]
+  });
+
+  console.log('[Scroll] Demo loaded');
+})();
+</script>

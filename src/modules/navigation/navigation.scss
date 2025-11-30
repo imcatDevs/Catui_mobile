@@ -1,0 +1,268 @@
+/**
+ * CATUI Mobile - Navigation Module Styles
+ * @description 네비게이션 모듈 전용 스타일
+ */
+@use '../../styles/abstracts' as *;
+
+// ========================================
+// TabBar
+// ========================================
+.catui-tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background: var(--bg-primary, #fff);
+  border-top: 1px solid var(--border-color, #e5e7eb);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  z-index: 1100;
+}
+
+.catui-tabbar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-2 $spacing-1;
+  min-height: 3.5rem;
+  color: var(--text-tertiary, $text-tertiary);
+  cursor: pointer;
+  transition: color $duration-fast $ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+  
+  &.is-active {
+    color: var(--primary, #3B82F6);
+  }
+}
+
+.catui-tabbar-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .material-icons,
+  .material-icons-outlined {
+    font-size: 1.5rem;
+  }
+}
+
+.catui-tabbar-badge {
+  position: absolute;
+  top: -$spacing-1;
+  right: -$spacing-2;
+  min-width: 1rem;
+  height: 1rem;
+  padding: 0 $spacing-1;
+  background: var(--danger, $danger);
+  color: $text-inverse;
+  font-size: 0.625rem;
+  font-weight: $font-weight-semibold;
+  border-radius: $radius-full;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.catui-tabbar-label {
+  font-size: 0.625rem;
+  margin-top: $spacing-1;
+}
+
+// ========================================
+// SwipeTabs
+// ========================================
+.catui-swipe-tabs {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.catui-swipe-tabs-header {
+  position: relative;
+  display: flex;
+  background: var(--bg-primary, #fff);
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+.catui-swipe-tabs-tab {
+  flex: 1;
+  padding: $spacing-3 $spacing-4;
+  text-align: center;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary, $text-secondary);
+  cursor: pointer;
+  transition: color $duration-fast $ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+  
+  &.is-active {
+    color: var(--primary, #3B82F6);
+  }
+}
+
+.catui-swipe-tabs-indicator {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background: var(--primary, $primary);
+  transition: transform $duration-slow $ease-in-out, width $duration-slow $ease-in-out;
+}
+
+.catui-swipe-tabs-content {
+  flex: 1;
+  overflow: hidden;
+}
+
+.catui-swipe-tabs-panels {
+  display: flex;
+  transition: transform 0.3s ease;
+  will-change: transform;
+}
+
+.catui-swipe-tabs-panel {
+  flex: 0 0 100%;
+  min-width: 100%;
+}
+
+// ========================================
+// AppBar
+// ========================================
+.catui-appbar {
+  display: flex;
+  align-items: center;
+  height: 4rem;
+  padding: 0 $spacing-4;
+  background: var(--bg-primary, $bg-primary);
+  border-bottom: 1px solid var(--border-color, $border-color);
+  padding-top: env(safe-area-inset-top, 0);
+  
+  &.catui-appbar-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1100;
+  }
+  
+  &.catui-appbar-primary {
+    background: var(--primary, #3B82F6);
+    border-bottom: none;
+    
+    .catui-appbar-title,
+    .catui-appbar-btn {
+      color: white;
+    }
+  }
+  
+  &.catui-appbar-transparent {
+    background: transparent;
+    border-bottom: none;
+  }
+}
+
+.catui-appbar-leading,
+.catui-appbar-trailing {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  flex-shrink: 0;
+}
+
+.catui-appbar-title {
+  flex: 1;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+  text-align: center;
+  padding: 0 $spacing-2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.catui-appbar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary, $text-secondary);
+  border-radius: $radius-default;
+  cursor: pointer;
+  transition: background $duration-fast $ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+  
+  &:active {
+    background: var(--bg-tertiary, #F3F4F6);
+  }
+  
+  .material-icons,
+  .material-icons-outlined {
+    font-size: 1.5rem;
+  }
+}
+
+// ========================================
+// Pull to Refresh
+// ========================================
+.catui-ptr-indicator {
+  color: var(--text-tertiary, #9CA3AF);
+  
+  &.is-ready {
+    color: var(--primary, #3B82F6);
+  }
+  
+  &.is-refreshing {
+    color: var(--primary, #3B82F6);
+  }
+}
+
+.catui-ptr-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  
+  .material-icons {
+    font-size: 1.5rem;
+    transition: transform 0.1s ease;
+  }
+}
+
+// ========================================
+// Dark Mode
+// ========================================
+[data-theme="dark"] {
+  .catui-tabbar {
+    background: #111827;
+    border-color: #374151;
+  }
+  
+  .catui-swipe-tabs-header {
+    background: #111827;
+    border-color: #374151;
+  }
+  
+  .catui-appbar {
+    background: #111827;
+    border-color: #374151;
+    
+    &.catui-appbar-primary {
+      background: var(--primary, #3B82F6);
+    }
+    
+    &.catui-appbar-transparent {
+      background: transparent;
+    }
+  }
+  
+  .catui-appbar-btn:active {
+    background: #1F2937;
+  }
+}

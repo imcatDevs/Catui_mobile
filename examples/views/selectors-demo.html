@@ -1,0 +1,350 @@
+<div class="fade-in">
+  <!-- Selectors Module Info -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">tune</span>
+        Selectors Module
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-secondary mb-3">
+        <code>CATUI.use('selectors')</code>로 모듈을 로드하여 사용합니다.
+      </p>
+      <pre class="bg-secondary p-3 rounded text-sm"><code>const Sel = await CATUI.use('selectors');
+
+// Autocomplete, MultiSelect,
+// RangeSlider, TagInput</code></pre>
+    </div>
+  </div>
+
+  <!-- Autocomplete Demo -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">search</span>
+        Autocomplete
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">정적 데이터 자동완성</p>
+      <input type="text" id="autocomplete-static" class="input" placeholder="과일 검색...">
+      <p class="text-sm text-secondary mt-2" id="autocomplete-output">선택: -</p>
+
+      <p class="text-sm text-secondary mt-4 mb-3">비동기 데이터 (API 시뮬레이션)</p>
+      <input type="text" id="autocomplete-async" class="input" placeholder="도시 검색...">
+      <p class="text-sm text-secondary mt-2" id="autocomplete-async-output">선택: -</p>
+    </div>
+  </div>
+
+  <!-- MultiSelect Demo -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">checklist</span>
+        MultiSelect
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">칩 스타일 (기본)</p>
+      <div id="multiselect-chips"></div>
+      <p class="text-sm text-secondary mt-2" id="multiselect-output">선택: 0개</p>
+
+      <p class="text-sm text-secondary mt-4 mb-3">아웃라인 칩 + 최대 3개</p>
+      <div id="multiselect-outline"></div>
+
+      <div class="flex gap-2 mt-4">
+        <button class="btn btn-sm btn-primary" id="multiselect-selectall">전체 선택</button>
+        <button class="btn btn-sm btn-outline" id="multiselect-clear">전체 해제</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RangeSlider Demo -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">linear_scale</span>
+        RangeSlider
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">단일 슬라이더</p>
+      <div id="slider-single"></div>
+
+      <p class="text-sm text-secondary mt-4 mb-3">범위 슬라이더 (가격)</p>
+      <div id="slider-range"></div>
+
+      <p class="text-sm text-secondary mt-4 mb-3">스텝 슬라이더 (10단위)</p>
+      <div id="slider-step"></div>
+
+      <div class="flex gap-2 mt-4">
+        <button class="btn btn-sm btn-outline" id="slider-reset">초기화</button>
+        <button class="btn btn-sm btn-outline" id="slider-disable">비활성화</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TagInput Demo -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">sell</span>
+        TagInput
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">기본 태그 입력</p>
+      <div id="taginput-basic"></div>
+      <p class="text-sm text-secondary mt-2" id="taginput-output">태그: 0개</p>
+
+      <p class="text-sm text-secondary mt-4 mb-3">자동완성 제안 + 최대 5개</p>
+      <div id="taginput-suggestions"></div>
+
+      <div class="flex gap-2 mt-4">
+        <button class="btn btn-sm btn-outline" id="taginput-clear">전체 삭제</button>
+        <button class="btn btn-sm btn-outline" id="taginput-add">태그 추가</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Usage Code -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">code</span>
+        사용 예시
+      </h3>
+    </div>
+    <div class="card-body">
+      <pre class="bg-secondary p-3 rounded text-sm" style="overflow-x: auto;"><code>// 모듈 로드
+const Sel = await CATUI.use('selectors');
+
+// Autocomplete
+const auto = new Sel.Autocomplete({
+  input: '#search',
+  data: ['Apple', 'Banana', 'Cherry'],
+  highlight: true,
+  onSelect: (item) => console.log(item)
+});
+
+// 비동기 소스
+const autoAsync = new Sel.Autocomplete({
+  input: '#city',
+  source: async (query) => {
+    const res = await fetch(`/api/cities?q=${query}`);
+    return res.json();
+  }
+});
+
+// MultiSelect
+const multi = new Sel.MultiSelect({
+  container: '#skills',
+  options: [
+    { value: 'js', label: 'JavaScript' },
+    { value: 'ts', label: 'TypeScript' }
+  ],
+  chips: true,
+  searchable: true,
+  maxSelect: 5,
+  onChange: (values) => console.log(values)
+});
+
+// RangeSlider
+const range = new Sel.RangeSlider({
+  container: '#price',
+  min: 0,
+  max: 1000000,
+  range: true,
+  value: [100000, 500000],
+  formatValue: (v) => v.toLocaleString() + '원',
+  onChange: (val) => console.log(val)
+});
+
+// TagInput
+const tags = new Sel.TagInput({
+  container: '#tags',
+  value: ['React', 'Vue'],
+  suggestions: ['Angular', 'Svelte', 'Next.js'],
+  maxTags: 10,
+  validate: (tag) => tag.length >= 2,
+  onChange: (tags) => console.log(tags)
+});</code></pre>
+    </div>
+  </div>
+</div>
+
+<script>
+(async function() {
+  // Selectors 모듈 로드
+  let Sel;
+  try {
+    Sel = await CATUI.use('selectors');
+    console.log('[Selectors] Module loaded:', Sel);
+  } catch (e) {
+    console.error('[Selectors] Module load failed:', e.message);
+    return;
+  }
+
+  // 과일 데이터
+  const fruits = [
+    '사과', '바나나', '체리', '포도', '오렌지', '딸기', '수박', '멜론',
+    '복숭아', '자두', '키위', '망고', '파인애플', '블루베리', '라즈베리'
+  ];
+
+  // 도시 데이터 (비동기 시뮬레이션용)
+  const cities = [
+    '서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종',
+    '수원', '성남', '고양', '용인', '창원', '청주', '전주', '천안'
+  ];
+
+  // Autocomplete - 정적 데이터
+  const autoStatic = new Sel.Autocomplete({
+    input: '#autocomplete-static',
+    data: fruits,
+    highlight: true,
+    placeholder: '과일 검색...',
+    onSelect: (item) => {
+      CATUI('#autocomplete-output').text(`선택: ${item}`);
+    }
+  });
+
+  // Autocomplete - 비동기 데이터
+  const autoAsync = new Sel.Autocomplete({
+    input: '#autocomplete-async',
+    source: async (query) => {
+      // API 호출 시뮬레이션
+      await new Promise(r => setTimeout(r, 300));
+      return cities.filter(c => c.includes(query));
+    },
+    highlight: true,
+    placeholder: '도시 검색...',
+    emptyMessage: '검색 결과가 없습니다',
+    onSelect: (item) => {
+      CATUI('#autocomplete-async-output').text(`선택: ${item}`);
+    }
+  });
+
+  // MultiSelect - 칩 스타일
+  const multiChips = new Sel.MultiSelect({
+    container: '#multiselect-chips',
+    options: [
+      { value: 'js', label: 'JavaScript' },
+      { value: 'ts', label: 'TypeScript' },
+      { value: 'py', label: 'Python' },
+      { value: 'java', label: 'Java' },
+      { value: 'go', label: 'Go' },
+      { value: 'rust', label: 'Rust' },
+      { value: 'swift', label: 'Swift' },
+      { value: 'kotlin', label: 'Kotlin' }
+    ],
+    chips: true,
+    searchable: true,
+    placeholder: '프로그래밍 언어 선택',
+    onChange: (values) => {
+      CATUI('#multiselect-output').text(`선택: ${values.length}개`);
+    }
+  });
+
+  // MultiSelect - 아웃라인 + 최대 3개
+  const multiOutline = new Sel.MultiSelect({
+    container: '#multiselect-outline',
+    options: [
+      { value: 'react', label: 'React' },
+      { value: 'vue', label: 'Vue' },
+      { value: 'angular', label: 'Angular' },
+      { value: 'svelte', label: 'Svelte' },
+      { value: 'solid', label: 'SolidJS' }
+    ],
+    chips: true,
+    chipVariant: 'outline',
+    maxSelect: 3,
+    placeholder: '프레임워크 선택 (최대 3개)'
+  });
+
+  CATUI('#multiselect-selectall').on('click', () => multiChips.selectAll());
+  CATUI('#multiselect-clear').on('click', () => multiChips.clear());
+
+  // RangeSlider - 단일
+  const sliderSingle = new Sel.RangeSlider({
+    container: '#slider-single',
+    min: 0,
+    max: 100,
+    value: 50,
+    showValue: true,
+    showLabels: true,
+    unit: '%'
+  });
+
+  // RangeSlider - 범위
+  const sliderRange = new Sel.RangeSlider({
+    container: '#slider-range',
+    min: 0,
+    max: 1000000,
+    value: [200000, 800000],
+    range: true,
+    step: 10000,
+    showValue: true,
+    formatValue: (v) => v.toLocaleString() + '원'
+  });
+
+  // RangeSlider - 스텝
+  const sliderStep = new Sel.RangeSlider({
+    container: '#slider-step',
+    min: 0,
+    max: 100,
+    value: 50,
+    step: 10,
+    showValue: true,
+    showLabels: true
+  });
+
+  let sliderDisabled = false;
+  CATUI('#slider-reset').on('click', () => {
+    sliderSingle.reset();
+    sliderRange.reset();
+    sliderStep.reset();
+  });
+  CATUI('#slider-disable').on('click', () => {
+    sliderDisabled = !sliderDisabled;
+    if (sliderDisabled) {
+      sliderRange.disable();
+      CATUI('#slider-disable').text('활성화');
+    } else {
+      sliderRange.enable();
+      CATUI('#slider-disable').text('비활성화');
+    }
+  });
+
+  // TagInput - 기본
+  const tagBasic = new Sel.TagInput({
+    container: '#taginput-basic',
+    value: ['JavaScript', 'React'],
+    placeholder: '태그 입력 후 Enter',
+    onChange: (tags) => {
+      CATUI('#taginput-output').text(`태그: ${tags.length}개`);
+    }
+  });
+
+  // TagInput - 자동완성 제안
+  const tagSuggestions = new Sel.TagInput({
+    container: '#taginput-suggestions',
+    suggestions: [
+      'React', 'Vue', 'Angular', 'Svelte', 'Next.js', 'Nuxt.js',
+      'Remix', 'Gatsby', 'Astro', 'SolidJS', 'Preact', 'Qwik'
+    ],
+    maxTags: 5,
+    placeholder: '프레임워크 입력...',
+    transform: (tag) => tag.trim()
+  });
+
+  let tagCount = 0;
+  CATUI('#taginput-clear').on('click', () => tagBasic.clear());
+  CATUI('#taginput-add').on('click', () => {
+    tagCount++;
+    tagBasic.addTag(`Tag${tagCount}`);
+  });
+
+  console.log('[Selectors Demo] Loaded');
+})();
+</script>

@@ -1,0 +1,246 @@
+<div class="fade-in">
+  <!-- Chat UI -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">chat</span>
+        Chat UI
+      </h3>
+    </div>
+    <div class="card-body p-0">
+      <div id="chat-demo"></div>
+    </div>
+  </div>
+
+  <!-- Reactions -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">thumb_up</span>
+        Reactions
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="mb-4">
+        <p class="text-sm text-secondary mb-2">Popup Style (길게 눌러서 선택)</p>
+        <div id="reactions-popup"></div>
+      </div>
+      <div class="mb-4">
+        <p class="text-sm text-secondary mb-2">Inline Style</p>
+        <div id="reactions-inline"></div>
+      </div>
+      <div>
+        <p class="text-sm text-secondary mb-2">Minimal Style</p>
+        <div id="reactions-minimal"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Share Buttons -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">share</span>
+        Share Buttons
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="mb-4">
+        <p class="text-sm text-secondary mb-2">Horizontal</p>
+        <div id="share-horizontal"></div>
+      </div>
+      <div class="mb-4">
+        <p class="text-sm text-secondary mb-2">With Labels</p>
+        <div id="share-labels"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comments -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">comment</span>
+        Comments
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="comments-demo"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+.p-0 { padding: 0 !important; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+</style>
+
+<script>
+(async function() {
+  let SocialModule;
+  try {
+    SocialModule = await CATUI.use('social');
+    console.log('[Social] Module loaded:', SocialModule);
+  } catch (e) {
+    console.error('[Social] Module load failed:', e.message);
+    return;
+  }
+
+  const { ChatUI, Comments, ShareButtons, Reactions } = SocialModule;
+
+  // ========================================
+  // Chat UI
+  // ========================================
+  const initialMessages = [
+    { id: '1', userId: 'other', userName: '김개발', text: '안녕하세요! CATUI 잘 쓰고 있습니다.', timestamp: new Date(Date.now() - 3600000) },
+    { id: '2', userId: 'me', userName: '나', text: '감사합니다! 피드백 있으시면 알려주세요.', timestamp: new Date(Date.now() - 3500000) },
+    { id: '3', userId: 'other', userName: '김개발', text: '모바일에서 정말 부드럽게 동작하네요 👍', timestamp: new Date(Date.now() - 3400000) },
+  ];
+
+  const chat = new ChatUI({
+    container: '#chat-demo',
+    messages: initialMessages,
+    currentUser: { id: 'me', name: '나' },
+    maxHeight: '300px',
+    onSend: async (message) => {
+      console.log('Message sent:', message);
+      // 시뮬레이션: 상대방 답장
+      chat.showTyping(true);
+      await new Promise(r => setTimeout(r, 1500));
+      chat.showTyping(false);
+      chat.addMessage({
+        id: Date.now().toString(),
+        userId: 'other',
+        userName: '김개발',
+        text: '메시지 잘 받았습니다!',
+        timestamp: new Date()
+      });
+    }
+  });
+
+  // ========================================
+  // Reactions
+  // ========================================
+  // Popup style
+  const reactionsPopup = new Reactions({
+    container: '#reactions-popup',
+    style: 'popup',
+    counts: { like: 42, love: 18, haha: 5 },
+    userReaction: null,
+    onReact: async (type, prev) => {
+      console.log('Reaction:', type, 'Previous:', prev);
+    }
+  });
+
+  // Inline style
+  const reactionsInline = new Reactions({
+    container: '#reactions-inline',
+    style: 'inline',
+    counts: { like: 12, love: 8, haha: 3, wow: 2 },
+    userReaction: 'like',
+    onReact: async (type, prev) => {
+      console.log('Reaction:', type, 'Previous:', prev);
+    }
+  });
+
+  // Minimal style
+  const reactionsMinimal = new Reactions({
+    container: '#reactions-minimal',
+    style: 'minimal',
+    counts: { like: 156, love: 89, haha: 23 },
+    userReaction: 'love',
+    onReact: async (type, prev) => {
+      console.log('Reaction:', type, 'Previous:', prev);
+    }
+  });
+
+  // ========================================
+  // Share Buttons
+  // ========================================
+  // Horizontal
+  const shareHorizontal = new ShareButtons({
+    container: '#share-horizontal',
+    url: 'https://example.com/article/123',
+    title: 'CATUI Mobile Framework',
+    description: '모바일 최적화 UI 프레임워크',
+    platforms: ['kakao', 'facebook', 'twitter', 'link'],
+    layout: 'horizontal',
+    size: 'md',
+    onShare: (platform) => {
+      console.log('Shared via:', platform);
+    },
+    onCopy: () => {
+      console.log('Link copied!');
+    }
+  });
+
+  // With labels
+  const shareLabels = new ShareButtons({
+    container: '#share-labels',
+    url: 'https://example.com/article/123',
+    title: 'CATUI Mobile Framework',
+    platforms: ['kakao', 'facebook', 'twitter', 'email', 'link'],
+    layout: 'horizontal',
+    size: 'sm',
+    showLabel: true,
+    onShare: (platform) => {
+      console.log('Shared via:', platform);
+    }
+  });
+
+  // ========================================
+  // Comments
+  // ========================================
+  const initialComments = [
+    {
+      id: '1',
+      userId: 'user1',
+      userName: '이디자인',
+      text: '정말 유용한 프레임워크네요! 모바일에서 터치 반응이 좋습니다.',
+      createdAt: new Date(Date.now() - 86400000),
+      likes: 12,
+      liked: false,
+      replies: [
+        {
+          id: '1-1',
+          userId: 'user2',
+          userName: '박프론트',
+          text: '저도 동의합니다! 특히 스와이프 기능이 좋아요.',
+          createdAt: new Date(Date.now() - 43200000),
+          likes: 3,
+          liked: true
+        }
+      ]
+    },
+    {
+      id: '2',
+      userId: 'user3',
+      userName: '최백엔드',
+      text: '다크모드 지원이 완벽하네요 👏',
+      createdAt: new Date(Date.now() - 3600000),
+      likes: 5,
+      liked: false
+    }
+  ];
+
+  const comments = new Comments({
+    container: '#comments-demo',
+    comments: initialComments,
+    currentUser: { id: 'me', name: '나', avatar: '' },
+    allowReply: true,
+    maxDepth: 2,
+    onSubmit: async (comment, parentId) => {
+      console.log('Comment submitted:', comment, 'Parent:', parentId);
+    },
+    onLike: async (id) => {
+      console.log('Liked comment:', id);
+    },
+    onDelete: async (id) => {
+      console.log('Deleted comment:', id);
+    }
+  });
+
+  console.log('[Social] Demo loaded');
+})();
+</script>

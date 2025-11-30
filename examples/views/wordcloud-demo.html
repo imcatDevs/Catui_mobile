@@ -1,0 +1,323 @@
+<div class="fade-in">
+  <!-- Word Cloud -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">cloud</span>
+        Word Cloud
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="wordcloud-demo" style="height: 280px;"></div>
+      <div class="flex gap-2 mt-3">
+        <button class="btn btn-sm btn-outline" id="theme-default">기본</button>
+        <button class="btn btn-sm btn-outline" id="theme-blue">블루</button>
+        <button class="btn btn-sm btn-outline" id="theme-rainbow">레인보우</button>
+        <button class="btn btn-sm btn-outline" id="theme-mono">모노</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Word Cloud with Heart Mask -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--error);">favorite</span>
+        Heart Mask
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="wordcloud-heart" style="height: 280px;"></div>
+    </div>
+  </div>
+
+  <!-- Word Cloud with Star Mask -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--warning);">star</span>
+        Star Mask
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="wordcloud-star" style="height: 280px;"></div>
+    </div>
+  </div>
+
+  <!-- Word Cloud with SVG Mask -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">pets</span>
+        SVG Mask (Logo)
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="wordcloud-svg" style="height: 280px;"></div>
+    </div>
+  </div>
+
+  <!-- Tag Cloud -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">label</span>
+        Tag Cloud
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="tagcloud-demo"></div>
+    </div>
+  </div>
+
+  <!-- Tag Cloud with Count -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">tag</span>
+        Tags with Count
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="tagcloud-count"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+.mt-3 { margin-top: 0.75rem; }
+</style>
+
+<script>
+(async function() {
+  let WordCloudModule;
+  try {
+    WordCloudModule = await CATUI.use('wordcloud');
+    console.log('[WordCloud] Module loaded:', WordCloudModule);
+  } catch (e) {
+    console.error('[WordCloud] Module load failed:', e.message);
+    return;
+  }
+
+  const { WordCloud, TagCloud } = WordCloudModule;
+
+  // ========================================
+  // Word Cloud Data
+  // ========================================
+  const words = [
+    { text: 'JavaScript', weight: 100 },
+    { text: 'React', weight: 85 },
+    { text: 'Vue', weight: 75 },
+    { text: 'TypeScript', weight: 80 },
+    { text: 'Node.js', weight: 70 },
+    { text: 'CSS', weight: 65 },
+    { text: 'HTML', weight: 60 },
+    { text: 'Python', weight: 55 },
+    { text: 'Angular', weight: 50 },
+    { text: 'Svelte', weight: 45 },
+    { text: 'Next.js', weight: 65 },
+    { text: 'Tailwind', weight: 60 },
+    { text: 'SASS', weight: 40 },
+    { text: 'webpack', weight: 35 },
+    { text: 'Vite', weight: 55 },
+    { text: 'GraphQL', weight: 45 },
+    { text: 'REST', weight: 50 },
+    { text: 'MongoDB', weight: 40 },
+    { text: 'PostgreSQL', weight: 35 },
+    { text: 'Docker', weight: 50 },
+    { text: 'Git', weight: 60 },
+    { text: 'AWS', weight: 45 },
+    { text: 'Firebase', weight: 40 },
+    { text: 'Redux', weight: 35 },
+    { text: 'Zustand', weight: 30 },
+  ];
+
+  // ========================================
+  // Word Cloud - Default
+  // ========================================
+  const wordcloud = new WordCloud({
+    container: '#wordcloud-demo',
+    words: words,
+    height: 280,
+    minFontSize: 12,
+    maxFontSize: 50,
+    colorTheme: 'default',
+    gridSize: 4,
+    tooltip: true,
+    onClick: (word) => {
+      console.log('Clicked:', word.text);
+      alert(`선택: ${word.text} (가중치: ${word.weight})`);
+    }
+  });
+
+  // 테마 변경 버튼
+  CATUI('#theme-default').on('click', () => wordcloud.setColorTheme('default'));
+  CATUI('#theme-blue').on('click', () => wordcloud.setColorTheme('blue'));
+  CATUI('#theme-rainbow').on('click', () => wordcloud.setColorTheme('rainbow'));
+  CATUI('#theme-mono').on('click', () => wordcloud.setColorTheme('monochrome'));
+
+  // ========================================
+  // Word Cloud - Heart Mask
+  // ========================================
+  const loveWords = [
+    { text: '사랑', weight: 100 },
+    { text: 'Love', weight: 90 },
+    { text: '행복', weight: 85 },
+    { text: '감사', weight: 80 },
+    { text: '희망', weight: 75 },
+    { text: '기쁨', weight: 70 },
+    { text: '평화', weight: 65 },
+    { text: '믿음', weight: 60 },
+    { text: '용기', weight: 55 },
+    { text: '꿈', weight: 50 },
+    { text: '열정', weight: 45 },
+    { text: '자유', weight: 40 },
+    { text: '우정', weight: 55 },
+    { text: '배려', weight: 35 },
+    { text: '존중', weight: 30 },
+    { text: '성장', weight: 40 },
+    { text: '도전', weight: 35 },
+  ];
+
+  const wordcloudHeart = new WordCloud({
+    container: '#wordcloud-heart',
+    words: loveWords,
+    height: 280,
+    minFontSize: 10,
+    maxFontSize: 36,
+    colorTheme: 'warm',
+    mask: 'heart',
+    maskSize: 0.85,
+    gridSize: 4,
+    tooltip: true
+  });
+
+  // ========================================
+  // Word Cloud - Star Mask
+  // ========================================
+  const techWords = [
+    { text: 'AI', weight: 100 },
+    { text: 'ML', weight: 90 },
+    { text: 'Deep Learning', weight: 85 },
+    { text: 'NLP', weight: 70 },
+    { text: 'Vision', weight: 65 },
+    { text: 'Neural', weight: 60 },
+    { text: 'TensorFlow', weight: 55 },
+    { text: 'PyTorch', weight: 55 },
+    { text: 'GPT', weight: 80 },
+    { text: 'LLM', weight: 75 },
+    { text: 'ChatGPT', weight: 70 },
+    { text: 'Transformer', weight: 50 },
+    { text: 'Data', weight: 45 },
+    { text: 'Cloud', weight: 50 },
+  ];
+
+  const wordcloudStar = new WordCloud({
+    container: '#wordcloud-star',
+    words: techWords,
+    height: 280,
+    minFontSize: 10,
+    maxFontSize: 36,
+    colorTheme: 'rainbow',
+    mask: 'star',
+    maskSize: 0.9,
+    gridSize: 4,
+    tooltip: true
+  });
+
+  // ========================================
+  // Word Cloud - SVG Mask (Logo)
+  // ========================================
+  const brandWords = [
+    { text: 'CATUI', weight: 100 },
+    { text: 'Mobile', weight: 90 },
+    { text: 'Framework', weight: 80 },
+    { text: 'UI', weight: 85 },
+    { text: 'Components', weight: 70 },
+    { text: 'Modern', weight: 65 },
+    { text: 'Fast', weight: 60 },
+    { text: 'Light', weight: 55 },
+    { text: 'Touch', weight: 50 },
+    { text: 'Responsive', weight: 45 },
+    { text: 'Design', weight: 55 },
+    { text: 'System', weight: 40 },
+    { text: 'Style', weight: 35 },
+    { text: 'Theme', weight: 30 },
+  ];
+
+  const wordcloudSvg = new WordCloud({
+    container: '#wordcloud-svg',
+    words: brandWords,
+    height: 280,
+    minFontSize: 10,
+    maxFontSize: 36,
+    colorTheme: 'blue',
+    mask: 'cloud',  // cloud 모양 사용
+    maskSize: 0.85,
+    gridSize: 4,
+    tooltip: true
+  });
+
+  // ========================================
+  // Tag Cloud
+  // ========================================
+  const tags = [
+    { text: '여행', count: 150 },
+    { text: '맛집', count: 120 },
+    { text: '카페', count: 100 },
+    { text: '일상', count: 90 },
+    { text: '패션', count: 80 },
+    { text: '뷰티', count: 75 },
+    { text: '운동', count: 70 },
+    { text: '독서', count: 60 },
+    { text: '영화', count: 55 },
+    { text: '음악', count: 50 },
+    { text: '게임', count: 45 },
+    { text: '반려동물', count: 65 },
+    { text: '인테리어', count: 40 },
+    { text: '요리', count: 55 },
+    { text: '사진', count: 60 },
+  ];
+
+  const tagcloud = new TagCloud({
+    container: '#tagcloud-demo',
+    tags: tags,
+    minSize: 'sm',
+    maxSize: 'xl',
+    colorful: true,
+    sortBy: 'weight',
+    onClick: (tag) => {
+      console.log('Tag clicked:', tag.text, tag.count);
+    }
+  });
+
+  // ========================================
+  // Tag Cloud with Count
+  // ========================================
+  const techTags = [
+    { text: 'React', count: 1250 },
+    { text: 'Vue', count: 890 },
+    { text: 'Angular', count: 650 },
+    { text: 'Svelte', count: 320 },
+    { text: 'Next.js', count: 780 },
+    { text: 'Nuxt', count: 420 },
+    { text: 'TypeScript', count: 1100 },
+    { text: 'JavaScript', count: 1500 },
+  ];
+
+  const tagcloudCount = new TagCloud({
+    container: '#tagcloud-count',
+    tags: techTags,
+    minSize: 'xs',
+    maxSize: 'lg',
+    showCount: true,
+    colorful: true,
+    sortBy: 'alpha',
+    onClick: (tag) => {
+      alert(`${tag.text}: ${tag.count}개의 글`);
+    }
+  });
+
+  console.log('[WordCloud] Demo loaded');
+})();
+</script>

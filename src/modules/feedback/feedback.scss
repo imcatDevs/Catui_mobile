@@ -1,0 +1,600 @@
+/**
+ * CATUI Mobile - Feedback Module Styles
+ * Notification, ProgressTracker, Skeleton, Loading
+ * Toast는 overlays 모듈 사용
+ */
+@use '../../styles/abstracts' as *;
+
+/* ======================
+   Notification Container
+   ====================== */
+.catui-notification-container {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+  z-index: $z-index-popover;
+  max-width: 360px;
+  width: 100%;
+}
+
+.catui-notification-top-left {
+  top: $spacing-4;
+  left: $spacing-4;
+}
+
+.catui-notification-top-right {
+  top: $spacing-4;
+  right: $spacing-4;
+}
+
+.catui-notification-bottom-left {
+  bottom: $spacing-4;
+  left: $spacing-4;
+}
+
+.catui-notification-bottom-right {
+  bottom: $spacing-4;
+  right: $spacing-4;
+}
+
+/* ======================
+   Notification
+   ====================== */
+.catui-notification {
+  background: var(--bg-primary, $bg-primary);
+  border-radius: $radius-default;
+  box-shadow: $shadow-lg;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all $duration-slow $ease-in-out;
+  overflow: hidden;
+  cursor: pointer;
+
+  .catui-notification-top-left &,
+  .catui-notification-bottom-left & {
+    transform: translateX(-100%);
+  }
+
+  &.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  &.is-hiding {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+.catui-notification-header {
+  display: flex;
+  padding: $spacing-3;
+  gap: $spacing-3;
+}
+
+.catui-notification-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-full;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.catui-notification-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+  font-size: $icon-size-sm;
+
+  .catui-notification-success & {
+    background: $bg-success;
+    color: $success;
+  }
+
+  .catui-notification-error & {
+    background: $bg-error;
+    color: $error;
+  }
+
+  .catui-notification-warning & {
+    background: $bg-warning;
+    color: $warning;
+  }
+
+  .catui-notification-info & {
+    background: $bg-info;
+    color: $primary;
+  }
+}
+
+.catui-notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.catui-notification-title {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+  margin-bottom: 2px;
+}
+
+.catui-notification-message {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+}
+
+.catui-notification-time {
+  font-size: $font-size-xs;
+  color: var(--text-tertiary, $text-tertiary);
+  margin-top: $spacing-1;
+}
+
+.catui-notification-close {
+  display: flex;
+  padding: $spacing-1;
+  background: none;
+  border: none;
+  color: var(--text-tertiary, $text-tertiary);
+  cursor: pointer;
+  border-radius: $radius-sm;
+  transition: background $duration-fast $ease-in-out;
+
+  &:hover {
+    background: var(--bg-tertiary, $bg-tertiary);
+  }
+
+  .material-icons {
+    font-size: 18px;
+  }
+}
+
+.catui-notification-actions {
+  display: flex;
+  gap: $spacing-2;
+  padding: 0 $spacing-3 $spacing-3;
+}
+
+.catui-notification-action {
+  flex: 1;
+  padding: $spacing-2 $spacing-3;
+  border: 1px solid var(--border-color, $border-color);
+  background: var(--bg-primary, $bg-primary);
+  border-radius: $radius-default;
+  font-size: $font-size-sm;
+  cursor: pointer;
+  transition: all $duration-fast $ease-in-out;
+
+  &:hover {
+    background: var(--bg-secondary, $bg-secondary);
+  }
+
+  &.is-primary {
+    background: var(--primary, $primary);
+    color: $text-inverse;
+    border-color: var(--primary, $primary);
+
+    &:hover {
+      background: $primary-hover;
+    }
+  }
+}
+
+/* ======================
+   Progress Tracker
+   ====================== */
+.catui-progress-tracker {
+  display: flex;
+
+  &-horizontal {
+    flex-direction: row;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  &-vertical {
+    flex-direction: column;
+  }
+}
+
+.catui-progress-step {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  position: relative;
+  z-index: 1;
+
+  .catui-progress-tracker-horizontal & {
+    flex-direction: column;
+    flex: 1;
+    text-align: center;
+    align-items: center;
+  }
+
+  &[role="button"] {
+    cursor: pointer;
+  }
+}
+
+.catui-progress-step-indicator {
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-full;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary, $bg-primary);
+  border: 2px solid var(--border-color, $border-color);
+  color: var(--text-secondary, $text-secondary);
+  font-weight: $font-weight-semibold;
+  transition: all $duration-slow $ease-in-out;
+  flex-shrink: 0;
+
+  .catui-progress-step.is-active & {
+    background: var(--primary, $primary);
+    border-color: var(--primary, $primary);
+    color: $text-inverse;
+  }
+
+  .catui-progress-step.is-completed & {
+    background: var(--success, $success);
+    border-color: var(--success, $success);
+    color: $text-inverse;
+  }
+
+  .material-icons {
+    font-size: 18px;
+  }
+}
+
+.catui-progress-step-number {
+  font-size: $font-size-sm;
+}
+
+.catui-progress-step-content {
+  padding: $spacing-2 0;
+
+  .catui-progress-tracker-horizontal & {
+    padding: $spacing-2 $spacing-1;
+  }
+}
+
+.catui-progress-step-title {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-progress-step-description {
+  font-size: $font-size-xs;
+  color: var(--text-secondary, $text-secondary);
+  margin-top: 2px;
+}
+
+.catui-progress-connector {
+  background: var(--border-color, $border-color);
+  position: relative;
+
+  .catui-progress-tracker-horizontal & {
+    position: absolute;
+    top: 15px; // (32px indicator height / 2) - 1px
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 0;
+  }
+
+  .catui-progress-tracker-vertical & {
+    width: 2px;
+    height: $spacing-6;
+    margin: $spacing-1 0 $spacing-1 15px; // (32px / 2) - 1px
+  }
+}
+
+.catui-progress-connector-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--success, $success);
+  transition: width $duration-slow $ease-in-out, height $duration-slow $ease-in-out;
+
+  .catui-progress-tracker-vertical & {
+    width: 100%;
+  }
+}
+
+/* ======================
+   Skeleton
+   ====================== */
+.catui-skeleton-wrapper {
+  overflow: hidden;
+}
+
+.catui-skeleton {
+  background: var(--bg-tertiary, $bg-tertiary);
+  position: relative;
+  overflow: hidden;
+
+  &.is-animated::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    animation: catui-skeleton-shimmer 1.5s infinite;
+  }
+}
+
+@keyframes catui-skeleton-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.catui-skeleton-text {
+  height: 16px;
+  border-radius: $radius-sm;
+  margin-bottom: $spacing-2;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.catui-skeleton-avatar {
+  border-radius: $radius-full;
+}
+
+.catui-skeleton-rect {
+  min-height: 100px;
+  border-radius: $radius-default;
+}
+
+.catui-skeleton-card {
+  border-radius: $radius-default;
+  overflow: hidden;
+}
+
+.catui-skeleton-image {
+  height: 160px;
+}
+
+.catui-skeleton-card-content {
+  padding: $spacing-4;
+}
+
+.catui-skeleton-list-item {
+  display: flex;
+  gap: $spacing-3;
+  padding: $spacing-3 0;
+  border-bottom: 1px solid var(--border-color, $border-color);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.catui-skeleton-list-content {
+  flex: 1;
+}
+
+/* ======================
+   Loading
+   ====================== */
+.catui-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity $duration-slow $ease-in-out;
+
+  &.is-fullscreen {
+    position: fixed;
+  }
+
+  &.has-overlay {
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  &.is-visible {
+    opacity: 1;
+  }
+
+  &.is-hiding {
+    opacity: 0;
+  }
+}
+
+.catui-loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-3;
+}
+
+.catui-loading-text {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+}
+
+// Spinner
+.catui-loading-spinner {
+  svg {
+    animation: catui-spin 1s linear infinite;
+  }
+
+  circle {
+    stroke: var(--primary, $primary);
+    stroke-linecap: round;
+    stroke-dasharray: 80, 200;
+    stroke-dashoffset: 0;
+    animation: catui-spinner-dash 1.5s ease-in-out infinite;
+  }
+}
+
+.catui-loading-sm .catui-loading-spinner svg {
+  width: 24px;
+  height: 24px;
+}
+
+.catui-loading-md .catui-loading-spinner svg {
+  width: 40px;
+  height: 40px;
+}
+
+.catui-loading-lg .catui-loading-spinner svg {
+  width: 56px;
+  height: 56px;
+}
+
+@keyframes catui-spin {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes catui-spinner-dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 200;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 200;
+    stroke-dashoffset: -125;
+  }
+}
+
+// Dots
+.catui-loading-dots {
+  display: flex;
+  gap: $spacing-2;
+
+  span {
+    width: 10px;
+    height: 10px;
+    background: var(--primary, $primary);
+    border-radius: $radius-full;
+    animation: catui-dots-bounce 1.4s ease-in-out infinite both;
+
+    &:nth-child(1) { animation-delay: -0.32s; }
+    &:nth-child(2) { animation-delay: -0.16s; }
+  }
+}
+
+@keyframes catui-dots-bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+
+// Bar
+.catui-loading-bar {
+  width: 200px;
+  height: 4px;
+  background: var(--bg-tertiary, $bg-tertiary);
+  border-radius: $radius-sm;
+  overflow: hidden;
+}
+
+.catui-loading-bar-progress {
+  width: 40%;
+  height: 100%;
+  background: var(--primary, $primary);
+  border-radius: $radius-sm;
+  animation: catui-bar-progress 1.5s ease-in-out infinite;
+}
+
+@keyframes catui-bar-progress {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
+// Pulse
+.catui-loading-pulse {
+  position: relative;
+  width: 40px;
+  height: 40px;
+
+  span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: $radius-full;
+    background: var(--primary, $primary);
+    opacity: 0.6;
+    animation: catui-pulse 2s ease-out infinite;
+
+    &:nth-child(2) {
+      animation-delay: 1s;
+    }
+  }
+}
+
+@keyframes catui-pulse {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* ======================
+   Dark Mode
+   ====================== */
+[data-theme="dark"] {
+  .catui-notification {
+    background: $dark-bg-secondary;
+  }
+
+  .catui-notification-title {
+    color: $dark-text-primary;
+  }
+
+  .catui-notification-close:hover {
+    background: $dark-bg-tertiary;
+  }
+
+  .catui-notification-action {
+    background: $dark-bg-tertiary;
+    border-color: $dark-border-color;
+    color: $dark-text-primary;
+  }
+
+  .catui-skeleton {
+    background: $dark-bg-tertiary;
+
+    &.is-animated::after {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
+  }
+
+  .catui-loading.has-overlay {
+    background: rgba($dark-bg-primary, 0.8);
+  }
+
+  .catui-loading-text {
+    color: $dark-text-secondary;
+  }
+
+  .catui-loading-bar {
+    background: $dark-bg-tertiary;
+  }
+}

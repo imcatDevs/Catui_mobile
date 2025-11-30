@@ -1,0 +1,337 @@
+<div class="fade-in">
+  <!-- Basic Slider -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">view_carousel</span>
+        Basic Slider
+      </h3>
+    </div>
+    <div class="card-body p-0">
+      <div id="slider-basic" style="height: 200px;"></div>
+    </div>
+  </div>
+
+  <!-- Slider with Content -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">article</span>
+        Slider with Content
+      </h3>
+    </div>
+    <div class="card-body p-0">
+      <div id="slider-content" style="height: 250px;"></div>
+    </div>
+  </div>
+
+  <!-- Fade Effect -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">gradient</span>
+        Fade Effect
+      </h3>
+    </div>
+    <div class="card-body p-0">
+      <div id="slider-fade" style="height: 200px;"></div>
+    </div>
+  </div>
+
+  <!-- Cards Effect -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">style</span>
+        Cards Effect
+      </h3>
+    </div>
+    <div class="card-body" style="padding: 40px 0;">
+      <div id="slider-cards" style="height: 300px;"></div>
+    </div>
+  </div>
+
+  <!-- Autoplay Slider -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">play_circle</span>
+        Autoplay (3초)
+      </h3>
+    </div>
+    <div class="card-body p-0">
+      <div id="slider-autoplay" style="height: 180px;"></div>
+    </div>
+  </div>
+
+  <!-- Lightbox Gallery -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">collections</span>
+        Lightbox Gallery
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">이미지를 클릭하면 라이트박스가 열립니다</p>
+      <div class="gallery-grid" id="gallery-1">
+        <img src="https://picsum.photos/400/300?random=10" data-lightbox="https://picsum.photos/1200/900?random=10" data-lightbox-group="gallery1" data-lightbox-title="산과 호수" data-lightbox-desc="아름다운 자연 풍경">
+        <img src="https://picsum.photos/400/300?random=11" data-lightbox="https://picsum.photos/1200/900?random=11" data-lightbox-group="gallery1" data-lightbox-title="도시 야경">
+        <img src="https://picsum.photos/400/300?random=12" data-lightbox="https://picsum.photos/1200/900?random=12" data-lightbox-group="gallery1" data-lightbox-title="해변">
+        <img src="https://picsum.photos/400/300?random=13" data-lightbox="https://picsum.photos/1200/900?random=13" data-lightbox-group="gallery1" data-lightbox-title="숲">
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox Animations -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">animation</span>
+        Lightbox Animations
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">다양한 애니메이션 효과</p>
+      <div class="flex flex-wrap gap-2">
+        <button class="btn btn-primary" id="lightbox-fade">Fade</button>
+        <button class="btn btn-outline" id="lightbox-zoom">Zoom</button>
+        <button class="btn btn-outline" id="lightbox-slide">Slide</button>
+        <button class="btn btn-outline" id="lightbox-flip">Flip</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox Programmatic -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">code</span>
+        Programmatic Lightbox
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">코드로 라이트박스 열기</p>
+      <button class="btn btn-primary" id="lightbox-code">Open Lightbox</button>
+    </div>
+  </div>
+
+  <!-- Slider Controls -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">tune</span>
+        Slider API
+      </h3>
+    </div>
+    <div class="card-body p-0">
+      <div id="slider-api" style="height: 180px;"></div>
+    </div>
+    <div class="card-body" style="border-top: 1px solid var(--border-color);">
+      <div class="flex flex-wrap gap-2">
+        <button class="btn btn-sm btn-outline" id="api-prev">Prev</button>
+        <button class="btn btn-sm btn-outline" id="api-next">Next</button>
+        <button class="btn btn-sm btn-outline" id="api-goto-0">Go to 1</button>
+        <button class="btn btn-sm btn-outline" id="api-goto-2">Go to 3</button>
+        <span class="text-sm text-secondary" style="line-height: 32px;" id="api-index">Current: 1</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.gallery-grid img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+.gallery-grid img:hover {
+  transform: scale(1.02);
+  opacity: 0.9;
+}
+.p-0 { padding: 0 !important; }
+</style>
+
+<script>
+(async function() {
+  let Carousel;
+  try {
+    Carousel = await CATUI.use('carousel');
+    console.log('[Carousel] Module loaded:', Carousel);
+  } catch (e) {
+    console.error('[Carousel] Module load failed:', e.message);
+    return;
+  }
+
+  const { Slider, Lightbox } = Carousel;
+
+  // 샘플 이미지
+  const images = [
+    { image: 'https://picsum.photos/800/400?random=1', title: 'Beautiful Landscape', description: 'A stunning view of nature' },
+    { image: 'https://picsum.photos/800/400?random=2', title: 'City Night', description: 'Urban nightscape photography' },
+    { image: 'https://picsum.photos/800/400?random=3', title: 'Ocean Waves', description: 'Relaxing beach scenery' },
+    { image: 'https://picsum.photos/800/400?random=4', title: 'Mountain Peak', description: 'Adventure awaits' },
+    { image: 'https://picsum.photos/800/400?random=5', title: 'Forest Path', description: 'Into the wild' }
+  ];
+
+  // ========================================
+  // Basic Slider
+  // ========================================
+  const sliderBasic = new Slider({
+    container: '#slider-basic',
+    slides: images.slice(0, 4).map(img => ({ image: img.image })),
+    effect: 'slide',
+    loop: true,
+    showPagination: true,
+    showNavigation: true
+  });
+
+  // ========================================
+  // Slider with Content
+  // ========================================
+  const sliderContent = new Slider({
+    container: '#slider-content',
+    slides: images,
+    effect: 'slide',
+    loop: true,
+    showPagination: true,
+    showNavigation: true
+  });
+
+  // ========================================
+  // Fade Effect
+  // ========================================
+  const sliderFade = new Slider({
+    container: '#slider-fade',
+    slides: [
+      { image: 'https://picsum.photos/800/400?random=6' },
+      { image: 'https://picsum.photos/800/400?random=7' },
+      { image: 'https://picsum.photos/800/400?random=8' }
+    ],
+    effect: 'fade',
+    loop: true,
+    speed: 500
+  });
+
+  // ========================================
+  // Cards Effect
+  // ========================================
+  const sliderCards = new Slider({
+    container: '#slider-cards',
+    slides: [
+      { image: 'https://picsum.photos/600/400?random=20' },
+      { image: 'https://picsum.photos/600/400?random=21' },
+      { image: 'https://picsum.photos/600/400?random=22' },
+      { image: 'https://picsum.photos/600/400?random=23' },
+      { image: 'https://picsum.photos/600/400?random=24' }
+    ],
+    effect: 'cards',
+    loop: true,
+    showPagination: true,
+    showNavigation: false
+  });
+
+  // ========================================
+  // Autoplay Slider
+  // ========================================
+  const sliderAutoplay = new Slider({
+    container: '#slider-autoplay',
+    slides: [
+      { image: 'https://picsum.photos/800/300?random=30' },
+      { image: 'https://picsum.photos/800/300?random=31' },
+      { image: 'https://picsum.photos/800/300?random=32' }
+    ],
+    autoplay: true,
+    autoplayDelay: 3000,
+    loop: true,
+    showNavigation: false
+  });
+
+  // ========================================
+  // Lightbox Gallery (Auto-bind)
+  // ========================================
+  Lightbox.init('[data-lightbox]', {
+    showThumbs: true,
+    enableZoom: true,
+    animation: 'fade'
+  });
+
+  // ========================================
+  // Lightbox Animations
+  // ========================================
+  const lightboxImages = [
+    { src: 'https://picsum.photos/1200/800?random=40', title: 'Image 1' },
+    { src: 'https://picsum.photos/1200/800?random=41', title: 'Image 2' },
+    { src: 'https://picsum.photos/1200/800?random=42', title: 'Image 3' }
+  ];
+
+  CATUI('#lightbox-fade').on('click', () => {
+    new Lightbox({ images: lightboxImages, animation: 'fade' }).open();
+  });
+
+  CATUI('#lightbox-zoom').on('click', () => {
+    new Lightbox({ images: lightboxImages, animation: 'zoom' }).open();
+  });
+
+  CATUI('#lightbox-slide').on('click', () => {
+    new Lightbox({ images: lightboxImages, animation: 'slide' }).open();
+  });
+
+  CATUI('#lightbox-flip').on('click', () => {
+    new Lightbox({ images: lightboxImages, animation: 'flip' }).open();
+  });
+
+  // ========================================
+  // Programmatic Lightbox
+  // ========================================
+  CATUI('#lightbox-code').on('click', () => {
+    const lightbox = new Lightbox({
+      images: [
+        { src: 'https://picsum.photos/1200/900?random=50', title: '프로그래밍 방식', description: 'Lightbox를 코드로 열 수 있습니다' },
+        { src: 'https://picsum.photos/1200/900?random=51', title: '다양한 옵션', description: '썸네일, 줌, 애니메이션 등' },
+        { src: 'https://picsum.photos/1200/900?random=52', title: '스와이프 지원', description: '터치 제스처로 탐색' }
+      ],
+      showThumbs: true,
+      enableZoom: true,
+      animation: 'zoom',
+      onOpen: () => console.log('Lightbox opened'),
+      onClose: () => console.log('Lightbox closed'),
+      onChange: (index) => console.log('Current index:', index)
+    });
+    lightbox.open();
+  });
+
+  // ========================================
+  // Slider API
+  // ========================================
+  const sliderApi = new Slider({
+    container: '#slider-api',
+    slides: [
+      { image: 'https://picsum.photos/800/300?random=60' },
+      { image: 'https://picsum.photos/800/300?random=61' },
+      { image: 'https://picsum.photos/800/300?random=62' },
+      { image: 'https://picsum.photos/800/300?random=63' }
+    ],
+    showNavigation: false,
+    showPagination: true,
+    onChange: (index) => {
+      CATUI('#api-index').text(`Current: ${index + 1}`);
+    }
+  });
+
+  CATUI('#api-prev').on('click', () => sliderApi.prev());
+  CATUI('#api-next').on('click', () => sliderApi.next());
+  CATUI('#api-goto-0').on('click', () => sliderApi.goTo(0));
+  CATUI('#api-goto-2').on('click', () => sliderApi.goTo(2));
+
+  console.log('[Carousel] Demo loaded');
+})();
+</script>

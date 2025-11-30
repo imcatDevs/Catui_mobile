@@ -27,6 +27,7 @@ class Overlay {
     this._backdrop = null;
     this._isOpen = false;
     this._onCloseCallback = null;
+    this._backdropClickHandler = null;
   }
 
   /**
@@ -50,7 +51,8 @@ class Overlay {
     `;
 
     if (this.options.closeOnBackdrop) {
-      backdrop.addEventListener('click', () => this.close());
+      this._backdropClickHandler = () => this.close();
+      backdrop.addEventListener('click', this._backdropClickHandler);
     }
 
     return backdrop;
@@ -154,10 +156,14 @@ class Overlay {
    * 정리
    */
   destroy() {
+    if (this._backdrop && this._backdropClickHandler) {
+      this._backdrop.removeEventListener('click', this._backdropClickHandler);
+    }
     this.close();
     this._element = null;
     this._backdrop = null;
     this._onCloseCallback = null;
+    this._backdropClickHandler = null;
   }
 }
 
@@ -444,6 +450,16 @@ class Toast {
     toast.show();
     return toast;
   }
+
+  /**
+   * 정리
+   */
+  destroy() {
+    this.hide();
+    this._element = null;
+    this._timeout = null;
+    this.options = null;
+  }
 }
 
 /**
@@ -610,6 +626,7 @@ class Drawer extends Overlay {
  */
 class Tooltip {
   static _activeTooltip = null;
+  static _boundElements = new WeakMap();
   
   /**
    * 툴팁 표시
@@ -699,13 +716,455 @@ class Tooltip {
    */
   static init(selector = '[data-tooltip]') {
     document.querySelectorAll(selector).forEach(el => {
-      el.addEventListener('mouseenter', (e) => this.show(e.currentTarget));
-      el.addEventListener('mouseleave', () => this.hide());
-      el.addEventListener('touchstart', (e) => this.show(e.currentTarget), { passive: true });
-      el.addEventListener('touchend', () => this.hide(), { passive: true });
+      if (this._boundElements.has(el)) return; // 이미 바인딩됨
+      
+      const handlers = {
+        mouseenter: (e) => this.show(e.currentTarget),
+        mouseleave: () => this.hide(),
+        touchstart: (e) => this.show(e.currentTarget),
+        touchend: () => this.hide()
+      };
+      
+      el.addEventListener('mouseenter', handlers.mouseenter);
+      el.addEventListener('mouseleave', handlers.mouseleave);
+      el.addEventListener('touchstart', handlers.touchstart, { passive: true });
+      el.addEventListener('touchend', handlers.touchend, { passive: true });
+      
+      this._boundElements.set(el, handlers);
     });
+  }
+
+  /**
+   * 바인딩 해제
+   * @param {HTMLElement} el - 요소 (없으면 전체 해제 불가, WeakMap 특성상)
+   */
+  static unbind(el) {
+    const handlers = this._boundElements.get(el);
+    if (handlers) {
+      el.removeEventListener('mouseenter', handlers.mouseenter);
+      el.removeEventListener('mouseleave', handlers.mouseleave);
+      el.removeEventListener('touchstart', handlers.touchstart);
+      el.removeEventListener('touchend', handlers.touchend);
+      this._boundElements.delete(el);
+    }
   }
 }
 
-export { Overlay, Modal, Toast, Drawer, Tooltip };
-export default { Overlay, Modal, Toast, Drawer, Tooltip };
+/**
+ * Popover 클래스 - 팝오버 (클릭으로 열리는 풍부한 콘텐츠 툴팁)
+ * @class Popover
+ */
+class Popover {
+  constructor(options = {}) {
+    this.options = {
+      trigger: null,        // 트리거 요소 (필수)
+      content: '',          // 콘텐츠 (HTML 문자열 또는 요소)
+      title: '',            // 제목
+      placement: 'bottom',  // top, bottom, left, right
+      offset: 8,            // 트리거와의 간격
+      showArrow: true,      // 화살표 표시
+      closeOnClickOutside: true,
+      closeButton: true,
+      width: 'auto',        // auto 또는 px 값
+      maxWidth: 300,
+      onOpen: null,
+      onClose: null,
+      ...options
+    };
+
+    this._element = null;
+    this._isOpen = false;
+    this._handlers = {};
+
+    this._init();
+  }
+
+  _init() {
+    const trigger = typeof this.options.trigger === 'string' 
+      ? document.querySelector(this.options.trigger) 
+      : this.options.trigger;
+
+    if (!trigger) {
+      console.error('[Popover] Trigger element not found');
+      return;
+    }
+
+    this._trigger = trigger;
+    this._handlers.click = (e) => {
+      e.stopPropagation();
+      this.toggle();
+    };
+    this._handlers.clickOutside = (e) => {
+      if (this._isOpen && this.options.closeOnClickOutside && 
+          !this._element?.contains(e.target) && !this._trigger.contains(e.target)) {
+        this.close();
+      }
+    };
+
+    this._trigger.addEventListener('click', this._handlers.click);
+    document.addEventListener('click', this._handlers.clickOutside);
+  }
+
+  _createElement() {
+    const popover = document.createElement('div');
+    popover.className = 'catui-popover';
+    popover.style.cssText = `
+      position: fixed;
+      z-index: 1050;
+      background: var(--bg-primary, #fff);
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      width: ${this.options.width === 'auto' ? 'auto' : this.options.width + 'px'};
+      max-width: ${this.options.maxWidth}px;
+    `;
+
+    let html = '';
+    
+    if (this.options.title || this.options.closeButton) {
+      html += `<div class="catui-popover-header" style="display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border-color,#E5E7EB);">
+        ${this.options.title ? `<div class="catui-popover-title" style="flex:1;font-weight:600;color:var(--text-primary,#111827);">${this.options.title}</div>` : '<div style="flex:1;"></div>'}
+        ${this.options.closeButton ? `<button class="catui-popover-close" style="display:flex;padding:4px;background:none;border:none;cursor:pointer;color:var(--text-tertiary,#9CA3AF);border-radius:4px;">
+          <span class="material-icons" style="font-size:18px;">close</span>
+        </button>` : ''}
+      </div>`;
+    }
+
+    html += `<div class="catui-popover-body" style="padding:16px;color:var(--text-secondary,#4B5563);font-size:14px;line-height:1.5;">
+      ${typeof this.options.content === 'string' ? this.options.content : ''}
+    </div>`;
+
+    if (this.options.showArrow) {
+      html += `<div class="catui-popover-arrow" style="position:absolute;width:12px;height:12px;background:var(--bg-primary,#fff);transform:rotate(45deg);box-shadow:-2px -2px 4px rgba(0,0,0,0.05);"></div>`;
+    }
+
+    popover.innerHTML = html;
+
+    if (typeof this.options.content !== 'string' && this.options.content instanceof HTMLElement) {
+      popover.querySelector('.catui-popover-body').appendChild(this.options.content);
+    }
+
+    if (this.options.closeButton) {
+      popover.querySelector('.catui-popover-close').addEventListener('click', () => this.close());
+    }
+
+    return popover;
+  }
+
+  _position() {
+    if (!this._element || !this._trigger) return;
+
+    const triggerRect = this._trigger.getBoundingClientRect();
+    const popoverRect = this._element.getBoundingClientRect();
+    const arrow = this._element.querySelector('.catui-popover-arrow');
+    const offset = this.options.offset;
+
+    let top, left, arrowTop, arrowLeft;
+    const arrowSize = 6;
+
+    switch (this.options.placement) {
+      case 'top':
+        top = triggerRect.top - popoverRect.height - offset;
+        left = triggerRect.left + (triggerRect.width - popoverRect.width) / 2;
+        if (arrow) {
+          arrowTop = popoverRect.height - arrowSize;
+          arrowLeft = popoverRect.width / 2 - arrowSize;
+        }
+        break;
+      case 'bottom':
+        top = triggerRect.bottom + offset;
+        left = triggerRect.left + (triggerRect.width - popoverRect.width) / 2;
+        if (arrow) {
+          arrowTop = -arrowSize;
+          arrowLeft = popoverRect.width / 2 - arrowSize;
+        }
+        break;
+      case 'left':
+        top = triggerRect.top + (triggerRect.height - popoverRect.height) / 2;
+        left = triggerRect.left - popoverRect.width - offset;
+        if (arrow) {
+          arrowTop = popoverRect.height / 2 - arrowSize;
+          arrowLeft = popoverRect.width - arrowSize;
+        }
+        break;
+      case 'right':
+        top = triggerRect.top + (triggerRect.height - popoverRect.height) / 2;
+        left = triggerRect.right + offset;
+        if (arrow) {
+          arrowTop = popoverRect.height / 2 - arrowSize;
+          arrowLeft = -arrowSize;
+        }
+        break;
+    }
+
+    // 화면 경계 체크
+    left = Math.max(8, Math.min(left, window.innerWidth - popoverRect.width - 8));
+    top = Math.max(8, Math.min(top, window.innerHeight - popoverRect.height - 8));
+
+    this._element.style.top = `${top}px`;
+    this._element.style.left = `${left}px`;
+
+    if (arrow) {
+      arrow.style.top = `${arrowTop}px`;
+      arrow.style.left = `${arrowLeft}px`;
+    }
+  }
+
+  open() {
+    if (this._isOpen) return;
+
+    this._element = this._createElement();
+    document.body.appendChild(this._element);
+
+    // 위치 계산을 위해 잠시 보이게 함
+    requestAnimationFrame(() => {
+      this._position();
+      this._element.style.opacity = '1';
+      this._element.style.transform = 'scale(1)';
+    });
+
+    this._isOpen = true;
+    this.options.onOpen?.();
+  }
+
+  close() {
+    if (!this._isOpen || !this._element) return;
+
+    this._element.style.opacity = '0';
+    this._element.style.transform = 'scale(0.95)';
+
+    setTimeout(() => {
+      this._element?.remove();
+      this._element = null;
+    }, 200);
+
+    this._isOpen = false;
+    this.options.onClose?.();
+  }
+
+  toggle() {
+    this._isOpen ? this.close() : this.open();
+  }
+
+  destroy() {
+    this.close();
+    if (this._trigger) {
+      this._trigger.removeEventListener('click', this._handlers.click);
+    }
+    document.removeEventListener('click', this._handlers.clickOutside);
+    this._trigger = null;
+    this._handlers = null;
+    this.options = null;
+  }
+}
+
+/**
+ * Notice 클래스 - 공지/팝업 (하루 동안 안 보기 지원)
+ * @class Notice
+ */
+class Notice {
+  constructor(options = {}) {
+    this.options = {
+      id: 'default',        // 공지 식별자 (localStorage 키로 사용)
+      title: '',
+      content: '',          // HTML 콘텐츠
+      image: null,          // 이미지 URL
+      imageHeight: 200,
+      showDontShowToday: true,  // "하루 동안 안 보기" 체크박스 표시
+      confirmText: '확인',
+      closeOnOverlay: true,
+      onConfirm: null,
+      onClose: null,
+      ...options
+    };
+
+    this._element = null;
+    this._overlay = null;
+    this._handlers = {};
+  }
+
+  /**
+   * 오늘 표시 여부 체크
+   */
+  _shouldShow() {
+    const storageKey = `catui-notice-hide-${this.options.id}`;
+    const hideUntil = localStorage.getItem(storageKey);
+    
+    if (hideUntil) {
+      const hideDate = new Date(parseInt(hideUntil, 10));
+      if (new Date() < hideDate) {
+        return false;
+      }
+      localStorage.removeItem(storageKey);
+    }
+    return true;
+  }
+
+  /**
+   * 하루 동안 안 보기 설정
+   */
+  _setDontShowToday() {
+    const storageKey = `catui-notice-hide-${this.options.id}`;
+    const tomorrow = new Date();
+    tomorrow.setHours(24, 0, 0, 0); // 오늘 자정
+    localStorage.setItem(storageKey, tomorrow.getTime().toString());
+  }
+
+  _createElement() {
+    // 오버레이
+    this._overlay = document.createElement('div');
+    this._overlay.className = 'catui-notice-overlay';
+    this._overlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    `;
+
+    // 공지 컨테이너
+    this._element = document.createElement('div');
+    this._element.className = 'catui-notice';
+    this._element.style.cssText = `
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      width: calc(100% - 48px);
+      max-width: 360px;
+      background: var(--bg-primary, #fff);
+      border-radius: 16px;
+      overflow: hidden;
+      z-index: 2001;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    `;
+
+    let html = '';
+
+    // 이미지
+    if (this.options.image) {
+      html += `<div class="catui-notice-image" style="width:100%;height:${this.options.imageHeight}px;overflow:hidden;">
+        <img src="${this.options.image}" alt="" style="width:100%;height:100%;object-fit:cover;">
+      </div>`;
+    }
+
+    // 콘텐츠
+    html += `<div class="catui-notice-content" style="padding:24px;">`;
+    
+    if (this.options.title) {
+      html += `<h3 class="catui-notice-title" style="margin:0 0 12px;font-size:18px;font-weight:600;color:var(--text-primary,#111827);">${this.options.title}</h3>`;
+    }
+
+    if (this.options.content) {
+      html += `<div class="catui-notice-body" style="font-size:14px;line-height:1.6;color:var(--text-secondary,#4B5563);">${this.options.content}</div>`;
+    }
+
+    // 하루 동안 안 보기 체크박스
+    if (this.options.showDontShowToday) {
+      html += `<label class="catui-notice-checkbox" style="display:flex;align-items:center;gap:8px;margin-top:16px;cursor:pointer;font-size:13px;color:var(--text-tertiary,#6B7280);">
+        <input type="checkbox" id="catui-notice-dontshow-${this.options.id}" style="width:18px;height:18px;accent-color:var(--primary,#3B82F6);">
+        <span>오늘 하루 보지 않기</span>
+      </label>`;
+    }
+
+    html += `</div>`;
+
+    // 버튼
+    html += `<div class="catui-notice-footer" style="padding:0 24px 24px;">
+      <button class="catui-notice-btn" style="width:100%;padding:14px;background:var(--primary,#3B82F6);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;">
+        ${this.options.confirmText}
+      </button>
+    </div>`;
+
+    this._element.innerHTML = html;
+
+    // 이벤트
+    this._handlers.confirm = () => {
+      if (this.options.showDontShowToday) {
+        const checkbox = this._element.querySelector(`#catui-notice-dontshow-${this.options.id}`);
+        if (checkbox?.checked) {
+          this._setDontShowToday();
+        }
+      }
+      this.options.onConfirm?.();
+      this.close();
+    };
+
+    this._handlers.overlayClick = () => {
+      if (this.options.closeOnOverlay) {
+        this.close();
+      }
+    };
+
+    this._element.querySelector('.catui-notice-btn').addEventListener('click', this._handlers.confirm);
+    this._overlay.addEventListener('click', this._handlers.overlayClick);
+
+    return this._element;
+  }
+
+  /**
+   * 공지 표시
+   * @returns {boolean} 표시 여부
+   */
+  show() {
+    if (!this._shouldShow()) {
+      return false;
+    }
+
+    this._createElement();
+    document.body.appendChild(this._overlay);
+    document.body.appendChild(this._element);
+
+    requestAnimationFrame(() => {
+      this._overlay.style.opacity = '1';
+      this._element.style.opacity = '1';
+      this._element.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
+
+    return true;
+  }
+
+  /**
+   * 공지 닫기
+   */
+  close() {
+    if (this._overlay) {
+      this._overlay.style.opacity = '0';
+    }
+    if (this._element) {
+      this._element.style.opacity = '0';
+      this._element.style.transform = 'translate(-50%, -50%) scale(0.9)';
+    }
+
+    setTimeout(() => {
+      this._overlay?.remove();
+      this._element?.remove();
+      this._overlay = null;
+      this._element = null;
+      this.options.onClose?.();
+    }, 300);
+  }
+
+  /**
+   * 하루 동안 안 보기 설정 초기화
+   */
+  static resetDontShow(id) {
+    localStorage.removeItem(`catui-notice-hide-${id}`);
+  }
+
+  destroy() {
+    this.close();
+    this._handlers = null;
+    this.options = null;
+  }
+}
+
+export { Overlay, Modal, Toast, Drawer, Tooltip, Popover, Notice };
+export default { Overlay, Modal, Toast, Drawer, Tooltip, Popover, Notice };

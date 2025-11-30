@@ -1,0 +1,460 @@
+<div class="fade-in">
+  <!-- Navigation Module Info -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">explore</span>
+        Navigation Module
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-secondary mb-3">
+        <code>CATUI.use('navigation')</code>으로 모듈을 로드하여 사용합니다.
+      </p>
+      <pre class="bg-secondary p-3 rounded text-sm"><code>const Nav = await CATUI.use('navigation');
+
+// TabBar, SwipeTabs, AppBar, PullToRefresh,
+// ScrollSpy, BackButton, Collapse, Accordion</code></pre>
+    </div>
+  </div>
+
+  <!-- TabBar Demo -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">view_carousel</span>
+        TabBar
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">하단 탭 네비게이션 (동적 생성)</p>
+      <div id="tabbar-demo" style="position: relative; height: 60px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);"></div>
+      <p class="text-sm text-secondary mt-2" id="tabbar-output">선택된 탭: Home</p>
+    </div>
+  </div>
+
+  <!-- SwipeTabs Demo -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">swipe</span>
+        SwipeTabs
+      </h3>
+    </div>
+    <div class="card-body p-0">
+      <p class="text-sm text-secondary p-4 pb-0">좌우로 스와이프하여 탭 전환</p>
+      <div id="swipe-tabs-demo" style="height: 250px;"></div>
+    </div>
+  </div>
+
+  <!-- AppBar Demo -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">web_asset</span>
+        AppBar (Module)
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">동적으로 생성되는 앱 바</p>
+      <div id="appbar-demo" style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);"></div>
+      <p class="text-sm text-secondary mt-2" id="appbar-output">액션: -</p>
+    </div>
+  </div>
+
+  <!-- PullToRefresh Demo -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">refresh</span>
+        Pull to Refresh
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">당겨서 새로고침</p>
+      <div id="ptr-demo" style="height: 200px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px;">
+        <div id="ptr-content" style="padding: 1rem;">
+          <p>아래로 당겨서 새로고침하세요</p>
+          <ul class="list" id="ptr-list">
+            <li class="list-item">Item 1</li>
+            <li class="list-item">Item 2</li>
+            <li class="list-item">Item 3</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BackButton Demo -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">arrow_back</span>
+        BackButton Handler
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">모바일 뒤로가기 버튼 처리</p>
+      <div class="flex gap-2">
+        <button class="btn btn-primary" id="back-register">핸들러 등록</button>
+        <button class="btn btn-outline" id="back-clear">전체 해제</button>
+      </div>
+      <p class="text-sm text-secondary mt-2" id="back-output">상태: 대기</p>
+    </div>
+  </div>
+
+  <!-- Collapse Demo -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">unfold_more</span>
+        Collapse
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">단일 접기/펼치기 컴포넌트</p>
+      
+      <!-- Collapse 예제 1 -->
+      <div class="mb-4">
+        <button class="btn btn-outline w-full text-left" id="collapse-trigger-1" style="justify-content: space-between;">
+          <span>더 보기</span>
+          <span class="material-icons" style="transition: transform 0.3s;">expand_more</span>
+        </button>
+        <div id="collapse-content-1" style="border: 1px solid var(--border-color); border-top: none; border-radius: 0 0 8px 8px;">
+          <div style="padding: 1rem;">
+            <p class="text-secondary">숨겨진 콘텐츠가 여기에 표시됩니다. Collapse 컴포넌트는 부드러운 애니메이션으로 콘텐츠를 접고 펼칩니다.</p>
+            <ul class="list mt-2">
+              <li class="list-item">항목 1</li>
+              <li class="list-item">항목 2</li>
+              <li class="list-item">항목 3</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collapse 컨트롤 -->
+      <div class="flex gap-2">
+        <button class="btn btn-sm btn-primary" id="collapse-expand">펼치기</button>
+        <button class="btn btn-sm btn-outline" id="collapse-collapse">접기</button>
+        <button class="btn btn-sm btn-outline" id="collapse-toggle">토글</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Demo -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">view_agenda</span>
+        Accordion
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">아코디언 (기본: 하나만 펼침)</p>
+      <div id="accordion-demo"></div>
+      
+      <p class="text-sm text-secondary mt-4 mb-3">다중 펼침 허용</p>
+      <div id="accordion-multiple-demo"></div>
+
+      <p class="text-sm text-secondary mt-4 mb-3">아이콘 왼쪽 배치</p>
+      <div id="accordion-left-demo"></div>
+
+      <!-- 동적 추가/제거 -->
+      <div class="flex gap-2 mt-4">
+        <button class="btn btn-sm btn-primary" id="accordion-add">아이템 추가</button>
+        <button class="btn btn-sm btn-outline" id="accordion-remove">마지막 제거</button>
+        <button class="btn btn-sm btn-outline" id="accordion-expand-all">모두 펼치기</button>
+        <button class="btn btn-sm btn-outline" id="accordion-collapse-all">모두 접기</button>
+      </div>
+      <p class="text-sm text-secondary mt-2" id="accordion-output">상태: -</p>
+    </div>
+  </div>
+
+  <!-- Usage Code -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">code</span>
+        사용 예시
+      </h3>
+    </div>
+    <div class="card-body">
+      <pre class="bg-secondary p-3 rounded text-sm" style="overflow-x: auto;"><code>// 모듈 로드
+const Nav = await CATUI.use('navigation');
+
+// TabBar
+const tabbar = new Nav.TabBar({
+  container: '#tabbar',
+  tabs: [
+    { icon: 'home', label: 'Home' },
+    { icon: 'search', label: 'Search', badge: 3 },
+    { icon: 'person', label: 'Profile' }
+  ],
+  onChange: (index, tab) => console.log(tab)
+});
+
+// SwipeTabs
+const tabs = new Nav.SwipeTabs({
+  container: '#tabs',
+  tabs: [
+    { title: 'Tab 1', content: '&lt;p&gt;Content 1&lt;/p&gt;' },
+    { title: 'Tab 2', content: '&lt;p&gt;Content 2&lt;/p&gt;' }
+  ],
+  swipeable: true
+});
+
+// PullToRefresh
+const ptr = new Nav.PullToRefresh({
+  container: '#scroll',
+  onRefresh: (done) => {
+    // 데이터 로드 후
+    setTimeout(done, 1500);
+  }
+});
+
+// BackButton
+const unregister = Nav.BackButton.register(() => {
+  // 뒤로가기 처리
+  modal.close();
+});
+
+// Collapse
+const collapse = new Nav.Collapse({
+  trigger: '#trigger',
+  content: '#content',
+  expanded: false,
+  duration: 300,
+  onToggle: (isExpanded) => console.log(isExpanded)
+});
+
+// Accordion
+const accordion = new Nav.Accordion({
+  container: '#accordion',
+  items: [
+    { title: '섹션 1', content: '내용 1' },
+    { title: '섹션 2', content: '내용 2', subtitle: '부제목' }
+  ],
+  multiple: false,        // true면 다중 펼침 허용
+  activeIndex: 0,         // 초기 펼침 인덱스
+  iconPosition: 'right',  // 'left' | 'right'
+  onChange: (index, expanded, item) => {}
+});
+
+// Accordion 메서드
+accordion.expand(1);
+accordion.collapse(0);
+accordion.expandAll();   // multiple: true일 때만
+accordion.collapseAll();
+accordion.addItem({ title: '새 항목', content: '내용' });
+accordion.removeItem(2);</code></pre>
+    </div>
+  </div>
+</div>
+
+<script>
+(async function() {
+  // Navigation 모듈 로드
+  let Nav;
+  try {
+    Nav = await CATUI.use('navigation');
+    console.log('[Navigation] Module loaded:', Nav);
+  } catch (e) {
+    console.error('[Navigation] Module load failed:', e.message);
+    return;
+  }
+
+  // TabBar Demo
+  const tabbar = new Nav.TabBar({
+    container: '#tabbar-demo',
+    tabs: [
+      { icon: 'home', label: 'Home' },
+      { icon: 'search', label: 'Search', badge: '3' },
+      { icon: 'favorite', label: 'Likes' },
+      { icon: 'person', label: 'Profile' }
+    ],
+    onChange: (index, tab) => {
+      CATUI('#tabbar-output').text(`선택된 탭: ${tab.label}`);
+    }
+  });
+
+  // SwipeTabs Demo
+  const swipeTabs = new Nav.SwipeTabs({
+    container: '#swipe-tabs-demo',
+    tabs: [
+      { 
+        title: 'For You', 
+        content: `<div style="padding: 1rem;">
+          <div class="card mb-3"><div class="card-body">추천 콘텐츠 1</div></div>
+          <div class="card mb-3"><div class="card-body">추천 콘텐츠 2</div></div>
+        </div>` 
+      },
+      { 
+        title: 'Following', 
+        content: `<div style="padding: 1rem;">
+          <div class="card mb-3"><div class="card-body">팔로잉 콘텐츠 1</div></div>
+          <div class="card mb-3"><div class="card-body">팔로잉 콘텐츠 2</div></div>
+        </div>` 
+      },
+      { 
+        title: 'Trending', 
+        content: `<div style="padding: 1rem;">
+          <div class="card mb-3"><div class="card-body">트렌딩 콘텐츠 1</div></div>
+          <div class="card mb-3"><div class="card-body">트렌딩 콘텐츠 2</div></div>
+        </div>` 
+      }
+    ],
+    onChange: (index, tab) => {
+      console.log('SwipeTabs changed:', tab.title);
+    }
+  });
+
+  // AppBar Demo
+  const appbar = new Nav.AppBar({
+    container: '#appbar-demo',
+    title: 'My App',
+    showBack: true,
+    trailing: [
+      { icon: 'search', action: 'search' },
+      { icon: 'more_vert', action: 'menu' }
+    ],
+    variant: 'primary',
+    fixed: false,
+    onBack: () => {
+      CATUI('#appbar-output').text('액션: 뒤로가기 클릭');
+    }
+  });
+
+  appbar.onAction((action) => {
+    CATUI('#appbar-output').text(`액션: ${action} 클릭`);
+  });
+
+  // PullToRefresh Demo
+  let itemCount = 3;
+  const ptr = new Nav.PullToRefresh({
+    container: '#ptr-demo',
+    onRefresh: (done) => {
+      setTimeout(() => {
+        itemCount++;
+        const newItem = CATUI.create('li', {
+          class: 'list-item',
+          text: `Item ${itemCount} (new)`
+        });
+        CATUI('#ptr-list').append(newItem);
+        done();
+      }, 1500);
+    }
+  });
+
+  // BackButton Demo
+  let backCount = 0;
+  CATUI('#back-register').on('click', () => {
+    backCount++;
+    const count = backCount;
+    Nav.BackButton.register(() => {
+      CATUI('#back-output').text(`상태: 핸들러 ${count} 실행됨`);
+    });
+    CATUI('#back-output').text(`상태: 핸들러 ${backCount}개 등록됨`);
+  });
+
+  CATUI('#back-clear').on('click', () => {
+    Nav.BackButton.clear();
+    backCount = 0;
+    CATUI('#back-output').text('상태: 모든 핸들러 해제됨');
+  });
+
+  // Collapse Demo
+  const collapse = new Nav.Collapse({
+    trigger: '#collapse-trigger-1',
+    content: '#collapse-content-1',
+    expanded: false,
+    duration: 300,
+    onToggle: (isExpanded) => {
+      const icon = document.querySelector('#collapse-trigger-1 .material-icons');
+      if (icon) {
+        icon.style.transform = isExpanded ? 'rotate(180deg)' : '';
+      }
+    }
+  });
+
+  CATUI('#collapse-expand').on('click', () => collapse.expand());
+  CATUI('#collapse-collapse').on('click', () => collapse.collapse());
+  CATUI('#collapse-toggle').on('click', () => collapse.toggle());
+
+  // Accordion Demo - 기본 (하나만 펼침)
+  const accordion = new Nav.Accordion({
+    container: '#accordion-demo',
+    items: [
+      { 
+        title: '섹션 1: 소개', 
+        content: '<p>CATUI는 모바일 퍼스트 UI 프레임워크입니다. 다양한 컴포넌트와 유틸리티를 제공합니다.</p>'
+      },
+      { 
+        title: '섹션 2: 설치 방법', 
+        subtitle: '간단한 설정',
+        content: '<p>npm install catui-mobile 명령어로 설치하거나, CDN을 통해 직접 로드할 수 있습니다.</p>'
+      },
+      { 
+        title: '섹션 3: 사용법', 
+        content: '<p>CATUI.use() 메서드로 필요한 모듈을 동적으로 로드하여 사용합니다.</p>'
+      }
+    ],
+    activeIndex: 0,
+    onChange: (index, expanded, item) => {
+      CATUI('#accordion-output').text(`상태: ${item.title} ${expanded ? '펼침' : '접힘'}`);
+    }
+  });
+
+  // Accordion Demo - 다중 펼침
+  const accordionMultiple = new Nav.Accordion({
+    container: '#accordion-multiple-demo',
+    items: [
+      { title: 'FAQ 1', content: '<p>자주 묻는 질문 1에 대한 답변입니다.</p>' },
+      { title: 'FAQ 2', content: '<p>자주 묻는 질문 2에 대한 답변입니다.</p>' },
+      { title: 'FAQ 3', content: '<p>자주 묻는 질문 3에 대한 답변입니다.</p>' }
+    ],
+    multiple: true,
+    activeIndex: -1
+  });
+
+  // Accordion Demo - 아이콘 왼쪽
+  const accordionLeft = new Nav.Accordion({
+    container: '#accordion-left-demo',
+    items: [
+      { title: '메뉴 1', content: '<p>메뉴 1의 하위 콘텐츠입니다.</p>' },
+      { title: '메뉴 2', content: '<p>메뉴 2의 하위 콘텐츠입니다.</p>' }
+    ],
+    iconPosition: 'left',
+    activeIndex: -1
+  });
+
+  // 동적 아이템 추가/제거
+  let faqCount = 3;
+  CATUI('#accordion-add').on('click', () => {
+    faqCount++;
+    accordionMultiple.addItem({
+      title: `FAQ ${faqCount}`,
+      content: `<p>새로 추가된 FAQ ${faqCount}의 내용입니다.</p>`
+    });
+    CATUI('#accordion-output').text(`상태: FAQ ${faqCount} 추가됨`);
+  });
+
+  CATUI('#accordion-remove').on('click', () => {
+    if (accordionMultiple._items.length > 0) {
+      accordionMultiple.removeItem(accordionMultiple._items.length - 1);
+      CATUI('#accordion-output').text(`상태: 마지막 아이템 제거됨`);
+    }
+  });
+
+  CATUI('#accordion-expand-all').on('click', () => {
+    accordionMultiple.expandAll();
+    CATUI('#accordion-output').text('상태: 모두 펼침 (다중 아코디언)');
+  });
+
+  CATUI('#accordion-collapse-all').on('click', () => {
+    accordionMultiple.collapseAll();
+    CATUI('#accordion-output').text('상태: 모두 접힘');
+  });
+
+  console.log('[Navigation Demo] Loaded');
+})();
+</script>

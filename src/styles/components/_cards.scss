@@ -13,7 +13,6 @@
   border: $component-card-border-width solid $component-card-border;
   border-radius: $component-card-border-radius;
   box-shadow: $component-card-shadow;
-  overflow: hidden;
   transition: box-shadow $duration-fast $ease-in-out;
   
   &.card-hover:hover {

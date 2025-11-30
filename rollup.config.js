@@ -99,12 +99,16 @@ const moduleConfigs = [
   // 기본 모듈
   'theme',
   'overlays',
-  // 모바일 우선 모듈 (향후 추가 예정)
-  // 'swiper',
-  // 'bottom-sheet',
-  // 'action-sheet',
-  // 'tabs-mobile',
-  // 'infinite-scroll',
+  'navigation',
+  'pickers',
+  'selectors',
+  'forms',
+  'feedback',
+  'carousel',
+  'pagination',
+  'scroll',
+  'social',
+  'wordcloud',
 ].filter(Boolean).map(createModuleConfig);
 
 // 코어 + 모듈 빌드

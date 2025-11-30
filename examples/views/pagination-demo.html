@@ -1,0 +1,389 @@
+<div class="fade-in">
+  <!-- Default Pagination -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">format_list_numbered</span>
+        Default Pagination
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="pagination-default"></div>
+      <div id="pagination-default-info" class="text-sm text-secondary text-center mt-3"></div>
+    </div>
+  </div>
+
+  <!-- Simple Style -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">chevron_left</span>
+        Simple Style
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="pagination-simple"></div>
+    </div>
+  </div>
+
+  <!-- Dots Style -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">more_horiz</span>
+        Dots Style (Carousel용)
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="pagination-dots"></div>
+    </div>
+  </div>
+
+  <!-- Minimal Style -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">looks_one</span>
+        Minimal Style
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="pagination-minimal"></div>
+    </div>
+  </div>
+
+  <!-- Load More Style -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">add_circle_outline</span>
+        Load More Style
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="loadmore-list"></div>
+      <div id="pagination-loadmore"></div>
+    </div>
+  </div>
+
+  <!-- With Info & Per Page Selector -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">tune</span>
+        Info & Per Page Selector
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="pagination-full"></div>
+    </div>
+  </div>
+
+  <!-- DataList Component -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">list</span>
+        DataList (List Layout)
+      </h3>
+    </div>
+    <div class="card-body p-0">
+      <div id="datalist-demo"></div>
+    </div>
+  </div>
+
+  <!-- DataList Grid -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">grid_view</span>
+        DataList (Grid Layout)
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="datalist-grid"></div>
+    </div>
+  </div>
+
+  <!-- Image Gallery -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">collections</span>
+        Image Gallery (Load More)
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="gallery-demo"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+.p-0 { padding: 0 !important; }
+.mt-3 { margin-top: 0.75rem; }
+
+/* 리스트 아이템 스타일 */
+.demo-list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+.demo-list-item:last-child {
+  border-bottom: none;
+}
+.demo-list-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+}
+.demo-list-content {
+  flex: 1;
+}
+.demo-list-title {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.demo-list-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* 그리드 카드 스타일 */
+.demo-grid-card {
+  padding: 16px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  text-align: center;
+}
+.demo-grid-icon {
+  font-size: 32px;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+.demo-grid-title {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* 로드모어 리스트 */
+#loadmore-list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 16px;
+}
+.loadmore-item {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 14px;
+}
+</style>
+
+<script>
+(async function() {
+  let PaginationModule;
+  try {
+    PaginationModule = await CATUI.use('pagination');
+    console.log('[Pagination] Module loaded:', PaginationModule);
+  } catch (e) {
+    console.error('[Pagination] Module load failed:', e.message);
+    return;
+  }
+
+  const { Pagination, DataList, ImageGallery } = PaginationModule;
+
+  // ========================================
+  // Default Pagination
+  // ========================================
+  const paginationDefault = new Pagination({
+    container: '#pagination-default',
+    totalItems: 100,
+    itemsPerPage: 10,
+    style: 'default',
+    showFirstLast: true,
+    showPrevNext: true,
+    onChange: (page, perPage) => {
+      const start = (page - 1) * perPage + 1;
+      const end = Math.min(page * perPage, 100);
+      CATUI('#pagination-default-info').text(`현재 페이지: ${page} (${start}-${end} 항목)`);
+    }
+  });
+  // 초기 정보 표시
+  CATUI('#pagination-default-info').text('현재 페이지: 1 (1-10 항목)');
+
+  // ========================================
+  // Simple Style
+  // ========================================
+  new Pagination({
+    container: '#pagination-simple',
+    totalItems: 50,
+    itemsPerPage: 5,
+    style: 'simple'
+  });
+
+  // ========================================
+  // Dots Style
+  // ========================================
+  new Pagination({
+    container: '#pagination-dots',
+    totalItems: 8,
+    itemsPerPage: 1,
+    style: 'dots'
+  });
+
+  // ========================================
+  // Minimal Style
+  // ========================================
+  new Pagination({
+    container: '#pagination-minimal',
+    totalItems: 25,
+    itemsPerPage: 5,
+    style: 'minimal'
+  });
+
+  // ========================================
+  // Load More Style
+  // ========================================
+  let loadmoreData = [];
+  let loadmorePage = 1;
+  const loadmoreContainer = document.getElementById('loadmore-list');
+
+  function renderLoadmoreItems() {
+    loadmoreContainer.innerHTML = loadmoreData.map((item, i) => 
+      `<div class="loadmore-item">${i + 1}. ${item}</div>`
+    ).join('');
+    loadmoreContainer.scrollTop = loadmoreContainer.scrollHeight;
+  }
+
+  // 초기 데이터
+  for (let i = 1; i <= 5; i++) {
+    loadmoreData.push(`아이템 ${i}`);
+  }
+  renderLoadmoreItems();
+
+  new Pagination({
+    container: '#pagination-loadmore',
+    totalItems: 30,
+    itemsPerPage: 5,
+    currentPage: 1,
+    style: 'loadmore',
+    loadMoreText: '더 보기 (+5)',
+    onLoadMore: async (page) => {
+      // 시뮬레이션 딜레이
+      await new Promise(r => setTimeout(r, 500));
+      
+      const start = (page - 1) * 5 + 1;
+      if (start > 30) return false; // 더 이상 없음
+      
+      for (let i = start; i < start + 5 && i <= 30; i++) {
+        loadmoreData.push(`아이템 ${i}`);
+      }
+      renderLoadmoreItems();
+      return true;
+    }
+  });
+
+  // ========================================
+  // Full Options
+  // ========================================
+  new Pagination({
+    container: '#pagination-full',
+    totalItems: 250,
+    itemsPerPage: 10,
+    style: 'default',
+    showInfo: true,
+    showPerPageSelector: true,
+    perPageOptions: [10, 25, 50],
+    onChange: (page, perPage) => {
+      console.log(`Page: ${page}, Per Page: ${perPage}`);
+    }
+  });
+
+  // ========================================
+  // DataList (List Layout)
+  // ========================================
+  const sampleUsers = [];
+  for (let i = 1; i <= 45; i++) {
+    sampleUsers.push({
+      id: i,
+      name: `사용자 ${i}`,
+      email: `user${i}@example.com`,
+      avatar: `https://i.pravatar.cc/40?img=${i % 70}`
+    });
+  }
+
+  new DataList({
+    container: '#datalist-demo',
+    data: sampleUsers,
+    itemsPerPage: 5,
+    layout: 'list',
+    paginationStyle: 'simple',
+    showInfo: false,
+    renderItem: (user) => `
+      <div class="demo-list-item">
+        <img class="demo-list-avatar" src="${user.avatar}" alt="${user.name}">
+        <div class="demo-list-content">
+          <div class="demo-list-title">${user.name}</div>
+          <div class="demo-list-desc">${user.email}</div>
+        </div>
+      </div>
+    `,
+    onItemClick: (user) => {
+      console.log('Clicked:', user);
+    }
+  });
+
+  // ========================================
+  // DataList (Grid Layout)
+  // ========================================
+  const sampleProducts = [];
+  const icons = ['shopping_bag', 'headphones', 'watch', 'phone_iphone', 'laptop', 'camera', 'sports_esports', 'checkroom'];
+  for (let i = 1; i <= 24; i++) {
+    sampleProducts.push({
+      id: i,
+      name: `상품 ${i}`,
+      icon: icons[i % icons.length]
+    });
+  }
+
+  new DataList({
+    container: '#datalist-grid',
+    data: sampleProducts,
+    itemsPerPage: 6,
+    layout: 'grid',
+    gridColumns: 3,
+    paginationStyle: 'dots',
+    renderItem: (product) => `
+      <div class="demo-grid-card">
+        <div class="demo-grid-icon material-icons">${product.icon}</div>
+        <div class="demo-grid-title">${product.name}</div>
+      </div>
+    `
+  });
+
+  // ========================================
+  // Image Gallery
+  // ========================================
+  const galleryImages = [];
+  for (let i = 1; i <= 20; i++) {
+    galleryImages.push({
+      src: `https://picsum.photos/800/600?random=${i}`,
+      thumb: `https://picsum.photos/200/200?random=${i}`,
+      title: `이미지 ${i}`
+    });
+  }
+
+  new ImageGallery({
+    container: '#gallery-demo',
+    data: galleryImages,
+    gridColumns: 3,
+    itemsPerPage: 6,
+    paginationStyle: 'loadmore'
+  });
+
+  console.log('[Pagination] Demo loaded');
+})();
+</script>

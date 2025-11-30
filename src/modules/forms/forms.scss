@@ -1,0 +1,460 @@
+/**
+ * CATUI Mobile - Forms Module Styles
+ */
+@use '../../styles/abstracts' as *;
+
+/* ======================
+   FileUpload
+   ====================== */
+.catui-file-upload {
+  width: 100%;
+}
+
+.catui-file-upload-dropzone {
+  position: relative;
+  padding: $spacing-8 $spacing-4;
+  border: 2px dashed var(--border-color, $border-color);
+  border-radius: $radius-lg;
+  text-align: center;
+  cursor: pointer;
+  transition: all $duration-base $ease-in-out;
+  background: var(--bg-secondary, $bg-secondary);
+
+  &:hover,
+  &.is-dragover {
+    border-color: var(--primary, $primary);
+    background: rgba($primary, 0.05);
+  }
+}
+
+.catui-file-upload-input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.catui-file-upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-2;
+
+  .material-icons {
+    font-size: 48px;
+    color: var(--text-tertiary, $text-tertiary);
+  }
+}
+
+.catui-file-upload-text {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+}
+
+.catui-file-upload-hint {
+  font-size: $font-size-xs;
+  color: var(--text-tertiary, $text-tertiary);
+}
+
+.catui-file-upload-preview {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+  margin-top: $spacing-4;
+}
+
+.catui-file-upload-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-3;
+  background: var(--bg-primary, $bg-primary);
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-default;
+}
+
+.catui-file-upload-item-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary, $bg-tertiary);
+  border-radius: $radius-default;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .material-icons {
+    color: var(--text-tertiary, $text-tertiary);
+  }
+}
+
+.catui-file-upload-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.catui-file-upload-item-name {
+  display: block;
+  font-size: $font-size-sm;
+  color: var(--text-primary, $text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.catui-file-upload-item-size {
+  font-size: $font-size-xs;
+  color: var(--text-tertiary, $text-tertiary);
+}
+
+.catui-file-upload-remove {
+  display: flex;
+  padding: $spacing-1;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text-tertiary, $text-tertiary);
+  border-radius: 50%;
+  transition: all $duration-fast $ease-in-out;
+
+  &:hover {
+    background: var(--bg-tertiary, $bg-tertiary);
+    color: var(--error, $error);
+  }
+
+  .material-icons {
+    font-size: 18px;
+  }
+}
+
+/* ======================
+   Rating
+   ====================== */
+.catui-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+
+  &.is-readonly .catui-rating-star {
+    cursor: default;
+  }
+}
+
+.catui-rating-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.catui-rating-star {
+  position: relative;
+  cursor: pointer;
+  line-height: 1;
+  transition: transform $duration-fast $ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  .catui-rating.is-readonly &:hover {
+    transform: none;
+  }
+}
+
+// empty 아이콘은 공간을 차지하고, full/half는 위에 겹침
+.catui-rating-icon-empty {
+  display: block;
+}
+
+.catui-rating-icon-full,
+.catui-rating-icon-half {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity $duration-fast $ease-in-out;
+}
+
+// 상태별 표시
+.catui-rating-star.is-full {
+  .catui-rating-icon-empty { opacity: 0; }
+  .catui-rating-icon-full { opacity: 1; }
+}
+
+.catui-rating-star.is-half {
+  .catui-rating-icon-empty { opacity: 0; }
+  .catui-rating-icon-half { opacity: 1; }
+}
+
+.catui-rating-star.is-empty {
+  .catui-rating-icon-empty { opacity: 1; }
+}
+
+.catui-rating-value {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+  min-width: 24px;
+}
+
+// Size variants
+.catui-rating-sm .catui-rating-star { font-size: 20px; }
+.catui-rating-md .catui-rating-star { font-size: 28px; }
+.catui-rating-lg .catui-rating-star { font-size: 36px; }
+
+/* ======================
+   SignaturePad
+   ====================== */
+.catui-signature-pad {
+  width: 100%;
+}
+
+.catui-signature-pad-canvas-wrapper {
+  position: relative;
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-default;
+  overflow: hidden;
+  background: var(--bg-primary, $bg-primary);
+}
+
+.catui-signature-pad-canvas {
+  display: block;
+  width: 100%;
+  touch-action: none;
+}
+
+.catui-signature-pad-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--text-tertiary, $text-tertiary);
+  font-size: $font-size-sm;
+  pointer-events: none;
+}
+
+.catui-signature-pad-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-2;
+  margin-top: $spacing-2;
+}
+
+.catui-signature-pad-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-color, $border-color);
+  background: var(--bg-primary, $bg-primary);
+  border-radius: $radius-default;
+  cursor: pointer;
+  color: var(--text-secondary, $text-secondary);
+  transition: all $duration-fast $ease-in-out;
+
+  &:hover {
+    background: var(--bg-secondary, $bg-secondary);
+  }
+
+  &:active {
+    background: var(--bg-tertiary, $bg-tertiary);
+  }
+
+  .material-icons {
+    font-size: 20px;
+  }
+}
+
+/* ======================
+   FormWizard
+   ====================== */
+.catui-form-wizard {
+  width: 100%;
+}
+
+.catui-form-wizard-header {
+  margin-bottom: $spacing-6;
+}
+
+.catui-form-wizard-steps {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.catui-form-wizard-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-2;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+
+  &[role="button"] {
+    cursor: pointer;
+  }
+}
+
+.catui-form-wizard-step-indicator {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary, $bg-tertiary);
+  border-radius: 50%;
+  color: var(--text-tertiary, $text-tertiary);
+  font-weight: $font-weight-semibold;
+  transition: all $duration-slow $ease-in-out;
+
+  .catui-form-wizard-step.is-active & {
+    background: var(--primary, $primary);
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba($primary, 0.2);
+  }
+
+  .catui-form-wizard-step.is-completed & {
+    background: var(--success, $success);
+    color: #fff;
+  }
+}
+
+.catui-form-wizard-step-number {
+  font-size: $font-size-sm;
+}
+
+.catui-form-wizard-step-check {
+  display: none;
+  font-size: 20px;
+
+  .catui-form-wizard-step.is-completed & {
+    display: block;
+  }
+}
+
+.catui-form-wizard-step.is-completed .catui-form-wizard-step-number {
+  display: none;
+}
+
+.catui-form-wizard-step-title {
+  font-size: $font-size-xs;
+  color: var(--text-tertiary, $text-tertiary);
+  text-align: center;
+  transition: color $duration-base $ease-in-out;
+
+  .catui-form-wizard-step.is-active & {
+    color: var(--primary, $primary);
+    font-weight: $font-weight-medium;
+  }
+
+  .catui-form-wizard-step.is-completed & {
+    color: var(--success, $success);
+  }
+}
+
+.catui-form-wizard-progress {
+  position: absolute;
+  top: 18px;
+  left: 50px;
+  right: 50px;
+  height: 2px;
+  background: var(--border-color, $border-color);
+  z-index: 0;
+}
+
+.catui-form-wizard-progress-bar {
+  height: 100%;
+  background: var(--primary, $primary);
+  transition: width $duration-slow $ease-in-out;
+}
+
+.catui-form-wizard-content {
+  min-height: 200px;
+}
+
+.catui-form-wizard-panel {
+  display: none;
+
+  &.is-active {
+    display: block;
+    animation: catui-wizard-fadein $duration-slow $ease-in-out;
+  }
+}
+
+@keyframes catui-wizard-fadein {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.catui-form-wizard-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: $spacing-6;
+  padding-top: $spacing-4;
+  border-top: 1px solid var(--border-color, $border-color);
+}
+
+.catui-form-wizard-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-1;
+  padding: $spacing-3 $spacing-5;
+  border: 1px solid var(--border-color, $border-color);
+  background: var(--bg-primary, $bg-primary);
+  border-radius: $radius-default;
+  font-size: $font-size-sm;
+  cursor: pointer;
+  color: var(--text-primary, $text-primary);
+  transition: all $duration-base $ease-in-out;
+
+  &:hover:not(:disabled) {
+    background: var(--bg-secondary, $bg-secondary);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.is-primary {
+    background: var(--primary, $primary);
+    color: #fff;
+    border-color: var(--primary, $primary);
+
+    &:hover:not(:disabled) {
+      background: #2563EB; // primary darker
+    }
+  }
+
+  .material-icons {
+    font-size: 18px;
+  }
+}
+
+/* ======================
+   Dark Mode
+   ====================== */
+[data-theme="dark"] {
+  .catui-file-upload-dropzone:hover,
+  .catui-file-upload-dropzone.is-dragover {
+    background: rgba($primary, 0.1);
+  }
+
+  .catui-signature-pad-canvas {
+    background: var(--bg-primary);
+  }
+}

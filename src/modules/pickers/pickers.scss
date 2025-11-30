@@ -1,0 +1,152 @@
+/**
+ * CATUI Mobile - Pickers Module Styles
+ * @description 선택기 모듈 전용 스타일
+ */
+@use '../../styles/abstracts' as *;
+
+// ========================================
+// DatePicker & TimePicker & ColorPicker
+// ========================================
+.catui-datepicker,
+.catui-timepicker,
+.catui-colorpicker {
+  font-family: inherit;
+}
+
+.catui-picker-header {
+  user-select: none;
+}
+
+.catui-picker-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background $duration-fast $ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+  
+  &:active {
+    background: var(--bg-tertiary, $bg-tertiary);
+  }
+}
+
+.catui-picker-day {
+  transition: background $duration-fast $ease-in-out, transform $duration-fast $ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+  
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+}
+
+.catui-picker-cancel,
+.catui-picker-confirm {
+  transition: opacity $duration-fast $ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+  
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+// ========================================
+// TimePicker
+// ========================================
+.catui-time-column button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background $duration-fast $ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+  
+  &:active {
+    background: var(--bg-tertiary, $bg-tertiary);
+  }
+  
+  .material-icons {
+    font-size: $icon-size-lg;
+    color: var(--text-secondary, $text-secondary);
+  }
+}
+
+// ========================================
+// ColorPicker
+// ========================================
+.catui-color-preset {
+  transition: transform $duration-fast $ease-in-out, border-color $duration-fast $ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+  
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+// ========================================
+// Countdown
+// ========================================
+.catui-countdown {
+  user-select: none;
+}
+
+.catui-countdown-item {
+  .catui-countdown-value {
+    font-variant-numeric: tabular-nums;
+    transition: transform $duration-base $ease-in-out;
+  }
+}
+
+// Animation for value change
+@keyframes catui-countdown-flip {
+  0% { transform: rotateX(0); }
+  50% { transform: rotateX(-90deg); }
+  100% { transform: rotateX(0); }
+}
+
+// ========================================
+// DDay
+// ========================================
+.catui-dday {
+  user-select: none;
+}
+
+.catui-dday-value {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+// ========================================
+// Dark Mode
+// ========================================
+[data-theme="dark"] {
+  .catui-datepicker,
+  .catui-timepicker,
+  .catui-colorpicker {
+    background: $dark-bg-primary;
+  }
+  
+  .catui-picker-header,
+  .catui-picker-footer {
+    border-color: $dark-border-color;
+  }
+  
+  .catui-picker-btn:active,
+  .catui-time-column button:active {
+    background: $dark-bg-secondary;
+  }
+  
+  .catui-time-hour,
+  .catui-time-minute {
+    border-color: $dark-border-color;
+    color: $dark-text-primary;
+  }
+  
+  .catui-color-input {
+    background: $dark-bg-secondary;
+    border-color: $dark-border-color;
+    color: $dark-text-primary;
+  }
+  
+  .catui-countdown-value {
+    background: $dark-bg-secondary;
+    color: $dark-text-primary;
+  }
+}
