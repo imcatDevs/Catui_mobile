@@ -1,0 +1,322 @@
+<div class="fade-in">
+  <!-- SearchBar -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">search</span>
+        SearchBar
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">확장형 검색바 컴포넌트</p>
+      
+      <p class="text-sm font-medium mb-2">기본</p>
+      <div id="searchbar-basic" class="mb-4"></div>
+      
+      <p class="text-sm font-medium mb-2">확장형 (아이콘 클릭)</p>
+      <div id="searchbar-expandable" class="mb-4"></div>
+      
+      <p class="text-sm font-medium mb-2">상태</p>
+      <p id="searchbar-status" class="text-sm p-3 bg-secondary rounded">검색어를 입력하세요</p>
+    </div>
+  </div>
+
+  <!-- SearchHistory -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">history</span>
+        SearchHistory
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">최근 검색어 기록 관리</p>
+      
+      <div id="search-history" class="mb-3" style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;"></div>
+      
+      <div class="flex gap-2 mb-4">
+        <button id="history-add" class="btn btn-outline">검색어 추가</button>
+      </div>
+      
+      <p class="text-sm font-medium mb-2">상태</p>
+      <p id="history-status" class="text-sm p-3 bg-secondary rounded">검색 기록을 클릭하세요</p>
+    </div>
+  </div>
+
+  <!-- SearchFilter -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">tune</span>
+        SearchFilter
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">검색 필터 (바텀시트)</p>
+      
+      <button id="filter-open" class="btn btn-primary mb-4">
+        필터 열기 <span id="filter-count"></span>
+      </button>
+      
+      <p class="text-sm font-medium mb-2">적용된 필터</p>
+      <pre id="filter-status" class="text-sm p-3 bg-secondary rounded" style="white-space: pre-wrap; margin: 0;">필터가 없습니다</pre>
+    </div>
+  </div>
+
+  <!-- SearchSuggestion -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">auto_awesome</span>
+        SearchSuggestion
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">검색어 자동완성</p>
+      
+      <div id="suggestion-search" class="mb-2"></div>
+      <div id="search-suggestion" style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; min-height: 50px;"></div>
+      
+      <p class="text-sm font-medium mt-4 mb-2">상태</p>
+      <p id="suggestion-status" class="text-sm p-3 bg-secondary rounded">검색어를 입력하세요</p>
+    </div>
+  </div>
+
+  <!-- 사용 예시 -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">code</span>
+        사용 예시
+      </h3>
+    </div>
+    <div class="card-body">
+      <pre class="demo-code"><code>// 모듈 로드
+const Search = await CATUI.use('search');
+
+// SearchBar
+const searchBar = new Search.SearchBar({
+  container: '#searchbar',
+  placeholder: '검색어 입력',
+  expandable: false,
+  onSearch: (value) => console.log('검색:', value),
+  onInput: (value) => console.log('입력:', value)
+});
+
+// SearchHistory
+const history = new Search.SearchHistory({
+  container: '#history',
+  maxItems: 10,
+  onSelect: (text) => {
+    searchBar.setValue(text);
+    searchBar.focus();
+  }
+});
+
+// SearchFilter
+const filter = new Search.SearchFilter({
+  filters: [
+    {
+      id: 'category',
+      label: '카테고리',
+      type: 'chips',
+      options: [
+        { label: '전체', value: 'all' },
+        { label: '음식', value: 'food' }
+      ]
+    }
+  ],
+  onApply: (values) => console.log('필터:', values)
+});
+
+// SearchSuggestion
+const suggestion = new Search.SearchSuggestion({
+  container: '#suggestion',
+  items: ['사과', '바나나', '오렌지'],
+  onSelect: (item) => console.log('선택:', item)
+});</code></pre>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+(async () => {
+  const Search = await CATUI.use('search');
+
+  // ========================================
+  // SearchBar
+  // ========================================
+  const searchbarStatus = CATUI('#searchbar-status');
+
+  // 기본
+  const searchbarBasic = new Search.SearchBar({
+    container: '#searchbar-basic',
+    placeholder: '검색어를 입력하세요',
+    onSearch: (value) => {
+      searchbarStatus.text(`🔍 검색: "${value}"`);
+      // 검색 기록에 추가
+      searchHistory.add(value);
+    },
+    onInput: (value) => {
+      searchbarStatus.text(`입력 중: "${value}"`);
+      // 자동완성 업데이트
+      searchSuggestion.update(value);
+    },
+    onClear: () => {
+      searchbarStatus.text('검색어가 지워졌습니다');
+      searchSuggestion.clear();
+    }
+  });
+
+  // 확장형
+  const searchbarExpandable = new Search.SearchBar({
+    container: '#searchbar-expandable',
+    placeholder: '검색',
+    expandable: true,
+    onSearch: (value) => {
+      searchbarStatus.text(`🔍 검색 (확장형): "${value}"`);
+    },
+    onCancel: () => {
+      searchbarStatus.text('검색 취소');
+    }
+  });
+
+  // ========================================
+  // SearchHistory
+  // ========================================
+  const historyStatus = CATUI('#history-status');
+
+  const searchHistory = new Search.SearchHistory({
+    container: '#search-history',
+    storageKey: 'catui_demo_history',
+    maxItems: 5,
+    onSelect: (text) => {
+      historyStatus.text(`선택됨: "${text}"`);
+      searchbarBasic.setValue(text);
+      searchbarBasic.focus();
+    },
+    onRemove: (text) => {
+      historyStatus.text(`삭제됨: "${text}"`);
+    },
+    onClear: () => {
+      historyStatus.text('전체 삭제됨');
+    }
+  });
+
+  // 검색어 추가 버튼
+  let addCount = 0;
+  CATUI('#history-add').on('click', () => {
+    addCount++;
+    searchHistory.add(`테스트 검색어 ${addCount}`);
+    historyStatus.text(`추가됨: "테스트 검색어 ${addCount}"`);
+  });
+
+  // ========================================
+  // SearchFilter
+  // ========================================
+  const filterStatus = CATUI('#filter-status');
+  const filterCountEl = CATUI('#filter-count');
+
+  const searchFilter = new Search.SearchFilter({
+    title: '검색 필터',
+    filters: [
+      {
+        id: 'category',
+        label: '카테고리',
+        type: 'chips',
+        options: [
+          { label: '전체', value: 'all' },
+          { label: '음식', value: 'food' },
+          { label: '음료', value: 'drink' },
+          { label: '디저트', value: 'dessert' }
+        ]
+      },
+      {
+        id: 'sort',
+        label: '정렬',
+        type: 'radio',
+        options: [
+          { label: '관련도순', value: 'relevance' },
+          { label: '최신순', value: 'recent' },
+          { label: '인기순', value: 'popular' }
+        ]
+      },
+      {
+        id: 'price',
+        label: '가격대',
+        type: 'select',
+        options: [
+          { label: '1만원 이하', value: '0-10000' },
+          { label: '1-3만원', value: '10000-30000' },
+          { label: '3-5만원', value: '30000-50000' },
+          { label: '5만원 이상', value: '50000+' }
+        ]
+      },
+      {
+        id: 'rating',
+        label: '최소 평점',
+        type: 'range',
+        min: 0,
+        max: 5,
+        value: 3
+      }
+    ],
+    onApply: (values) => {
+      const count = Object.keys(values).length;
+      filterCountEl.text(count > 0 ? `(${count})` : '');
+      filterStatus.text(`적용된 필터: ${JSON.stringify(values, null, 2)}`);
+    },
+    onReset: () => {
+      filterCountEl.text('');
+      filterStatus.text('필터가 초기화되었습니다');
+    }
+  });
+
+  CATUI('#filter-open').on('click', () => {
+    searchFilter.open();
+  });
+
+  // ========================================
+  // SearchSuggestion
+  // ========================================
+  const suggestionStatus = CATUI('#suggestion-status');
+
+  // 자동완성용 검색바
+  const suggestionSearch = new Search.SearchBar({
+    container: '#suggestion-search',
+    placeholder: '과일 이름을 검색하세요',
+    showCancel: false,
+    onInput: (value) => {
+      searchSuggestion.update(value);
+    },
+    onSearch: (value) => {
+      suggestionStatus.text(`🔍 검색: "${value}"`);
+      searchSuggestion.clear();
+    }
+  });
+
+  // 자동완성
+  const searchSuggestion = new Search.SearchSuggestion({
+    container: '#search-suggestion',
+    items: [
+      { text: '사과', icon: 'local_florist' },
+      { text: '바나나', icon: 'local_florist' },
+      { text: '오렌지', icon: 'local_florist' },
+      { text: '포도', icon: 'local_florist' },
+      { text: '딸기', icon: 'local_florist' },
+      { text: '수박', icon: 'local_florist' },
+      { text: '참외', icon: 'local_florist' },
+      { text: '복숭아', icon: 'local_florist' },
+      { text: '배', icon: 'local_florist' },
+      { text: '감', icon: 'local_florist' }
+    ],
+    highlight: true,
+    onSelect: (item) => {
+      const text = item.text || item;
+      suggestionSearch.setValue(text);
+      suggestionStatus.text(`선택됨: "${text}"`);
+      searchSuggestion.clear();
+    }
+  });
+})();
+</script>

@@ -1,0 +1,352 @@
+<div class="fade-in">
+  <!-- OTPInput -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">pin</span>
+        OTPInput
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">인증번호 입력 (6자리)</p>
+      
+      <p class="text-sm font-medium mb-2">기본</p>
+      <div id="otp-basic" class="mb-4"></div>
+      
+      <p class="text-sm font-medium mb-2">구분자 있음 (3-3)</p>
+      <div id="otp-separator" class="mb-4"></div>
+      
+      <p class="text-sm font-medium mb-2">마스킹</p>
+      <div id="otp-masked" class="mb-4"></div>
+      
+      <button id="otp-verify" class="btn btn-primary btn-block mb-4">인증 확인</button>
+      
+      <p class="text-sm font-medium mb-2">상태</p>
+      <p id="otp-status" class="text-sm p-3 bg-secondary rounded">OTP를 입력하세요</p>
+    </div>
+  </div>
+
+  <!-- PinInput -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">dialpad</span>
+        PinInput
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">PIN 번호 입력 (키패드)</p>
+      
+      <div id="pin-input" class="mb-4"></div>
+      
+      <p class="text-sm font-medium mb-2">상태</p>
+      <p id="pin-status" class="text-sm p-3 bg-secondary rounded">PIN을 입력하세요</p>
+    </div>
+  </div>
+
+  <!-- PasswordInput -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">password</span>
+        PasswordInput
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">비밀번호 입력 (강도 표시)</p>
+      
+      <div id="password-input" class="mb-4"></div>
+      
+      <button id="password-submit" class="btn btn-primary btn-block" disabled>비밀번호 설정</button>
+    </div>
+  </div>
+
+  <!-- SocialLoginButtons -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">login</span>
+        SocialLoginButtons
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">소셜 로그인 버튼 그룹</p>
+      
+      <p class="text-sm font-medium mb-2">기본 (수직)</p>
+      <div id="social-vertical" class="mb-4"></div>
+      
+      <p class="text-sm font-medium mb-2">아이콘만 (둥근)</p>
+      <div id="social-icons" class="mb-4"></div>
+      
+      <p class="text-sm font-medium mb-2">상태</p>
+      <p id="social-status" class="text-sm p-3 bg-secondary rounded">로그인 버튼을 클릭하세요</p>
+    </div>
+  </div>
+
+  <!-- BiometricPrompt -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">fingerprint</span>
+        BiometricPrompt
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">생체인증 안내 UI</p>
+      
+      <div class="flex flex-wrap gap-2 mb-4">
+        <button id="biometric-fingerprint" class="btn btn-outline">지문 인증</button>
+        <button id="biometric-face" class="btn btn-outline">얼굴 인증</button>
+        <button id="biometric-success" class="btn btn-primary">성공 시뮬레이션</button>
+        <button id="biometric-error" class="btn btn-danger">실패 시뮬레이션</button>
+      </div>
+      
+      <p class="text-sm font-medium mb-2">상태</p>
+      <p id="biometric-status" class="text-sm p-3 bg-secondary rounded">생체인증 버튼을 클릭하세요</p>
+    </div>
+  </div>
+
+  <!-- 사용 예시 -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">code</span>
+        사용 예시
+      </h3>
+    </div>
+    <div class="card-body">
+      <pre class="demo-code"><code>// 모듈 로드
+const Auth = await CATUI.use('auth');
+
+// OTPInput
+const otp = new Auth.OTPInput({
+  container: '#otp',
+  length: 6,
+  type: 'number',
+  autoFocus: true,
+  onComplete: (code) => verifyOTP(code)
+});
+
+// PinInput
+const pin = new Auth.PinInput({
+  container: '#pin',
+  length: 4,
+  shuffle: true,
+  biometric: true,
+  onComplete: (pin) => verifyPin(pin)
+});
+
+// PasswordInput
+const password = new Auth.PasswordInput({
+  container: '#password',
+  showStrength: true,
+  minLength: 8
+});</code></pre>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+(async () => {
+  const Auth = await CATUI.use('auth');
+  const otpStatus = CATUI('#otp-status');
+  const pinStatus = CATUI('#pin-status');
+
+  // ========================================
+  // OTPInput 기본
+  // ========================================
+  const otpBasic = new Auth.OTPInput({
+    container: '#otp-basic',
+    length: 6,
+    type: 'number',
+    autoFocus: true,
+    onInput: (value) => {
+      otpStatus.text(`입력 중: ${value} (${value.length}/6)`);
+    },
+    onComplete: (code) => {
+      otpStatus.text(`완료: ${code}`);
+    }
+  });
+
+  // OTPInput 구분자
+  const otpSeparator = new Auth.OTPInput({
+    container: '#otp-separator',
+    length: 6,
+    type: 'number',
+    separator: '-',
+    separatorPosition: [3],
+    onComplete: (code) => {
+      otpStatus.text(`구분자 OTP 완료: ${code}`);
+    }
+  });
+
+  // OTPInput 마스킹
+  const otpMasked = new Auth.OTPInput({
+    container: '#otp-masked',
+    length: 6,
+    type: 'number',
+    masked: true,
+    onComplete: (code) => {
+      otpStatus.text(`마스킹 OTP 완료: ${code}`);
+    }
+  });
+
+  // 인증 확인 버튼
+  CATUI('#otp-verify').on('click', () => {
+    const code = otpBasic.getValue();
+    
+    if (code.length !== 6) {
+      otpBasic.setError(true);
+      otpStatus.text('6자리를 모두 입력하세요');
+      return;
+    }
+
+    if (code === '123456') {
+      otpStatus.text('✅ 인증 성공!');
+      otpBasic.setDisabled(true);
+    } else {
+      otpBasic.setError(true);
+      otpStatus.text('❌ 인증 실패. 다시 시도하세요.');
+      setTimeout(() => otpBasic.clear(), 500);
+    }
+  });
+
+  // ========================================
+  // PinInput
+  // ========================================
+  const pinInput = new Auth.PinInput({
+    container: '#pin-input',
+    length: 4,
+    title: 'PIN 입력',
+    subtitle: '4자리 PIN을 입력하세요',
+    shuffle: true,
+    biometric: true,
+    haptic: true,
+    onInput: (length) => {
+      pinStatus.text(`입력 중: ${'●'.repeat(length)}${'○'.repeat(4 - length)}`);
+    },
+    onComplete: (pin) => {
+      if (pin === '1234') {
+        pinStatus.text('✅ PIN 인증 성공!');
+        pinInput.setLocked(true);
+      } else {
+        pinStatus.text('❌ PIN이 틀렸습니다. 다시 시도하세요.');
+        pinInput.setError(true);
+        setTimeout(() => {
+          pinInput.clear();
+          pinInput.shuffle();
+        }, 500);
+      }
+    },
+    onBiometric: () => {
+      pinStatus.text('🔐 생체인증 요청...');
+      setTimeout(() => {
+        pinStatus.text('✅ 생체인증 성공!');
+        pinInput.setLocked(true);
+      }, 1000);
+    }
+  });
+
+  // ========================================
+  // PasswordInput
+  // ========================================
+  const submitBtn = CATUI('#password-submit');
+
+  const passwordInput = new Auth.PasswordInput({
+    container: '#password-input',
+    placeholder: '새 비밀번호',
+    showStrength: true,
+    minLength: 8,
+    requireUppercase: true,
+    requireLowercase: true,
+    requireNumber: true,
+    requireSpecial: false,
+    onStrengthChange: (strength, level) => {
+      submitBtn.attr('disabled', strength < 100);
+    }
+  });
+
+  submitBtn.on('click', () => {
+    if (passwordInput.isValid()) {
+      alert(`비밀번호 설정 완료: ${passwordInput.getValue()}`);
+    }
+  });
+
+  // ========================================
+  // SocialLoginButtons
+  // ========================================
+  const socialStatus = CATUI('#social-status');
+
+  const socialVertical = new Auth.SocialLoginButtons({
+    container: '#social-vertical',
+    providers: ['google', 'kakao', 'naver', 'apple'],
+    layout: 'vertical',
+    onClick: (provider) => {
+      socialStatus.text(`${provider} 로그인 시도 중...`);
+      socialVertical.setLoading(provider, true);
+      
+      setTimeout(() => {
+        socialVertical.setLoading(provider, false);
+        socialStatus.text(`✅ ${provider} 로그인 성공!`);
+      }, 1500);
+    }
+  });
+
+  const socialIcons = new Auth.SocialLoginButtons({
+    container: '#social-icons',
+    providers: ['google', 'kakao', 'naver', 'apple', 'facebook'],
+    iconOnly: true,
+    rounded: true,
+    onClick: (provider) => {
+      socialStatus.text(`${provider} 선택됨`);
+    }
+  });
+
+  // ========================================
+  // BiometricPrompt
+  // ========================================
+  const biometricStatus = CATUI('#biometric-status');
+  let currentBiometric = null;
+
+  CATUI('#biometric-fingerprint').on('click', () => {
+    currentBiometric = new Auth.BiometricPrompt({
+      type: 'fingerprint',
+      title: '지문 인증',
+      subtitle: '보안을 위해 인증해 주세요',
+      description: '지문 센서에 손가락을 올려주세요',
+      onAuthenticate: () => biometricStatus.text('인증 진행 중...'),
+      onCancel: () => biometricStatus.text('인증 취소됨'),
+      onError: (msg) => biometricStatus.text(`❌ ${msg}`)
+    });
+    currentBiometric.open();
+  });
+
+  CATUI('#biometric-face').on('click', () => {
+    currentBiometric = new Auth.BiometricPrompt({
+      type: 'face',
+      title: '얼굴 인식',
+      description: '카메라를 바라봐 주세요',
+      onAuthenticate: () => biometricStatus.text('인증 진행 중...'),
+      onCancel: () => biometricStatus.text('인증 취소됨')
+    });
+    currentBiometric.open();
+  });
+
+  CATUI('#biometric-success').on('click', () => {
+    if (currentBiometric) {
+      currentBiometric.success();
+      biometricStatus.text('✅ 생체인증 성공!');
+    } else {
+      biometricStatus.text('먼저 인증을 시작하세요');
+    }
+  });
+
+  CATUI('#biometric-error').on('click', () => {
+    if (currentBiometric) {
+      currentBiometric.error('인식 실패');
+    } else {
+      biometricStatus.text('먼저 인증을 시작하세요');
+    }
+  });
+})();
+</script>

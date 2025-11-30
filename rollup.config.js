@@ -109,6 +109,9 @@ const moduleConfigs = [
   'scroll',
   'social',
   'wordcloud',
+  'list',
+  'auth',
+  'search',
 ].filter(Boolean).map(createModuleConfig);
 
 // 코어 + 모듈 빌드

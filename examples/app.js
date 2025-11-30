@@ -68,6 +68,9 @@ CATUI.ready(async () => {
     { icon: 'forum', label: '소셜', nav: 'social-demo', outlined: true },
     { icon: 'grid_view', label: '그리드', nav: 'grid-menu-demo', outlined: true },
     { icon: 'cloud', label: '워드클라우드', nav: 'wordcloud-demo', outlined: true },
+    { icon: 'swipe', label: '리스트', nav: 'list-demo', outlined: true },
+    { icon: 'lock', label: '인증', nav: 'auth-demo', outlined: true },
+    { icon: 'search', label: '검색', nav: 'search-demo', outlined: true },
     { icon: 'phone_iphone', label: '모바일', nav: 'mobile', outlined: true },
     { icon: 'touch_app', label: '터치', nav: 'touch', outlined: true },
     { icon: 'more_horiz', label: '더보기', nav: 'more', outlined: true }

@@ -1,0 +1,587 @@
+@use '../../styles/abstracts' as *;
+
+// ========================================
+// SearchBar
+// ========================================
+.catui-searchbar {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  width: 100%;
+
+  &.is-focused {
+    .catui-searchbar-field {
+      border-color: var(--primary, $primary);
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    }
+  }
+
+  // 확장형
+  &.is-expandable {
+    .catui-searchbar-field {
+      width: 0;
+      opacity: 0;
+      padding: 0;
+      overflow: hidden;
+      transition: width $duration-base $ease-out, opacity $duration-base $ease-out, padding $duration-base $ease-out;
+    }
+
+    .catui-searchbar-cancel {
+      display: none;
+    }
+
+    &.is-expanded {
+      .catui-searchbar-trigger {
+        display: none;
+      }
+
+      .catui-searchbar-field {
+        width: 100%;
+        opacity: 1;
+        padding: 0 $spacing-3;
+      }
+
+      .catui-searchbar-cancel {
+        display: block;
+      }
+    }
+  }
+}
+
+.catui-searchbar-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $spacing-10;
+  height: $spacing-10;
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-default;
+  background: var(--bg-secondary, $bg-secondary);
+  color: var(--text-secondary, $text-secondary);
+  cursor: pointer;
+  transition: background $duration-fast $ease-in-out;
+
+  &:hover {
+    background: var(--bg-tertiary, $bg-tertiary);
+  }
+
+  .material-icons {
+    font-size: $icon-size-sm;
+  }
+}
+
+.catui-searchbar-field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  padding: 0 $spacing-3;
+  height: $spacing-10;
+  background: var(--bg-secondary, $bg-secondary);
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-default;
+  transition: border-color $duration-fast $ease-in-out, box-shadow $duration-fast $ease-in-out;
+}
+
+.catui-searchbar-icon {
+  font-size: $icon-size-sm;
+  color: var(--text-tertiary, $text-tertiary);
+  flex-shrink: 0;
+}
+
+.catui-searchbar-input {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: $font-size-base;
+  color: var(--text-primary, $text-primary);
+  outline: none;
+
+  &::placeholder {
+    color: var(--text-tertiary, $text-tertiary);
+  }
+
+  // 기본 search 스타일 제거
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-decoration {
+    display: none;
+  }
+}
+
+.catui-searchbar-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $icon-size-md;
+  height: $icon-size-md;
+  border: none;
+  border-radius: $radius-full;
+  background: var(--bg-tertiary, $bg-tertiary);
+  color: var(--text-secondary, $text-secondary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background $duration-fast $ease-in-out;
+
+  &:hover {
+    background: var(--border-color, $border-color);
+  }
+
+  .material-icons {
+    font-size: $icon-size-xs;
+  }
+}
+
+.catui-searchbar-cancel {
+  padding: $spacing-2 $spacing-3;
+  border: none;
+  background: transparent;
+  font-size: $font-size-sm;
+  color: var(--primary, $primary);
+  cursor: pointer;
+  flex-shrink: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ========================================
+// SearchHistory
+// ========================================
+.catui-search-history {
+  display: flex;
+  flex-direction: column;
+}
+
+.catui-search-history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-3 $spacing-4;
+}
+
+.catui-search-history-title {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-secondary, $text-secondary);
+}
+
+.catui-search-history-clearall {
+  padding: $spacing-1 $spacing-2;
+  border: none;
+  background: transparent;
+  font-size: $font-size-xs;
+  color: var(--text-tertiary, $text-tertiary);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--primary, $primary);
+  }
+}
+
+.catui-search-history-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.catui-search-history-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-3 $spacing-4;
+  cursor: pointer;
+  transition: background $duration-fast $ease-in-out;
+
+  &:hover {
+    background: var(--bg-secondary, $bg-secondary);
+  }
+
+  &:active {
+    background: var(--bg-tertiary, $bg-tertiary);
+  }
+}
+
+.catui-search-history-icon {
+  font-size: $icon-size-sm;
+  color: var(--text-tertiary, $text-tertiary);
+}
+
+.catui-search-history-text {
+  flex: 1;
+  font-size: $font-size-base;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-search-history-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $icon-size-md;
+  height: $icon-size-md;
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary, $text-tertiary);
+  cursor: pointer;
+  border-radius: $radius-full;
+  transition: background $duration-fast $ease-in-out, color $duration-fast $ease-in-out;
+
+  &:hover {
+    background: var(--bg-tertiary, $bg-tertiary);
+    color: var(--text-secondary, $text-secondary);
+  }
+
+  .material-icons {
+    font-size: $icon-size-xs;
+  }
+}
+
+.catui-search-history-empty {
+  padding: $spacing-8 $spacing-4;
+  text-align: center;
+  font-size: $font-size-sm;
+  color: var(--text-tertiary, $text-tertiary);
+}
+
+// ========================================
+// SearchFilter
+// ========================================
+.catui-search-filter-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: $z-index-modal;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity $duration-base $ease-in-out, visibility $duration-base $ease-in-out;
+
+  &.is-visible {
+    opacity: 1;
+    visibility: visible;
+
+    .catui-search-filter-sheet {
+      transform: translateY(0);
+    }
+  }
+}
+
+.catui-search-filter-sheet {
+  width: 100%;
+  max-height: 80vh;
+  background: var(--bg-primary, $bg-primary);
+  border-radius: $radius-lg $radius-lg 0 0;
+  transform: translateY(100%);
+  transition: transform $duration-slow $ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.catui-search-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-4;
+  border-bottom: 1px solid var(--border-color, $border-color);
+}
+
+.catui-search-filter-title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-search-filter-reset,
+.catui-search-filter-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-2;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.catui-search-filter-reset {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+
+  &:hover {
+    color: var(--primary, $primary);
+  }
+}
+
+.catui-search-filter-close {
+  color: var(--text-secondary, $text-secondary);
+
+  .material-icons {
+    font-size: $icon-size-md;
+  }
+}
+
+.catui-search-filter-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: $spacing-4;
+}
+
+.catui-search-filter-item {
+  margin-bottom: $spacing-6;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.catui-search-filter-label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary, $text-secondary);
+  margin-bottom: $spacing-3;
+}
+
+.catui-search-filter-control {
+  // Select
+  .catui-search-filter-select {
+    width: 100%;
+    padding: $spacing-3;
+    border: 1px solid var(--border-color, $border-color);
+    border-radius: $radius-default;
+    background: var(--bg-primary, $bg-primary);
+    font-size: $font-size-base;
+    color: var(--text-primary, $text-primary);
+    cursor: pointer;
+  }
+
+  // Checkboxes & Radios
+  .catui-search-filter-checkboxes,
+  .catui-search-filter-radios {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2;
+  }
+
+  .catui-search-filter-checkbox,
+  .catui-search-filter-radio {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    padding: $spacing-2;
+    cursor: pointer;
+
+    input {
+      width: $icon-size-sm;
+      height: $icon-size-sm;
+      accent-color: var(--primary, $primary);
+    }
+
+    span {
+      font-size: $font-size-base;
+      color: var(--text-primary, $text-primary);
+    }
+  }
+
+  // Range
+  .catui-search-filter-range {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+
+    input {
+      flex: 1;
+      accent-color: var(--primary, $primary);
+    }
+  }
+
+  .catui-search-filter-range-value {
+    min-width: 3rem;
+    text-align: right;
+    font-size: $font-size-sm;
+    color: var(--text-secondary, $text-secondary);
+  }
+
+  // Chips
+  .catui-search-filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-2;
+  }
+
+  .catui-search-filter-chip {
+    padding: $spacing-2 $spacing-4;
+    border: 1px solid var(--border-color, $border-color);
+    border-radius: $radius-full;
+    background: transparent;
+    font-size: $font-size-sm;
+    color: var(--text-secondary, $text-secondary);
+    cursor: pointer;
+    transition: all $duration-fast $ease-in-out;
+
+    &:hover {
+      border-color: var(--primary, $primary);
+      color: var(--primary, $primary);
+    }
+
+    &.is-active {
+      background: var(--primary, $primary);
+      border-color: var(--primary, $primary);
+      color: white;
+    }
+  }
+}
+
+.catui-search-filter-footer {
+  padding: $spacing-4;
+  border-top: 1px solid var(--border-color, $border-color);
+}
+
+.catui-search-filter-apply {
+  width: 100%;
+  padding: $spacing-4;
+  border: none;
+  border-radius: $radius-default;
+  background: var(--primary, $primary);
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: white;
+  cursor: pointer;
+  transition: background $duration-fast $ease-in-out;
+
+  &:hover {
+    filter: brightness(0.95);
+  }
+
+  &:active {
+    filter: brightness(0.9);
+  }
+}
+
+// ========================================
+// SearchSuggestion
+// ========================================
+.catui-search-suggestion {
+  display: flex;
+  flex-direction: column;
+}
+
+.catui-search-suggestion-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.catui-search-suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-3 $spacing-4;
+  cursor: pointer;
+  transition: background $duration-fast $ease-in-out;
+
+  &:hover,
+  &.is-selected {
+    background: var(--bg-secondary, $bg-secondary);
+  }
+
+  &:active {
+    background: var(--bg-tertiary, $bg-tertiary);
+  }
+}
+
+.catui-search-suggestion-icon {
+  font-size: $icon-size-sm;
+  color: var(--text-tertiary, $text-tertiary);
+}
+
+.catui-search-suggestion-text {
+  flex: 1;
+  font-size: $font-size-base;
+  color: var(--text-primary, $text-primary);
+
+  mark {
+    background: transparent;
+    color: var(--primary, $primary);
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.catui-search-suggestion-loading,
+.catui-search-suggestion-empty {
+  padding: $spacing-8 $spacing-4;
+  text-align: center;
+  font-size: $font-size-sm;
+  color: var(--text-tertiary, $text-tertiary);
+}
+
+.catui-search-suggestion-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-2;
+
+  .material-icons {
+    animation: catui-spin 1s linear infinite;
+  }
+}
+
+@keyframes catui-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// ========================================
+// 다크모드
+// ========================================
+[data-theme="dark"] {
+  .catui-searchbar-field {
+    background: #1F2937;
+  }
+
+  .catui-searchbar-trigger {
+    background: #1F2937;
+
+    &:hover {
+      background: #374151;
+    }
+  }
+
+  .catui-searchbar-clear {
+    background: #374151;
+
+    &:hover {
+      background: #4B5563;
+    }
+  }
+
+  .catui-search-history-item {
+    &:hover {
+      background: #1F2937;
+    }
+
+    &:active {
+      background: #374151;
+    }
+  }
+
+  .catui-search-filter-sheet {
+    background: #111827;
+  }
+
+  .catui-search-filter-control {
+    .catui-search-filter-select {
+      background: #1F2937;
+      border-color: #374151;
+    }
+  }
+
+  .catui-search-suggestion-item {
+    &:hover,
+    &.is-selected {
+      background: #1F2937;
+    }
+
+    &:active {
+      background: #374151;
+    }
+  }
+}

@@ -1,0 +1,471 @@
+/**
+ * CATUI Mobile - List Module Styles
+ * @description 리스트 모듈 전용 스타일
+ */
+@use '../../styles/abstracts' as *;
+
+// ========================================
+// SwipeableList
+// ========================================
+.catui-swipeable-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.catui-swipeable-item {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-primary, $bg-primary);
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--border-color, $border-color);
+  }
+}
+
+.catui-swipeable-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  min-height: 4rem;
+  padding: $spacing-4;
+  background: var(--bg-primary, $bg-primary);
+  transition: transform $duration-base $ease-out;
+  will-change: transform;
+}
+
+.catui-swipeable-text {
+  flex: 1;
+  font-size: $font-size-base;
+  color: var(--text-primary, $text-primary);
+}
+
+// 액션 버튼 영역 - 항상 배경에 위치
+.catui-swipeable-actions {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: stretch;
+  z-index: 1;
+}
+
+.catui-swipeable-actions-left {
+  right: 0;
+  justify-content: flex-end;
+}
+
+.catui-swipeable-actions-right {
+  left: 0;
+  justify-content: flex-start;
+}
+
+.catui-swipeable-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  min-height: 100%;
+  padding: $spacing-2;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: filter $duration-fast $ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    filter: brightness(0.9);
+  }
+
+  .material-icons {
+    font-size: 1.5rem;
+  }
+}
+
+.catui-swipeable-action-label {
+  margin-top: $spacing-1;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+}
+
+// ========================================
+// ReorderableList
+// ========================================
+.catui-reorderable-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.catui-reorderable-item {
+  display: flex;
+  align-items: center;
+  min-height: 3.5rem;
+  padding: $spacing-3 $spacing-4;
+  background: var(--bg-primary, $bg-primary);
+  border-bottom: 1px solid var(--border-color, $border-color);
+  transition: background $duration-fast $ease-in-out, box-shadow $duration-fast $ease-in-out;
+
+  &.is-dragging {
+    background: var(--bg-secondary, $bg-secondary);
+    box-shadow: $shadow-lg;
+    border-radius: $radius-default;
+    border-bottom: none;
+  }
+
+  &.is-ghost {
+    background: var(--bg-tertiary, $bg-tertiary);
+    border: 2px dashed var(--border-color, $border-color);
+    border-radius: $radius-default;
+  }
+}
+
+.catui-reorderable-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-right: $spacing-2;
+  color: var(--text-tertiary, $text-tertiary);
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  .material-icons {
+    font-size: 1.25rem;
+  }
+}
+
+.catui-reorderable-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.catui-reorderable-text {
+  font-size: $font-size-base;
+  color: var(--text-primary, $text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ========================================
+// Dark Mode
+// ========================================
+[data-theme="dark"] {
+  .catui-swipeable-content {
+    background: #111827;
+  }
+
+  .catui-swipeable-item {
+    background: #111827;
+    border-color: #374151;
+  }
+
+  .catui-reorderable-item {
+    background: #111827;
+    border-color: #374151;
+
+    &.is-dragging {
+      background: #1F2937;
+    }
+
+    &.is-ghost {
+      background: #1F2937;
+      border-color: #4B5563;
+    }
+  }
+
+  // CheckList 다크모드
+  .catui-checklist-header {
+    background: #1F2937;
+    border-color: #374151;
+  }
+
+  .catui-checklist-item {
+    background: #111827;
+    border-color: #374151;
+
+    &:hover {
+      background: #1F2937;
+    }
+  }
+
+  .catui-checklist-checkbox {
+    border-color: #4B5563;
+  }
+
+  // GroupedList 다크모드
+  .catui-groupedlist-header {
+    background: #1F2937;
+    border-color: #374151;
+  }
+
+  .catui-groupedlist-item {
+    background: #111827;
+    border-color: #374151;
+
+    &:hover {
+      background: #1F2937;
+    }
+  }
+
+  .catui-groupedlist-item-badge {
+    background: #374151;
+  }
+}
+
+// ========================================
+// CheckList
+// ========================================
+.catui-checklist {
+  display: flex;
+  flex-direction: column;
+}
+
+.catui-checklist-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-3 $spacing-4;
+  background: var(--bg-secondary, $bg-secondary);
+  border-bottom: 1px solid var(--border-color, $border-color);
+}
+
+.catui-checklist-selectall {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  cursor: pointer;
+  user-select: none;
+}
+
+.catui-checklist-selectall-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.catui-checklist-selectall-label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-checklist-count {
+  font-size: $font-size-xs;
+  color: var(--text-secondary, $text-secondary);
+}
+
+.catui-checklist-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.catui-checklist-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-4;
+  background: var(--bg-primary, $bg-primary);
+  border-bottom: 1px solid var(--border-color, $border-color);
+  cursor: pointer;
+  user-select: none;
+  transition: background $duration-fast $ease-in-out;
+
+  &:hover {
+    background: var(--bg-secondary, $bg-secondary);
+  }
+
+  &.is-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.is-checked .catui-checklist-checkbox {
+    background: var(--primary, $primary);
+    border-color: var(--primary, $primary);
+
+    &::after {
+      opacity: 1;
+      transform: rotate(45deg) scale(1);
+    }
+  }
+}
+
+.catui-checklist-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.catui-checklist-checkbox {
+  position: relative;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--border-color, $border-color);
+  border-radius: $radius-sm;
+  background: var(--bg-primary, $bg-primary);
+  flex-shrink: 0;
+  transition: all $duration-fast $ease-in-out;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    opacity: 0;
+    transform: rotate(45deg) scale(0.5);
+    transition: all $duration-fast $ease-in-out;
+  }
+
+  // Indeterminate 상태
+  &.is-indeterminate {
+    background: var(--primary, $primary);
+    border-color: var(--primary, $primary);
+
+    &::after {
+      opacity: 1;
+      left: 3px;
+      top: 7px;
+      width: 10px;
+      height: 0;
+      border-width: 0 0 2px 0;
+      transform: none;
+    }
+  }
+}
+
+.catui-checklist-content {
+  flex: 1;
+  font-size: $font-size-base;
+  color: var(--text-primary, $text-primary);
+}
+
+// ========================================
+// GroupedList
+// ========================================
+.catui-groupedlist {
+  display: flex;
+  flex-direction: column;
+
+  &.has-sticky-headers .catui-groupedlist-header.is-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+}
+
+.catui-groupedlist-group {
+  display: flex;
+  flex-direction: column;
+
+  &.is-collapsed {
+    .catui-groupedlist-items {
+      display: none;
+    }
+
+    .catui-groupedlist-arrow {
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+.catui-groupedlist-header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  padding: $spacing-3 $spacing-4;
+  background: var(--bg-secondary, $bg-secondary);
+  border-bottom: 1px solid var(--border-color, $border-color);
+  user-select: none;
+
+  &.is-collapsible {
+    cursor: pointer;
+
+    &:hover {
+      background: var(--bg-tertiary, $bg-tertiary);
+    }
+  }
+}
+
+.catui-groupedlist-title {
+  flex: 1;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-secondary, $text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.catui-groupedlist-count {
+  font-size: $font-size-xs;
+  color: var(--text-tertiary, $text-tertiary);
+  background: var(--bg-tertiary, $bg-tertiary);
+  padding: $spacing-1 $spacing-2;
+  border-radius: $radius-full;
+}
+
+.catui-groupedlist-arrow {
+  font-size: 1.25rem;
+  color: var(--text-tertiary, $text-tertiary);
+  transition: transform $duration-base $ease-in-out;
+}
+
+.catui-groupedlist-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.catui-groupedlist-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-4;
+  background: var(--bg-primary, $bg-primary);
+  border-bottom: 1px solid var(--border-color, $border-color);
+  cursor: pointer;
+  transition: background $duration-fast $ease-in-out;
+
+  &:hover {
+    background: var(--bg-secondary, $bg-secondary);
+  }
+
+  &:active {
+    background: var(--bg-tertiary, $bg-tertiary);
+  }
+}
+
+.catui-groupedlist-item-icon {
+  font-size: 1.25rem;
+  color: var(--text-secondary, $text-secondary);
+}
+
+.catui-groupedlist-item-content {
+  flex: 1;
+  font-size: $font-size-base;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-groupedlist-item-badge {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary, $text-secondary);
+  background: var(--bg-secondary, $bg-secondary);
+  padding: $spacing-1 $spacing-2;
+  border-radius: $radius-full;
+}
+
+.catui-groupedlist-item-arrow {
+  font-size: 1.25rem;
+  color: var(--text-tertiary, $text-tertiary);
+}

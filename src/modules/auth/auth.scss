@@ -1,0 +1,674 @@
+/**
+ * CATUI Mobile - Auth Module Styles
+ * @description 인증 모듈 전용 스타일
+ */
+@use '../../styles/abstracts' as *;
+
+// ========================================
+// OTPInput
+// ========================================
+.catui-otp-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &.is-focused .catui-otp-field {
+    border-color: var(--primary, $primary);
+  }
+
+  &.is-error .catui-otp-field {
+    border-color: var(--error, $error);
+    background: rgba($error, 0.05);
+  }
+
+  &.is-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  // 흔들림 애니메이션
+  &.shake .catui-otp-fields {
+    animation: shake 0.5s ease;
+  }
+}
+
+.catui-otp-fields {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+}
+
+.catui-otp-field {
+  width: 3rem;
+  height: 3.5rem;
+  padding: 0;
+  border: 2px solid var(--border-color, $border-color);
+  border-radius: $radius-default;
+  background: var(--bg-primary, $bg-primary);
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  text-align: center;
+  color: var(--text-primary, $text-primary);
+  transition: border-color $duration-fast $ease-in-out, background $duration-fast $ease-in-out;
+  appearance: none;
+  -webkit-appearance: none;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary, $primary);
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+  }
+
+  &::placeholder {
+    color: var(--text-tertiary, $text-tertiary);
+  }
+
+  // CSS 마스킹 (password 타입 대신)
+  &.is-masked {
+    -webkit-text-security: disc;
+  }
+}
+
+.catui-otp-separator {
+  font-size: $font-size-lg;
+  color: var(--text-tertiary, $text-tertiary);
+  padding: 0 $spacing-1;
+}
+
+// ========================================
+// PinInput
+// ========================================
+.catui-pin-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $spacing-6;
+  user-select: none;
+
+  &.is-locked {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.catui-pin-title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+  margin-bottom: $spacing-2;
+}
+
+.catui-pin-subtitle {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+  margin-bottom: $spacing-6;
+}
+
+.catui-pin-display {
+  display: flex;
+  gap: $spacing-4;
+  margin-bottom: $spacing-8;
+
+  &.is-error .catui-pin-dot {
+    border-color: var(--error, $error);
+    
+    &.is-filled {
+      background: var(--error, $error);
+    }
+  }
+
+  &.shake {
+    animation: shake 0.5s ease;
+  }
+}
+
+.catui-pin-dot {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--border-color, $border-color);
+  border-radius: $radius-full;
+  background: transparent;
+  transition: all $duration-fast $ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-sm;
+  color: var(--text-primary, $text-primary);
+
+  &.is-filled {
+    background: var(--primary, $primary);
+    border-color: var(--primary, $primary);
+  }
+}
+
+.catui-pin-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-3;
+  max-width: 18rem;
+  width: 100%;
+}
+
+.catui-pin-key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 5rem;
+  max-height: 5rem;
+  margin: 0 auto;
+  border: none;
+  border-radius: $radius-full;
+  background: var(--bg-secondary, $bg-secondary);
+  cursor: pointer;
+  transition: background $duration-fast $ease-in-out, transform $duration-fast $ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    background: var(--bg-tertiary, $bg-tertiary);
+    transform: scale(0.95);
+  }
+
+  .material-icons {
+    font-size: 1.5rem;
+    color: var(--text-secondary, $text-secondary);
+  }
+}
+
+.catui-pin-key-number {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-medium;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-pin-key-empty {
+  background: transparent;
+  cursor: default;
+}
+
+.catui-pin-key-biometric,
+.catui-pin-key-delete {
+  background: transparent;
+
+  &:active {
+    background: var(--bg-secondary, $bg-secondary);
+  }
+}
+
+// ========================================
+// PasswordInput
+// ========================================
+.catui-password-input {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+
+  &.is-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &.is-error .catui-password-field {
+    border-color: var(--error, $error);
+  }
+}
+
+.catui-password-form {
+  margin: 0;
+  padding: 0;
+}
+
+.catui-password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-default;
+  background: var(--bg-primary, $bg-primary);
+  transition: border-color $duration-fast $ease-in-out;
+
+  &:focus-within {
+    border-color: var(--primary, $primary);
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+  }
+}
+
+.catui-password-value {
+  flex: 1;
+  padding: $spacing-3 $spacing-4;
+  border: none;
+  background: transparent;
+  font-size: $font-size-base;
+  color: var(--text-primary, $text-primary);
+  outline: none;
+
+  &::placeholder {
+    color: var(--text-tertiary, $text-tertiary);
+  }
+}
+
+.catui-password-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-right: $spacing-1;
+  border: none;
+  border-radius: $radius-default;
+  background: transparent;
+  color: var(--text-tertiary, $text-tertiary);
+  cursor: pointer;
+  transition: color $duration-fast $ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    color: var(--text-secondary, $text-secondary);
+  }
+
+  .material-icons {
+    font-size: 1.25rem;
+  }
+}
+
+.catui-password-strength {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+}
+
+.catui-password-strength-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--bg-tertiary, $bg-tertiary);
+  border-radius: $radius-full;
+  overflow: hidden;
+}
+
+.catui-password-strength-fill {
+  height: 100%;
+  width: 0;
+  border-radius: $radius-full;
+  transition: width $duration-base $ease-out, background $duration-base $ease-out;
+
+  &.is-weak {
+    background: var(--error, $error);
+  }
+
+  &.is-medium {
+    background: var(--warning, $warning);
+  }
+
+  &.is-strong {
+    background: var(--success, $success);
+  }
+}
+
+.catui-password-strength-text {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary, $text-secondary);
+  min-width: 2.5rem;
+}
+
+.catui-password-rules {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    font-size: $font-size-xs;
+    color: var(--text-tertiary, $text-tertiary);
+    transition: color $duration-fast $ease-in-out;
+
+    &::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: $radius-full;
+      background: var(--border-color, $border-color);
+      transition: background $duration-fast $ease-in-out;
+    }
+
+    &.is-valid {
+      color: var(--success, $success);
+
+      &::before {
+        background: var(--success, $success);
+      }
+    }
+  }
+}
+
+.catui-password-error {
+  font-size: $font-size-xs;
+  color: var(--error, $error);
+}
+
+// ========================================
+// Animations
+// ========================================
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+// ========================================
+// Dark Mode
+// ========================================
+[data-theme="dark"] {
+  .catui-otp-field {
+    background: #1F2937;
+    border-color: #374151;
+  }
+
+  .catui-pin-key {
+    background: #1F2937;
+
+    &:active {
+      background: #374151;
+    }
+  }
+
+  .catui-pin-key-biometric,
+  .catui-pin-key-delete {
+    background: transparent;
+
+    &:active {
+      background: #1F2937;
+    }
+  }
+
+  .catui-password-field {
+    background: #1F2937;
+    border-color: #374151;
+  }
+
+  .catui-password-strength-bar {
+    background: #374151;
+  }
+
+  // SocialLoginButtons 다크모드
+  .catui-social-login-btn {
+    &:hover {
+      filter: brightness(0.9);
+    }
+  }
+
+  // BiometricPrompt 다크모드
+  .catui-biometric-prompt {
+    background: #1F2937;
+  }
+}
+
+// ========================================
+// SocialLoginButtons
+// ========================================
+.catui-social-login {
+  display: flex;
+  gap: $spacing-3;
+
+  // 레이아웃
+  &.is-vertical {
+    flex-direction: column;
+  }
+
+  &.is-horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  &.is-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+
+  // 아이콘만
+  &.is-icon-only {
+    flex-direction: row;
+    justify-content: center;
+
+    .catui-social-login-btn {
+      width: auto;
+      padding: $spacing-3;
+    }
+
+    &.is-rounded .catui-social-login-btn {
+      border-radius: 50%;
+      width: 3rem;
+      height: 3rem;
+      padding: 0;
+    }
+  }
+}
+
+.catui-social-login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-3;
+  width: 100%;
+  padding: $spacing-3 $spacing-4;
+  border: none;
+  border-radius: $radius-default;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: filter $duration-fast $ease-in-out, transform $duration-fast $ease-in-out;
+
+  &:hover {
+    filter: brightness(0.95);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &.is-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &.is-loading {
+    opacity: 0.7;
+    cursor: wait;
+  }
+
+  // 크기
+  .is-small & {
+    padding: $spacing-2 $spacing-3;
+    font-size: $font-size-sm;
+  }
+
+  .is-large & {
+    padding: $spacing-4 $spacing-5;
+    font-size: $font-size-lg;
+  }
+}
+
+.catui-social-login-icon {
+  font-size: 1.25rem;
+
+  &.spin {
+    animation: catui-spin 1s linear infinite;
+  }
+
+  .is-small & {
+    font-size: 1rem;
+  }
+
+  .is-large & {
+    font-size: 1.5rem;
+  }
+}
+
+.catui-social-login-label {
+  flex: 1;
+  text-align: center;
+}
+
+@keyframes catui-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// ========================================
+// BiometricPrompt
+// ========================================
+.catui-biometric-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: $z-index-modal;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity $duration-base $ease-in-out, visibility $duration-base $ease-in-out;
+
+  &.is-visible {
+    opacity: 1;
+    visibility: visible;
+
+    .catui-biometric-prompt {
+      transform: translateY(0);
+    }
+  }
+}
+
+.catui-biometric-prompt {
+  width: 100%;
+  max-width: 400px;
+  padding: $spacing-8 $spacing-6;
+  background: var(--bg-primary, $bg-primary);
+  border-radius: $radius-lg $radius-lg 0 0;
+  text-align: center;
+  transform: translateY(100%);
+  transition: transform $duration-slow $ease-out;
+}
+
+.catui-biometric-icon-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  margin-bottom: $spacing-4;
+  background: var(--bg-secondary, $bg-secondary);
+  border-radius: 50%;
+  transition: background $duration-base $ease-in-out;
+
+  &.is-authenticating {
+    .catui-biometric-ripple {
+      animation: catui-biometric-pulse 1.5s ease-in-out infinite;
+    }
+  }
+
+  &.is-success {
+    background: rgba($success, 0.1);
+
+    .catui-biometric-icon {
+      color: $success;
+    }
+  }
+
+  &.is-error {
+    background: rgba($error, 0.1);
+
+    .catui-biometric-icon {
+      color: $error;
+    }
+  }
+}
+
+.catui-biometric-icon {
+  font-size: 2.5rem;
+  color: var(--primary, $primary);
+  transition: color $duration-base $ease-in-out;
+}
+
+.catui-biometric-ripple {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--primary, $primary);
+  opacity: 0;
+}
+
+@keyframes catui-biometric-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.catui-biometric-title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+  margin-bottom: $spacing-2;
+}
+
+.catui-biometric-subtitle {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+  margin-bottom: $spacing-2;
+}
+
+.catui-biometric-description {
+  font-size: $font-size-sm;
+  color: var(--text-tertiary, $text-tertiary);
+  margin-bottom: $spacing-4;
+}
+
+.catui-biometric-status {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+  min-height: 1.5rem;
+  margin-bottom: $spacing-4;
+
+  &.is-success {
+    color: $success;
+  }
+
+  &.is-error {
+    color: $error;
+  }
+}
+
+.catui-biometric-cancel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-3 $spacing-6;
+  background: transparent;
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-default;
+  font-size: $font-size-base;
+  color: var(--text-secondary, $text-secondary);
+  cursor: pointer;
+  transition: background $duration-fast $ease-in-out;
+
+  &:hover {
+    background: var(--bg-secondary, $bg-secondary);
+  }
+
+  &:active {
+    background: var(--bg-tertiary, $bg-tertiary);
+  }
+}

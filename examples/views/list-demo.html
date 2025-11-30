@@ -1,0 +1,326 @@
+<div class="fade-in">
+  <!-- SwipeableList -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">swipe</span>
+        SwipeableList
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">스와이프하여 액션 버튼을 표시합니다. (Vant SwipeCell 스타일)</p>
+      
+      <p class="text-sm font-medium mb-2">버튼 1개 (← 스와이프)</p>
+      <div id="single-button-list" class="mb-4" style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;"></div>
+      
+      <p class="text-sm font-medium mb-2">버튼 2개 (← 스와이프)</p>
+      <div id="two-button-list" class="mb-4" style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;"></div>
+      
+      <p class="text-sm font-medium mb-2">버튼 3개 (← 스와이프)</p>
+      <div id="three-button-list" class="mb-4" style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;"></div>
+      
+      <p class="text-sm font-medium mb-2">양방향 스와이프 (←삭제 / →완료,보관)</p>
+      <div id="bidirectional-list" class="mb-4" style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;"></div>
+      
+      <p class="text-sm font-medium mb-2">상태</p>
+      <p id="swipe-status" class="text-sm p-3 bg-secondary rounded">스와이프해 보세요!</p>
+    </div>
+  </div>
+
+  <!-- ReorderableList -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">drag_indicator</span>
+        ReorderableList
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">드래그하여 아이템 순서를 변경합니다.</p>
+      
+      <div id="reorderable-list" class="mb-4" style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;"></div>
+      
+      <p class="text-sm font-medium mb-2">현재 순서</p>
+      <pre id="reorder-status" class="text-sm p-3 bg-secondary rounded" style="white-space: pre-wrap; margin: 0;">-</pre>
+    </div>
+  </div>
+
+  <!-- CheckList -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">checklist</span>
+        CheckList
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">체크박스로 다중 선택합니다.</p>
+      
+      <p class="text-sm font-medium mb-2">전체 선택 포함</p>
+      <div id="checklist-basic" class="mb-4" style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;"></div>
+      
+      <p class="text-sm font-medium mb-2">단일 선택 (라디오)</p>
+      <div id="checklist-single" class="mb-4" style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;"></div>
+      
+      <p class="text-sm font-medium mb-2">최대 2개 선택</p>
+      <div id="checklist-max" class="mb-4" style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;"></div>
+      
+      <p class="text-sm font-medium mb-2">상태</p>
+      <p id="checklist-status" class="text-sm p-3 bg-secondary rounded">선택: 없음</p>
+    </div>
+  </div>
+
+  <!-- GroupedList -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">segment</span>
+        GroupedList
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">섹션별로 그룹핑된 리스트입니다.</p>
+      
+      <p class="text-sm font-medium mb-2">기본 (접기/펼치기)</p>
+      <div id="groupedlist-basic" class="mb-4" style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;"></div>
+      
+      <p class="text-sm font-medium mb-2">아코디언 모드</p>
+      <div id="groupedlist-accordion" class="mb-4" style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;"></div>
+      
+      <p class="text-sm font-medium mb-2">상태</p>
+      <p id="groupedlist-status" class="text-sm p-3 bg-secondary rounded">아이템을 클릭하세요</p>
+    </div>
+  </div>
+
+  <!-- 사용 예시 -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">code</span>
+        사용 예시
+      </h3>
+    </div>
+    <div class="card-body">
+      <pre class="demo-code"><code>// 모듈 로드
+const List = await CATUI.use('list');
+
+// SwipeableList
+const swipeList = new List.SwipeableList({
+  container: '#list',
+  items: [{ id: 1, content: '항목 1' }],
+  leftActions: [{
+    icon: 'delete',
+    label: '삭제',
+    color: '#EF4444',
+    onAction: (item) => {}
+  }]
+});
+
+// ReorderableList
+const reorderList = new List.ReorderableList({
+  container: '#list',
+  items: [...],
+  onChange: (newOrder) => {}
+});
+
+// CheckList
+const checkList = new List.CheckList({
+  container: '#list',
+  items: [...],
+  selectAll: true,
+  onChange: (selected) => {}
+});
+
+// GroupedList
+const groupedList = new List.GroupedList({
+  container: '#list',
+  groups: [{ title: '그룹', items: [...] }],
+  accordion: true
+});</code></pre>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+(async () => {
+  const List = await CATUI.use('list');
+  const statusEl = CATUI('#swipe-status');
+  const reorderStatusEl = CATUI('#reorder-status');
+
+  // ========================================
+  // 버튼 1개 리스트
+  // ========================================
+  new List.SwipeableList({
+    container: '#single-button-list',
+    items: [
+      { id: 1, content: '알림: 새로운 메시지가 도착했습니다' },
+      { id: 2, content: '알림: 시스템 업데이트 완료' },
+    ],
+    leftActions: [{
+      icon: 'delete',
+      label: '삭제',
+      color: '#EF4444',
+      onAction: (item, index, list) => {
+        statusEl.text(`삭제됨: ${item.content}`);
+        list.removeItem(index);
+      }
+    }],
+    onItemClick: (item) => statusEl.text(`클릭됨: ${item.content}`)
+  });
+
+  // ========================================
+  // 버튼 2개 리스트
+  // ========================================
+  new List.SwipeableList({
+    container: '#two-button-list',
+    items: [
+      { id: 1, content: '메일: 회의 일정 안내' },
+      { id: 2, content: '메일: 프로젝트 진행 상황' },
+    ],
+    leftActions: [
+      { icon: 'edit', label: '수정', color: '#3B82F6', onAction: (item) => statusEl.text(`수정: ${item.content}`) },
+      { icon: 'delete', label: '삭제', color: '#EF4444', onAction: (item, index, list) => { statusEl.text(`삭제됨: ${item.content}`); list.removeItem(index); } }
+    ],
+    onItemClick: (item) => statusEl.text(`클릭됨: ${item.content}`)
+  });
+
+  // ========================================
+  // 버튼 3개 리스트
+  // ========================================
+  new List.SwipeableList({
+    container: '#three-button-list',
+    items: [
+      { id: 1, content: '파일: 보고서.pdf' },
+      { id: 2, content: '파일: 이미지.png' },
+    ],
+    leftActions: [
+      { icon: 'share', label: '공유', color: '#8B5CF6', onAction: (item) => statusEl.text(`공유: ${item.content}`) },
+      { icon: 'file_copy', label: '복사', color: '#3B82F6', onAction: (item) => statusEl.text(`복사: ${item.content}`) },
+      { icon: 'delete', label: '삭제', color: '#EF4444', onAction: (item, index, list) => { statusEl.text(`삭제됨: ${item.content}`); list.removeItem(index); } }
+    ],
+    onItemClick: (item) => statusEl.text(`클릭됨: ${item.content}`)
+  });
+
+  // ========================================
+  // 양방향 스와이프 리스트
+  // ========================================
+  new List.SwipeableList({
+    container: '#bidirectional-list',
+    items: [
+      { id: 1, content: '할일: 보고서 작성' },
+      { id: 2, content: '할일: 회의 참석' },
+      { id: 3, content: '할일: 코드 리뷰' },
+    ],
+    leftActions: [{ icon: 'delete', label: '삭제', color: '#EF4444', onAction: (item, index, list) => { statusEl.text(`삭제됨: ${item.content}`); list.removeItem(index); } }],
+    rightActions: [
+      { icon: 'check_circle', label: '완료', color: '#22C55E', onAction: (item) => statusEl.text(`완료: ${item.content}`) },
+      { icon: 'archive', label: '보관', color: '#F59E0B', onAction: (item) => statusEl.text(`보관: ${item.content}`) }
+    ],
+    onItemClick: (item) => statusEl.text(`클릭됨: ${item.content}`)
+  });
+
+  // ========================================
+  // ReorderableList
+  // ========================================
+  const reorderItems = [
+    { id: 1, content: '1순위: 긴급 업무' },
+    { id: 2, content: '2순위: 중요 업무' },
+    { id: 3, content: '3순위: 일반 업무' },
+    { id: 4, content: '4순위: 여유 업무' },
+  ];
+
+  const reorderList = new List.ReorderableList({
+    container: '#reorderable-list',
+    items: reorderItems,
+    onChange: (newOrder) => {
+      const orderText = newOrder.map((item, i) => `${i + 1}. ${item.content}`).join('\n');
+      reorderStatusEl.text(orderText);
+    },
+    onEnd: (item, fromIndex, toIndex) => {
+      if (fromIndex !== toIndex) {
+        statusEl.text(`이동: ${item.content} (${fromIndex + 1}위 → ${toIndex + 1}위)`);
+      }
+    }
+  });
+
+  reorderStatusEl.text(reorderItems.map((item, i) => `${i + 1}. ${item.content}`).join('\n'));
+
+  // ========================================
+  // CheckList
+  // ========================================
+  const checklistStatusEl = CATUI('#checklist-status');
+
+  new List.CheckList({
+    container: '#checklist-basic',
+    items: [
+      { id: 1, content: '사과' },
+      { id: 2, content: '바나나', checked: true },
+      { id: 3, content: '오렌지' },
+      { id: 4, content: '포도', disabled: true },
+    ],
+    selectAll: true,
+    selectAllLabel: '전체 선택',
+    onChange: (selected) => {
+      const names = selected.map(i => i.content).join(', ') || '없음';
+      checklistStatusEl.text(`선택: ${names}`);
+    }
+  });
+
+  new List.CheckList({
+    container: '#checklist-single',
+    items: [
+      { id: 1, content: '옵션 A' },
+      { id: 2, content: '옵션 B' },
+      { id: 3, content: '옵션 C' },
+    ],
+    multiple: false,
+    onChange: (selected) => {
+      const names = selected.map(i => i.content).join(', ') || '없음';
+      checklistStatusEl.text(`선택 (단일): ${names}`);
+    }
+  });
+
+  new List.CheckList({
+    container: '#checklist-max',
+    items: [
+      { id: 1, content: '한국어' },
+      { id: 2, content: '영어' },
+      { id: 3, content: '일본어' },
+      { id: 4, content: '중국어' },
+    ],
+    maxSelect: 2,
+    onChange: (selected) => {
+      const names = selected.map(i => i.content).join(', ') || '없음';
+      checklistStatusEl.text(`선택 (최대 2개): ${names}`);
+    }
+  });
+
+  // ========================================
+  // GroupedList
+  // ========================================
+  const groupedlistStatusEl = CATUI('#groupedlist-status');
+
+  new List.GroupedList({
+    container: '#groupedlist-basic',
+    groups: [
+      { title: '과일', items: [{ content: '사과' }, { content: '바나나', badge: 'NEW' }, { content: '오렌지' }] },
+      { title: '채소', collapsed: true, items: [{ content: '당근' }, { content: '브로콜리' }] }
+    ],
+    showCount: true,
+    onItemClick: (item, groupIndex) => groupedlistStatusEl.text(`클릭: ${item.content} (그룹 ${groupIndex + 1})`),
+    onGroupToggle: (group, index, collapsed) => groupedlistStatusEl.text(`${group.title}: ${collapsed ? '접음' : '펼침'}`)
+  });
+
+  new List.GroupedList({
+    container: '#groupedlist-accordion',
+    groups: [
+      { title: '설정', items: [{ content: '알림 설정', icon: 'notifications' }, { content: '개인정보', icon: 'person' }] },
+      { title: '계정', items: [{ content: '비밀번호 변경', icon: 'lock' }, { content: '로그아웃', icon: 'logout' }] },
+      { title: '정보', items: [{ content: '버전 정보', icon: 'info' }, { content: '도움말', icon: 'help' }] }
+    ],
+    accordion: true,
+    showCount: false,
+    onItemClick: (item) => groupedlistStatusEl.text(`클릭: ${item.content}`)
+  });
+})();
+</script>
