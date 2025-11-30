@@ -24,6 +24,7 @@ export class ViewRouter {
     this.container = '#app';
     this.currentPath = '';
     this.hooks = {
+      beforeUnload: [],
       beforeLoad: [],
       afterLoad: [],
       onError: []
@@ -107,7 +108,7 @@ export class ViewRouter {
 
     try {
       // 이전 뷰의 인스턴스 정리
-      this._cleanupCurrentView();
+      await this._cleanupCurrentView();
 
       // beforeLoad 훅
       await this._emitHook('beforeLoad', path, from);
@@ -285,7 +286,20 @@ export class ViewRouter {
    * 현재 뷰의 모든 인스턴스 정리
    * @private
    */
-  _cleanupCurrentView() {
+  async _cleanupCurrentView() {
+    // beforeUnload 훅 실행
+    await this._emitHook('beforeUnload', this.currentPath);
+    
+    // 글로벌 cleanup 함수 실행 (페이지별 정리)
+    if (typeof window._pageCleanup === 'function') {
+      try {
+        window._pageCleanup();
+      } catch (error) {
+        console.error('Error in page cleanup:', error);
+      }
+      window._pageCleanup = null;
+    }
+    
     // 현재 뷰의 모든 인스턴스 정리
     this.currentViewInstances.forEach(instance => {
       try {
@@ -299,6 +313,22 @@ export class ViewRouter {
 
     // 인스턴스 배열 초기화
     this.currentViewInstances = [];
+  }
+
+  /**
+   * beforeUnload 훅 등록 (페이지 전환 전 실행)
+   * @param {Function} handler - 핸들러 (currentPath) => {}
+   * @returns {Function} 구독 취소 함수
+   * 
+   * @example
+   * router.beforeUnload((path) => {
+   *   // 현재 페이지 정리 작업
+   *   console.log('Leaving:', path);
+   * });
+   */
+  beforeUnload(handler) {
+    this.hooks.beforeUnload.push(handler);
+    return () => this._removeHook('beforeUnload', handler);
   }
 
   /**
@@ -381,6 +411,7 @@ export class ViewRouter {
    * 모든 훅 제거
    */
   clearHooks() {
+    this.hooks.beforeUnload = [];
     this.hooks.beforeLoad = [];
     this.hooks.afterLoad = [];
     this.hooks.onError = [];

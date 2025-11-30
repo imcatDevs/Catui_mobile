@@ -897,6 +897,10 @@
     border-radius: 0;
     appearance: textfield;
     -moz-appearance: textfield;
+    width: $spacing-12;
+    height: $spacing-8;
+    padding: $spacing-1 $spacing-2;
+    font-size: $font-size-sm;
     
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
@@ -907,10 +911,13 @@
   }
   
   .number-btn {
-    @include touch-target(44px);
     display: flex;
     align-items: center;
     justify-content: center;
+    width: $spacing-8;
+    height: $spacing-8;
+    min-width: $spacing-8;
+    min-height: $spacing-8;
     background: var(--bg-tertiary);
     border: 1px solid var(--border-color);
     color: var(--text-secondary);
@@ -940,6 +947,51 @@
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
+    }
+    
+    .material-icons {
+      font-size: $icon-size-sm;
+    }
+  }
+  
+  // Size variants
+  &.form-number-sm {
+    .form-input {
+      height: $spacing-6;
+      width: $spacing-10;
+      font-size: $font-size-xs;
+      padding: $spacing-1;
+    }
+    
+    .number-btn {
+      width: $spacing-6;
+      height: $spacing-6;
+      min-width: $spacing-6;
+      min-height: $spacing-6;
+      
+      .material-icons {
+        font-size: $icon-size-xs;
+      }
+    }
+  }
+  
+  &.form-number-lg {
+    .form-input {
+      height: $spacing-10;
+      width: $spacing-16;
+      font-size: $font-size-base;
+      padding: $spacing-2 $spacing-3;
+    }
+    
+    .number-btn {
+      width: $spacing-10;
+      height: $spacing-10;
+      min-width: $spacing-10;
+      min-height: $spacing-10;
+      
+      .material-icons {
+        font-size: $icon-size-md;
+      }
     }
   }
 }

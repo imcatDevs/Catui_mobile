@@ -368,8 +368,11 @@
 .catui-groupedlist-group {
   display: flex;
   flex-direction: column;
+  padding: 0;
 
   &.is-collapsed {
+    padding: 0;
+    
     .catui-groupedlist-items {
       display: none;
     }

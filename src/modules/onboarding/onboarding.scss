@@ -1,0 +1,543 @@
+@use '../../styles/abstracts' as *;
+
+// ========================================
+// IntroSlider
+// ========================================
+.catui-intro-slider {
+  position: fixed;
+  inset: 0;
+  z-index: $z-index-modal;
+  background: var(--bg-primary, $bg-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+.catui-intro-slides {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.catui-intro-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-8;
+  opacity: 0;
+  transition: opacity $duration-slow $ease-in-out, transform $duration-slow $ease-in-out;
+
+  &.is-active {
+    opacity: 1;
+  }
+
+  .is-slide & {
+    transform: translateX(100%);
+
+    &.is-active {
+      transform: translateX(0);
+    }
+  }
+
+  .is-fade & {
+    transform: none;
+  }
+}
+
+.catui-intro-image {
+  max-width: 80%;
+  max-height: 40vh;
+  object-fit: contain;
+  margin-bottom: $spacing-8;
+}
+
+.catui-intro-icon {
+  font-size: 64px;
+  color: var(--primary, $primary);
+  margin-bottom: $spacing-6;
+}
+
+.catui-intro-content {
+  text-align: center;
+  max-width: 320px;
+}
+
+.catui-intro-title {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary, $text-primary);
+  margin: 0 0 $spacing-3 0;
+}
+
+.catui-intro-desc {
+  font-size: $font-size-base;
+  color: var(--text-secondary, $text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.catui-intro-skip {
+  position: absolute;
+  top: $spacing-4;
+  right: $spacing-4;
+  padding: $spacing-2 $spacing-4;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary, $text-secondary);
+  font-size: $font-size-sm;
+  cursor: pointer;
+  @include safe-area-top(top, $spacing-4);
+}
+
+.catui-intro-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-6 $spacing-6;
+  @include safe-area-bottom(padding-bottom, $spacing-6);
+}
+
+.catui-intro-dots {
+  display: flex;
+  gap: $spacing-2;
+}
+
+.catui-intro-dot {
+  width: $spacing-2;
+  height: $spacing-2;
+  border-radius: $radius-full;
+  background: var(--border-color, $border-color);
+  transition: background $duration-fast $ease-in-out, width $duration-fast $ease-in-out;
+  cursor: pointer;
+
+  &.is-active {
+    width: $spacing-6;
+    background: var(--primary, $primary);
+  }
+}
+
+.catui-intro-progress {
+  flex: 1;
+  max-width: 200px;
+  height: 4px;
+  background: var(--bg-tertiary, $bg-tertiary);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.catui-intro-progress-bar {
+  height: 100%;
+  background: var(--primary, $primary);
+  transition: width $duration-base $ease-in-out;
+}
+
+.catui-intro-fraction {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+
+  .catui-intro-current {
+    font-weight: $font-weight-semibold;
+    color: var(--text-primary, $text-primary);
+  }
+}
+
+.catui-intro-btn {
+  padding: $spacing-3 $spacing-6;
+  border: none;
+  border-radius: $radius-default;
+  background: var(--primary, $primary);
+  color: white;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: filter $duration-fast $ease-in-out;
+
+  &:hover {
+    filter: brightness(0.95);
+  }
+
+  &:active {
+    filter: brightness(0.9);
+  }
+}
+
+// ========================================
+// FeatureSpotlight
+// ========================================
+.catui-spotlight {
+  position: fixed;
+  inset: 0;
+  z-index: $z-index-tooltip;
+  opacity: 0;
+  transition: opacity $duration-base $ease-in-out;
+
+  &.is-visible {
+    opacity: 1;
+  }
+}
+
+.catui-spotlight-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.catui-spotlight-highlight {
+  position: absolute;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+  background: transparent;
+  pointer-events: none;
+}
+
+.catui-spotlight-tooltip {
+  position: absolute;
+  max-width: 300px;
+  padding: $spacing-4;
+  background: var(--bg-primary, $bg-primary);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-xl;
+
+  &.is-top::after,
+  &.is-bottom::before,
+  &.is-left::after,
+  &.is-right::before {
+    content: '';
+    position: absolute;
+    border: 8px solid transparent;
+  }
+
+  &.is-bottom::before {
+    bottom: 100%;
+    left: 24px;
+    border-bottom-color: var(--bg-primary, $bg-primary);
+  }
+
+  &.is-top::after {
+    top: 100%;
+    left: 24px;
+    border-top-color: var(--bg-primary, $bg-primary);
+  }
+}
+
+.catui-spotlight-title {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+  margin: 0 0 $spacing-2 0;
+}
+
+.catui-spotlight-desc {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+  line-height: 1.5;
+  margin: 0 0 $spacing-4 0;
+}
+
+.catui-spotlight-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-2;
+}
+
+.catui-spotlight-btn {
+  padding: $spacing-2 $spacing-4;
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-default;
+  background: transparent;
+  color: var(--text-primary, $text-primary);
+  font-size: $font-size-sm;
+  cursor: pointer;
+
+  &.is-primary {
+    border-color: var(--primary, $primary);
+    background: var(--primary, $primary);
+    color: white;
+  }
+}
+
+// ========================================
+// Coachmark
+// ========================================
+.catui-coachmark {
+  position: fixed;
+  inset: 0;
+  z-index: $z-index-tooltip;
+  opacity: 0;
+  transition: opacity $duration-base $ease-in-out;
+
+  &.is-visible {
+    opacity: 1;
+  }
+}
+
+.catui-coachmark-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.catui-coachmark-highlight {
+  position: absolute;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+  background: transparent;
+  border-radius: $radius-default;
+  pointer-events: none;
+}
+
+.catui-coachmark-tooltip {
+  position: absolute;
+  width: 280px;
+  padding: $spacing-4;
+  background: var(--bg-primary, $bg-primary);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-xl;
+
+  &.is-bottom::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 24px;
+    border: 8px solid transparent;
+    border-bottom-color: var(--bg-primary, $bg-primary);
+  }
+
+  &.is-top::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 24px;
+    border: 8px solid transparent;
+    border-top-color: var(--bg-primary, $bg-primary);
+  }
+}
+
+.catui-coachmark-progress {
+  font-size: $font-size-xs;
+  color: var(--text-tertiary, $text-tertiary);
+  margin-bottom: $spacing-2;
+}
+
+.catui-coachmark-title {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+  margin: 0 0 $spacing-2 0;
+}
+
+.catui-coachmark-desc {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+  line-height: 1.5;
+  margin: 0 0 $spacing-4 0;
+}
+
+.catui-coachmark-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.catui-coachmark-left {
+  display: flex;
+}
+
+.catui-coachmark-right {
+  display: flex;
+  gap: $spacing-2;
+}
+
+.catui-coachmark-skip {
+  padding: $spacing-2;
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary, $text-tertiary);
+  font-size: $font-size-sm;
+  cursor: pointer;
+}
+
+.catui-coachmark-btn {
+  padding: $spacing-2 $spacing-4;
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-default;
+  background: transparent;
+  color: var(--text-primary, $text-primary);
+  font-size: $font-size-sm;
+  cursor: pointer;
+
+  &.is-primary {
+    border-color: var(--primary, $primary);
+    background: var(--primary, $primary);
+    color: white;
+  }
+}
+
+// ========================================
+// PermissionGuide
+// ========================================
+.catui-permission-modal {
+  position: fixed;
+  inset: 0;
+  z-index: $z-index-modal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-4;
+  opacity: 0;
+  transition: opacity $duration-base $ease-in-out;
+
+  &.is-visible {
+    opacity: 1;
+
+    .catui-permission {
+      transform: translateY(0);
+    }
+  }
+}
+
+.catui-permission-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-overlay, $bg-overlay);
+}
+
+.catui-permission {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  padding: $spacing-6;
+  background: var(--bg-primary, $bg-primary);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-xl;
+  transform: translateY(20px);
+  transition: transform $duration-base $ease-out;
+}
+
+.catui-permission-header {
+  text-align: center;
+  margin-bottom: $spacing-6;
+}
+
+.catui-permission-title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary, $text-primary);
+  margin: 0 0 $spacing-2 0;
+}
+
+.catui-permission-desc {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+  margin: 0;
+}
+
+.catui-permission-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+  margin-bottom: $spacing-6;
+}
+
+.catui-permission-item {
+  display: flex;
+  gap: $spacing-3;
+  padding: $spacing-3;
+  background: var(--bg-secondary, $bg-secondary);
+  border-radius: $radius-default;
+}
+
+.catui-permission-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $spacing-10;
+  height: $spacing-10;
+  background: var(--primary, $primary);
+  border-radius: $radius-full;
+  color: white;
+  flex-shrink: 0;
+
+  .material-icons {
+    font-size: $icon-size-sm;
+  }
+}
+
+.catui-permission-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.catui-permission-name {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-primary, $text-primary);
+  margin-bottom: $spacing-1;
+}
+
+.catui-permission-required {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: var(--error, $error);
+}
+
+.catui-permission-optional {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: var(--text-tertiary, $text-tertiary);
+}
+
+.catui-permission-text {
+  font-size: $font-size-xs;
+  color: var(--text-secondary, $text-secondary);
+}
+
+.catui-permission-actions {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+.catui-permission-btn {
+  width: 100%;
+  padding: $spacing-3;
+  border: none;
+  border-radius: $radius-default;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: filter $duration-fast $ease-in-out;
+
+  &.is-primary {
+    background: var(--primary, $primary);
+    color: white;
+
+    &:hover {
+      filter: brightness(0.95);
+    }
+  }
+
+  &.is-text {
+    background: transparent;
+    color: var(--text-secondary, $text-secondary);
+  }
+}
+
+// ========================================
+// Dark Mode
+// ========================================
+[data-theme="dark"] {
+  .catui-spotlight-tooltip,
+  .catui-coachmark-tooltip,
+  .catui-permission {
+    background: var(--bg-primary, $dark-bg-primary);
+  }
+
+  .catui-spotlight-highlight,
+  .catui-coachmark-highlight {
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85);
+  }
+}

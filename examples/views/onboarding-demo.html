@@ -1,0 +1,318 @@
+<div class="fade-in">
+  <!-- IntroSlider -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">slideshow</span>
+        IntroSlider
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">앱 소개 슬라이더 (온보딩)</p>
+      
+      <button id="intro-start" class="btn btn-primary mb-4">인트로 시작</button>
+      
+      <p class="text-sm font-medium mb-2">상태</p>
+      <p id="intro-status" class="text-sm p-3 bg-secondary rounded">버튼을 클릭하여 인트로를 시작하세요</p>
+    </div>
+  </div>
+
+  <!-- FeatureSpotlight -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">highlight</span>
+        FeatureSpotlight
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">기능 하이라이트 (스포트라이트)</p>
+      
+      <div class="flex gap-3 mb-4">
+        <button id="spotlight-btn" class="btn btn-outline">이 버튼 하이라이트</button>
+        <button id="spotlight-start" class="btn btn-primary">스포트라이트 시작</button>
+      </div>
+      
+      <p class="text-sm font-medium mb-2">상태</p>
+      <p id="spotlight-status" class="text-sm p-3 bg-secondary rounded">버튼을 클릭하여 스포트라이트를 시작하세요</p>
+    </div>
+  </div>
+
+  <!-- Coachmark -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">school</span>
+        Coachmark
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">단계별 가이드 (코치마크)</p>
+      
+      <div class="flex gap-3 mb-4">
+        <button id="coach-target1" class="btn btn-outline">타겟 1</button>
+        <button id="coach-target2" class="btn btn-outline">타겟 2</button>
+        <button id="coach-target3" class="btn btn-outline">타겟 3</button>
+      </div>
+      
+      <button id="coachmark-start" class="btn btn-primary mb-4">가이드 시작</button>
+      
+      <p class="text-sm font-medium mb-2">상태</p>
+      <p id="coachmark-status" class="text-sm p-3 bg-secondary rounded">버튼을 클릭하여 가이드를 시작하세요</p>
+    </div>
+  </div>
+
+  <!-- PermissionGuide -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">security</span>
+        PermissionGuide
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">권한 요청 안내</p>
+      
+      <button id="permission-show" class="btn btn-primary mb-4">권한 안내 표시</button>
+      
+      <p class="text-sm font-medium mb-2">상태</p>
+      <p id="permission-status" class="text-sm p-3 bg-secondary rounded">버튼을 클릭하여 권한 안내를 표시하세요</p>
+    </div>
+  </div>
+
+  <!-- 사용 예시 -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">code</span>
+        사용 예시
+      </h3>
+    </div>
+    <div class="card-body">
+      <pre class="demo-code"><code>// 모듈 로드
+const Onboarding = await CATUI.use('onboarding');
+
+// IntroSlider
+const intro = new Onboarding.IntroSlider({
+  container: '#intro',
+  slides: [
+    { icon: 'waving_hand', title: '환영합니다', description: '...' },
+    { icon: 'rocket', title: '시작하기', description: '...' }
+  ],
+  pagination: 'dots',
+  onDone: () => navigateToHome()
+});
+
+// FeatureSpotlight
+const spotlight = new Onboarding.FeatureSpotlight({
+  target: '#new-feature',
+  title: '새로운 기능',
+  description: '여기를 탭하면 새로운 기능을 사용할 수 있어요',
+  position: 'bottom'
+});
+spotlight.show();
+
+// Coachmark
+const coach = new Onboarding.Coachmark({
+  steps: [
+    { target: '#step1', title: '1단계', description: '...' },
+    { target: '#step2', title: '2단계', description: '...' }
+  ],
+  onComplete: () => console.log('완료!')
+});
+coach.start();
+
+// PermissionGuide
+const permission = new Onboarding.PermissionGuide({
+  permissions: [
+    { icon: 'camera_alt', name: '카메라', description: '...', required: true },
+    { icon: 'location_on', name: '위치', description: '...', required: false }
+  ],
+  onAllow: () => requestPermissions()
+});
+permission.show();</code></pre>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+(async () => {
+  const Onboarding = await CATUI.use('onboarding');
+  const { Toast } = await CATUI.use('overlays');
+
+  // ========================================
+  // IntroSlider
+  // ========================================
+  const introStatus = CATUI('#intro-status');
+
+  CATUI('#intro-start').on('click', () => {
+    const intro = new Onboarding.IntroSlider({
+      container: document.body.appendChild(document.createElement('div')),
+      slides: [
+        {
+          icon: 'waving_hand',
+          title: '환영합니다!',
+          description: 'CATUI Mobile 프레임워크를 사용해 주셔서 감사합니다.',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+        },
+        {
+          icon: 'palette',
+          title: '아름다운 디자인',
+          description: '모바일에 최적화된 현대적인 UI 컴포넌트를 제공합니다.',
+          background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+        },
+        {
+          icon: 'speed',
+          title: '빠른 성능',
+          description: '가벼우면서도 강력한 기능을 제공합니다.',
+          background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
+        },
+        {
+          icon: 'rocket_launch',
+          title: '시작하세요!',
+          description: '지금 바로 멋진 모바일 앱을 만들어보세요.',
+          background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
+        }
+      ],
+      pagination: 'dots',
+      showSkip: true,
+      onSlideChange: (index) => {
+        introStatus.text(`슬라이드 ${index + 1} 표시 중`);
+      },
+      onSkip: () => {
+        introStatus.text('인트로 건너뛰기');
+        Toast.info('인트로를 건너뛰었습니다');
+      },
+      onDone: () => {
+        introStatus.text('✅ 인트로 완료!');
+        Toast.success('온보딩이 완료되었습니다!');
+      }
+    });
+  });
+
+  // ========================================
+  // FeatureSpotlight
+  // ========================================
+  const spotlightStatus = CATUI('#spotlight-status');
+
+  CATUI('#spotlight-start').on('click', () => {
+    const spotlight = new Onboarding.FeatureSpotlight({
+      target: '#spotlight-btn',
+      title: '새로운 버튼!',
+      description: '이 버튼을 클릭하면 특별한 기능을 사용할 수 있습니다.',
+      position: 'bottom',
+      shape: 'rectangle',
+      buttons: [
+        { text: '나중에' },
+        { text: '알겠습니다', primary: true }
+      ],
+      onShow: () => {
+        spotlightStatus.text('스포트라이트 표시 중');
+      },
+      onClose: () => {
+        spotlightStatus.text('스포트라이트 닫힘');
+      },
+      onAction: (index) => {
+        spotlightStatus.text(`버튼 ${index + 1} 클릭됨`);
+        if (index === 1) {
+          Toast.success('확인되었습니다!');
+        }
+      }
+    });
+    spotlight.show();
+  });
+
+  // ========================================
+  // Coachmark
+  // ========================================
+  const coachmarkStatus = CATUI('#coachmark-status');
+
+  CATUI('#coachmark-start').on('click', () => {
+    const coach = new Onboarding.Coachmark({
+      steps: [
+        {
+          target: '#coach-target1',
+          title: '첫 번째 단계',
+          description: '이것은 첫 번째 기능입니다. 클릭하여 사용해보세요.',
+          position: 'bottom'
+        },
+        {
+          target: '#coach-target2',
+          title: '두 번째 단계',
+          description: '여기서 추가 설정을 할 수 있습니다.',
+          position: 'bottom'
+        },
+        {
+          target: '#coach-target3',
+          title: '세 번째 단계',
+          description: '마지막으로 이 버튼으로 완료합니다.',
+          position: 'bottom'
+        }
+      ],
+      showProgress: true,
+      showSkip: true,
+      onStepChange: (index, step) => {
+        coachmarkStatus.text(`단계 ${index + 1}: ${step.title}`);
+      },
+      onSkip: () => {
+        coachmarkStatus.text('가이드 건너뛰기');
+        Toast.info('가이드를 건너뛰었습니다');
+      },
+      onComplete: () => {
+        coachmarkStatus.text('✅ 가이드 완료!');
+        Toast.success('가이드가 완료되었습니다!');
+      }
+    });
+    coach.start();
+  });
+
+  // ========================================
+  // PermissionGuide
+  // ========================================
+  const permissionStatus = CATUI('#permission-status');
+
+  CATUI('#permission-show').on('click', () => {
+    const permission = new Onboarding.PermissionGuide({
+      title: '앱 권한 안내',
+      description: '최상의 서비스 이용을 위해 다음 권한이 필요합니다.',
+      permissions: [
+        {
+          icon: 'camera_alt',
+          name: '카메라',
+          description: '프로필 사진 촬영 및 QR 코드 스캔',
+          required: true
+        },
+        {
+          icon: 'location_on',
+          name: '위치',
+          description: '주변 매장 검색 및 배송지 설정',
+          required: true
+        },
+        {
+          icon: 'notifications',
+          name: '알림',
+          description: '주문 현황 및 이벤트 알림',
+          required: false
+        },
+        {
+          icon: 'photo_library',
+          name: '사진',
+          description: '사진 업로드 및 저장',
+          required: false
+        }
+      ],
+      buttonText: '권한 허용하기',
+      skipText: '나중에 설정',
+      onAllow: () => {
+        permissionStatus.text('✅ 권한 허용됨');
+        Toast.success('권한이 허용되었습니다');
+      },
+      onDeny: () => {
+        permissionStatus.text('권한 설정 나중에');
+        Toast.info('설정에서 나중에 권한을 허용할 수 있습니다');
+      }
+    });
+    permission.show();
+  });
+})();
+</script>

@@ -1,0 +1,581 @@
+@use '../../styles/abstracts' as *;
+
+// ========================================
+// ImageCropper
+// ========================================
+.catui-image-cropper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+  width: 100%;
+}
+
+.catui-cropper-wrapper {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: var(--bg-tertiary, $bg-tertiary);
+  border-radius: $radius-default;
+  overflow: hidden;
+}
+
+.catui-cropper-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.catui-cropper-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.catui-cropper-cropbox {
+  position: absolute;
+  border: 2px solid var(--primary, $primary);
+  background: transparent;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+  cursor: move;
+
+  .is-mask-circle & {
+    border-radius: $radius-full;
+  }
+}
+
+.catui-cropper-guides {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.catui-cropper-guide-h,
+.catui-cropper-guide-v {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.catui-cropper-guide-h {
+  left: 0;
+  right: 0;
+  height: 1px;
+
+  &:first-child { top: 33.33%; }
+  &:nth-child(2) { top: 66.66%; }
+}
+
+.catui-cropper-guide-v {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+
+  &:nth-child(3) { left: 33.33%; }
+  &:nth-child(4) { left: 66.66%; }
+}
+
+.catui-cropper-handle {
+  position: absolute;
+  width: $spacing-4;
+  height: $spacing-4;
+  background: var(--primary, $primary);
+  border: 2px solid white;
+  border-radius: $radius-sm;
+
+  &[data-handle="nw"] { top: -$spacing-2; left: -$spacing-2; cursor: nw-resize; }
+  &[data-handle="ne"] { top: -$spacing-2; right: -$spacing-2; cursor: ne-resize; }
+  &[data-handle="sw"] { bottom: -$spacing-2; left: -$spacing-2; cursor: sw-resize; }
+  &[data-handle="se"] { bottom: -$spacing-2; right: -$spacing-2; cursor: se-resize; }
+}
+
+.catui-cropper-toolbar {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-2;
+}
+
+.catui-cropper-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $spacing-10;
+  height: $spacing-10;
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-default;
+  background: var(--bg-primary, $bg-primary);
+  color: var(--text-primary, $text-primary);
+  cursor: pointer;
+  transition: background $duration-fast $ease-in-out;
+
+  &:hover {
+    background: var(--bg-secondary, $bg-secondary);
+  }
+
+  &:active {
+    background: var(--bg-tertiary, $bg-tertiary);
+  }
+
+  .material-icons {
+    font-size: $icon-size-sm;
+  }
+}
+
+// ========================================
+// VideoPlayer
+// ========================================
+.catui-video-player {
+  position: relative;
+  width: 100%;
+  background: #000;
+  border-radius: $radius-default;
+  overflow: hidden;
+
+  &:fullscreen {
+    border-radius: 0;
+  }
+}
+
+.catui-video-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.catui-video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.catui-video-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  transition: opacity $duration-fast $ease-in-out;
+
+  &.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.catui-video-play-large {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border: none;
+  border-radius: $radius-full;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary, $text-primary);
+  cursor: pointer;
+  transition: transform $duration-fast $ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  .material-icons {
+    font-size: $icon-size-xl;
+  }
+}
+
+.catui-video-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  padding: $spacing-3;
+}
+
+.catui-video-progress {
+  margin-bottom: $spacing-2;
+  cursor: pointer;
+}
+
+.catui-video-progress-bar {
+  position: relative;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.catui-video-progress-played {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--primary, $primary);
+  border-radius: 2px;
+}
+
+.catui-video-progress-buffered {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.catui-video-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.catui-video-left,
+.catui-video-right {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+}
+
+.catui-video-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-1;
+  border: none;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: opacity $duration-fast $ease-in-out;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  .material-icons {
+    font-size: $icon-size-sm;
+  }
+}
+
+.catui-video-rate {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  min-width: $spacing-8;
+}
+
+.catui-video-time {
+  font-size: $font-size-xs;
+  color: white;
+}
+
+// ========================================
+// AudioPlayer
+// ========================================
+.catui-audio-player {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+  padding: $spacing-4;
+  background: var(--bg-secondary, $bg-secondary);
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-default;
+
+  &.is-mini {
+    flex-direction: row;
+    align-items: center;
+    padding: $spacing-3;
+
+    .catui-audio-controls {
+      order: -1;
+    }
+
+    .catui-audio-progress {
+      flex: 1;
+    }
+  }
+
+  &.is-full {
+    padding: $spacing-6;
+  }
+}
+
+.catui-audio {
+  display: none;
+}
+
+.catui-audio-header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-4;
+}
+
+.catui-audio-cover {
+  width: 80px;
+  height: 80px;
+  border-radius: $radius-default;
+  object-fit: cover;
+
+  &.catui-audio-cover-default {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-tertiary, $bg-tertiary);
+    color: var(--text-tertiary, $text-tertiary);
+
+    .material-icons {
+      font-size: $icon-size-xl;
+    }
+  }
+}
+
+.catui-audio-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.catui-audio-title {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.catui-audio-artist {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.catui-audio-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-2;
+}
+
+.catui-audio-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $spacing-10;
+  height: $spacing-10;
+  border: none;
+  border-radius: $radius-full;
+  background: transparent;
+  color: var(--text-primary, $text-primary);
+  cursor: pointer;
+  transition: background $duration-fast $ease-in-out;
+
+  &:hover {
+    background: var(--bg-tertiary, $bg-tertiary);
+  }
+
+  .material-icons {
+    font-size: $icon-size-md;
+  }
+
+  &.catui-audio-btn-play {
+    background: var(--primary, $primary);
+    color: white;
+
+    &:hover {
+      filter: brightness(0.95);
+    }
+
+    .material-icons {
+      font-size: $icon-size-lg;
+    }
+  }
+}
+
+.catui-audio-progress {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+}
+
+.catui-audio-progress-bar {
+  flex: 1;
+  position: relative;
+  height: 4px;
+  background: var(--bg-tertiary, $bg-tertiary);
+  border-radius: 2px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.catui-audio-progress-played {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--primary, $primary);
+  border-radius: 2px;
+}
+
+.catui-audio-time {
+  font-size: $font-size-xs;
+  color: var(--text-secondary, $text-secondary);
+  min-width: $spacing-10;
+
+  &.catui-audio-current {
+    text-align: right;
+  }
+}
+
+.catui-audio-volume {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+
+  .material-icons {
+    font-size: $icon-size-sm;
+    color: var(--text-secondary, $text-secondary);
+  }
+}
+
+.catui-audio-volume-slider {
+  flex: 1;
+  height: 4px;
+  accent-color: var(--primary, $primary);
+}
+
+// ========================================
+// MediaPreview
+// ========================================
+.catui-media-preview {
+  display: grid;
+  grid-template-columns: repeat(var(--columns, 3), 1fr);
+  gap: $spacing-2;
+
+  &.is-small {
+    .catui-media-item {
+      aspect-ratio: 1;
+    }
+    .catui-media-thumb {
+      border-radius: $radius-sm;
+    }
+  }
+
+  &.is-medium {
+    .catui-media-item {
+      aspect-ratio: 1;
+    }
+  }
+
+  &.is-large {
+    .catui-media-item {
+      aspect-ratio: 4 / 3;
+    }
+    .catui-media-thumb {
+      border-radius: $radius-lg;
+    }
+  }
+}
+
+.catui-media-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: $radius-default;
+  cursor: pointer;
+
+  &:hover {
+    .catui-media-play {
+      opacity: 1;
+    }
+    .catui-media-remove {
+      opacity: 1;
+    }
+  }
+}
+
+.catui-media-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  &.catui-media-thumb-default {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-tertiary, $bg-tertiary);
+    color: var(--text-tertiary, $text-tertiary);
+
+    .material-icons {
+      font-size: $icon-size-lg;
+    }
+  }
+}
+
+.catui-media-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $spacing-10;
+  height: $spacing-10;
+  border-radius: $radius-full;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  opacity: 0.8;
+  transition: opacity $duration-fast $ease-in-out;
+
+  .material-icons {
+    font-size: $icon-size-md;
+  }
+}
+
+.catui-media-remove {
+  position: absolute;
+  top: $spacing-1;
+  right: $spacing-1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $spacing-6;
+  height: $spacing-6;
+  border: none;
+  border-radius: $radius-full;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity $duration-fast $ease-in-out;
+
+  .material-icons {
+    font-size: $icon-size-xs;
+  }
+}
+
+.catui-media-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: $spacing-2;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  font-size: $font-size-xs;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ========================================
+// Dark Mode
+// ========================================
+[data-theme="dark"] {
+  .catui-cropper-btn {
+    background: var(--bg-secondary, $dark-bg-secondary);
+    border-color: var(--border-color, $dark-border-color);
+  }
+
+  .catui-audio-player {
+    background: var(--bg-secondary, $dark-bg-secondary);
+    border-color: var(--border-color, $dark-border-color);
+  }
+}

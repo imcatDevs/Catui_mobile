@@ -369,6 +369,19 @@
     ]
   });
 
+  // ========================================
+  // 페이지 전환 시 정리 (cleanup 함수 등록)
+  // ========================================
+  window._pageCleanup = () => {
+    backToTop?.destroy();
+    scrollProgress?.destroy();
+    virtualScroll?.destroy();
+    infiniteScroll?.destroy();
+    stickyHeader?.destroy();
+    parallax?.destroy();
+    console.log('[Scroll] Cleanup completed');
+  };
+
   console.log('[Scroll] Demo loaded');
 })();
 </script>

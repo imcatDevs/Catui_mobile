@@ -223,13 +223,39 @@
     </div>
     
     <div class="form-group">
-      <label class="form-label">수량</label>
-      <div class="form-number" style="max-width: 160px;">
+      <label class="form-label">Small</label>
+      <div class="form-number form-number-sm">
+        <button class="number-btn">
+          <span class="material-icons">remove</span>
+        </button>
+        <input type="number" class="form-input" value="1" min="1" max="99">
+        <button class="number-btn">
+          <span class="material-icons">add</span>
+        </button>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">Default</label>
+      <div class="form-number" id="qty-default">
         <button class="number-btn" id="qty-dec">
           <span class="material-icons">remove</span>
         </button>
         <input type="number" class="form-input" id="qty-input" value="1" min="1" max="99">
         <button class="number-btn" id="qty-inc">
+          <span class="material-icons">add</span>
+        </button>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">Large</label>
+      <div class="form-number form-number-lg">
+        <button class="number-btn">
+          <span class="material-icons">remove</span>
+        </button>
+        <input type="number" class="form-input" value="1" min="1" max="99">
+        <button class="number-btn">
           <span class="material-icons">add</span>
         </button>
       </div>

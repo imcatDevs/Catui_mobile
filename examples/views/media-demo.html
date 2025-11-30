@@ -1,0 +1,276 @@
+<div class="fade-in">
+  <!-- ImageCropper -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">crop</span>
+        ImageCropper
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">이미지 자르기/회전 컴포넌트</p>
+      
+      <div class="flex gap-2 mb-4">
+        <button id="cropper-load" class="btn btn-outline">이미지 로드</button>
+        <button id="cropper-crop" class="btn btn-primary">크롭 실행</button>
+      </div>
+      
+      <div id="image-cropper" class="mb-4"></div>
+      
+      <p class="text-sm font-medium mb-2">크롭 결과</p>
+      <div id="crop-result" class="p-3 bg-secondary rounded text-center" style="min-height: 100px;">
+        <span class="text-sm text-secondary">크롭 실행 후 결과가 표시됩니다</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- VideoPlayer -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">play_circle</span>
+        VideoPlayer
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">커스텀 비디오 플레이어</p>
+      
+      <div id="video-player" class="mb-4"></div>
+      
+      <p class="text-sm font-medium mb-2">상태</p>
+      <p id="video-status" class="text-sm p-3 bg-secondary rounded">비디오를 재생하세요</p>
+    </div>
+  </div>
+
+  <!-- AudioPlayer -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">music_note</span>
+        AudioPlayer
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">오디오 플레이어 컴포넌트</p>
+      
+      <p class="text-sm font-medium mb-2">기본 테마</p>
+      <div id="audio-default" class="mb-4"></div>
+      
+      <p class="text-sm font-medium mb-2">미니 테마</p>
+      <div id="audio-mini" class="mb-4"></div>
+      
+      <p class="text-sm font-medium mb-2">전체 테마</p>
+      <div id="audio-full" class="mb-4"></div>
+    </div>
+  </div>
+
+  <!-- MediaPreview -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">collections</span>
+        MediaPreview
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">미디어 미리보기 그리드</p>
+      
+      <div id="media-preview" class="mb-4"></div>
+      
+      <div class="flex gap-2 mb-4">
+        <button id="preview-add" class="btn btn-outline">미디어 추가</button>
+        <button id="preview-clear" class="btn btn-secondary">전체 삭제</button>
+      </div>
+      
+      <p class="text-sm font-medium mb-2">상태</p>
+      <p id="preview-status" class="text-sm p-3 bg-secondary rounded">미디어를 클릭하세요</p>
+    </div>
+  </div>
+
+  <!-- 사용 예시 -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">code</span>
+        사용 예시
+      </h3>
+    </div>
+    <div class="card-body">
+      <pre class="demo-code"><code>// 모듈 로드
+const Media = await CATUI.use('media');
+
+// ImageCropper
+const cropper = new Media.ImageCropper({
+  container: '#cropper',
+  aspectRatio: 1,
+  mask: 'circle',
+  onCrop: (result) => console.log(result)
+});
+cropper.setImage('image.jpg');
+const result = await cropper.crop();
+
+// VideoPlayer
+const video = new Media.VideoPlayer({
+  container: '#video',
+  src: 'video.mp4',
+  poster: 'poster.jpg',
+  onPlay: () => console.log('재생'),
+  onPause: () => console.log('일시정지')
+});
+
+// AudioPlayer
+const audio = new Media.AudioPlayer({
+  container: '#audio',
+  src: 'audio.mp3',
+  title: '노래 제목',
+  artist: '아티스트',
+  theme: 'full'
+});
+
+// MediaPreview
+const preview = new Media.MediaPreview({
+  container: '#preview',
+  items: [
+    { type: 'image', src: 'photo.jpg' },
+    { type: 'video', src: 'video.mp4', thumbnail: 'thumb.jpg' }
+  ],
+  removable: true,
+  onClick: (item) => console.log(item)
+});</code></pre>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+(async () => {
+  const Media = await CATUI.use('media');
+  const { Toast } = await CATUI.use('overlays');
+
+  // ========================================
+  // ImageCropper
+  // ========================================
+  const cropper = new Media.ImageCropper({
+    container: '#image-cropper',
+    aspectRatio: 1,
+    mask: 'none',
+    rotatable: true,
+    zoomable: true,
+    guides: true,
+    onReady: () => console.log('Cropper ready'),
+    onCrop: (result) => {
+      const resultEl = document.getElementById('crop-result');
+      resultEl.innerHTML = `<img src="${result.dataURL}" style="max-width: 200px; border-radius: 8px;">`;
+    }
+  });
+
+  // 이미지 로드
+  CATUI('#cropper-load').on('click', () => {
+    cropper.setImage('https://picsum.photos/600/400?random=' + Date.now());
+    Toast.success('이미지를 로드했습니다');
+  });
+
+  // 크롭 실행
+  CATUI('#cropper-crop').on('click', async () => {
+    const result = await cropper.crop();
+    Toast.success('크롭 완료!');
+  });
+
+  // 초기 이미지 로드
+  cropper.setImage('https://picsum.photos/600/400?random=1');
+
+  // ========================================
+  // VideoPlayer
+  // ========================================
+  const videoStatus = CATUI('#video-status');
+
+  const videoPlayer = new Media.VideoPlayer({
+    container: '#video-player',
+    src: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    poster: 'https://picsum.photos/640/360?random=10',
+    controls: true,
+    pip: true,
+    fullscreen: true,
+    playbackRate: true,
+    onPlay: () => videoStatus.text('▶️ 재생 중'),
+    onPause: () => videoStatus.text('⏸️ 일시정지'),
+    onEnded: () => videoStatus.text('✅ 재생 완료'),
+    onTimeUpdate: (current, duration) => {
+      const percent = Math.round((current / duration) * 100);
+      videoStatus.text(`재생 중: ${percent}%`);
+    }
+  });
+
+  // ========================================
+  // AudioPlayer
+  // ========================================
+  const audioSrc = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+
+  // 기본 테마
+  new Media.AudioPlayer({
+    container: '#audio-default',
+    src: audioSrc,
+    theme: 'default'
+  });
+
+  // 미니 테마
+  new Media.AudioPlayer({
+    container: '#audio-mini',
+    src: audioSrc,
+    theme: 'mini'
+  });
+
+  // 전체 테마
+  new Media.AudioPlayer({
+    container: '#audio-full',
+    src: audioSrc,
+    title: 'SoundHelix Song 1',
+    artist: 'SoundHelix',
+    cover: 'https://picsum.photos/200/200?random=20',
+    theme: 'full'
+  });
+
+  // ========================================
+  // MediaPreview
+  // ========================================
+  const previewStatus = CATUI('#preview-status');
+  let addCount = 0;
+
+  const mediaPreview = new Media.MediaPreview({
+    container: '#media-preview',
+    items: [
+      { type: 'image', src: 'https://picsum.photos/200/200?random=30', title: '이미지 1' },
+      { type: 'image', src: 'https://picsum.photos/200/200?random=31', title: '이미지 2' },
+      { type: 'video', src: '', thumbnail: 'https://picsum.photos/200/200?random=32', title: '비디오' },
+      { type: 'image', src: 'https://picsum.photos/200/200?random=33' },
+      { type: 'audio', src: '', title: '오디오' },
+      { type: 'image', src: 'https://picsum.photos/200/200?random=34' },
+    ],
+    columns: 3,
+    removable: true,
+    onClick: (item, index) => {
+      previewStatus.text(`클릭: ${item.title || item.type} (인덱스: ${index})`);
+    },
+    onRemove: (item, index) => {
+      previewStatus.text(`삭제됨: ${item.title || item.type}`);
+      Toast.info('미디어가 삭제되었습니다');
+    }
+  });
+
+  // 미디어 추가
+  CATUI('#preview-add').on('click', () => {
+    addCount++;
+    mediaPreview.add({
+      type: 'image',
+      src: `https://picsum.photos/200/200?random=${Date.now()}`,
+      title: `추가된 이미지 ${addCount}`
+    });
+    previewStatus.text(`미디어 추가됨: 추가된 이미지 ${addCount}`);
+  });
+
+  // 전체 삭제
+  CATUI('#preview-clear').on('click', () => {
+    mediaPreview.clear();
+    previewStatus.text('전체 삭제됨');
+  });
+})();
+</script>
