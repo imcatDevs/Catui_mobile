@@ -33,7 +33,11 @@
     "zip": "powershell Compress-Archive -Path dist/* -DestinationPath catui-mobile-dist.zip -Force",
     "prerelease": "npm run lint && npm run build && npm run zip",
     "release": "npm run prerelease && npm publish",
-    "release:dry": "npm run prerelease && npm publish --dry-run"
+    "release:dry": "npm run prerelease && npm publish --dry-run",
+    "git:commit": "git add -A && git commit -m",
+    "git:tag": "git tag -a v%npm_package_version% -m \"Release v%npm_package_version%\"",
+    "git:push": "git push && git push --tags",
+    "release:git": "npm run prerelease && npm run git:tag && npm run git:push"
   },
   "keywords": [
     "mobile",
