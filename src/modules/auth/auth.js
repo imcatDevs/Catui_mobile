@@ -55,7 +55,7 @@ class OTPInput {
     if (this._container) {
       this._render();
       this._bindEvents();
-      
+
       if (this.options.autoFocus) {
         this._inputs[0]?.focus();
       }
@@ -68,18 +68,18 @@ class OTPInput {
    */
   _render() {
     this._container.className = 'catui-otp-input';
-    
+
     let html = '<div class="catui-otp-fields">';
-    
+
     for (let i = 0; i < this.options.length; i++) {
       // 구분자 추가
       if (this.options.separator && this.options.separatorPosition.includes(i)) {
         html += `<span class="catui-otp-separator">${this.options.separator}</span>`;
       }
-      
+
       // password 타입은 form 밖에서 경고 발생하므로 text + CSS로 마스킹
       const inputType = this.options.type === 'number' ? 'tel' : 'text';
-      
+
       html += `
         <input 
           type="${inputType}"
@@ -93,10 +93,10 @@ class OTPInput {
         />
       `;
     }
-    
+
     html += '</div>';
     this._container.innerHTML = html;
-    
+
     this._inputs = Array.from(this._container.querySelectorAll('.catui-otp-field'));
   }
 
@@ -176,13 +176,13 @@ class OTPInput {
     this._handlers.paste = (e) => {
       e.preventDefault();
       const pastedData = (e.clipboardData || window.clipboardData).getData('text');
-      
+
       if (this.options.onPaste) {
         this.options.onPaste(pastedData);
       }
 
       // 숫자만 추출 (type이 number인 경우)
-      let cleanData = this.options.type === 'number' 
+      let cleanData = this.options.type === 'number'
         ? pastedData.replace(/[^0-9]/g, '')
         : pastedData;
 
@@ -252,11 +252,11 @@ class OTPInput {
    */
   setValue(value) {
     const chars = value.split('').slice(0, this.options.length);
-    
+
     this._inputs.forEach((input, i) => {
       input.value = chars[i] || '';
     });
-    
+
     this._updateValue();
   }
 
@@ -288,7 +288,7 @@ class OTPInput {
    */
   setError(isError) {
     this._isError = isError;
-    
+
     if (isError) {
       this._container.classList.add('is-error');
       // 흔들림 효과
@@ -405,7 +405,7 @@ class PinInput {
    */
   _getKeypadNumbers() {
     const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-    
+
     if (this.options.shuffle) {
       // Fisher-Yates 셔플
       for (let i = numbers.length - 1; i > 0; i--) {
@@ -413,7 +413,7 @@ class PinInput {
         [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
       }
     }
-    
+
     return numbers;
   }
 
@@ -423,30 +423,30 @@ class PinInput {
    */
   _render() {
     this._container.className = 'catui-pin-input';
-    
+
     const numbers = this._getKeypadNumbers();
-    
+
     let html = '';
-    
+
     // 제목
     if (this.options.title) {
       html += `<div class="catui-pin-title">${this.options.title}</div>`;
     }
-    
+
     if (this.options.subtitle) {
       html += `<div class="catui-pin-subtitle">${this.options.subtitle}</div>`;
     }
-    
+
     // 입력 표시
     html += '<div class="catui-pin-display">';
     for (let i = 0; i < this.options.length; i++) {
       html += `<div class="catui-pin-dot" data-index="${i}"></div>`;
     }
     html += '</div>';
-    
+
     // 키패드
     html += '<div class="catui-pin-keypad">';
-    
+
     // 1-9
     for (let i = 0; i < 9; i++) {
       html += `
@@ -455,7 +455,7 @@ class PinInput {
         </button>
       `;
     }
-    
+
     // 생체인증 또는 빈칸
     if (this.options.biometric) {
       html += `
@@ -466,25 +466,25 @@ class PinInput {
     } else {
       html += '<div class="catui-pin-key catui-pin-key-empty"></div>';
     }
-    
+
     // 0
     html += `
       <button class="catui-pin-key" data-value="${numbers[9]}">
         <span class="catui-pin-key-number">${numbers[9]}</span>
       </button>
     `;
-    
+
     // 삭제
     html += `
       <button class="catui-pin-key catui-pin-key-delete" data-action="delete">
         <span class="material-icons">backspace</span>
       </button>
     `;
-    
+
     html += '</div>';
-    
+
     this._container.innerHTML = html;
-    
+
     this._dots = Array.from(this._container.querySelectorAll('.catui-pin-dot'));
     this._keys = Array.from(this._container.querySelectorAll('.catui-pin-key'));
   }
@@ -501,7 +501,7 @@ class PinInput {
 
     this._handlers.keyClick = (e) => {
       if (this._isLocked) return;
-      
+
       const key = e.target.closest('.catui-pin-key');
       if (!key) return;
 
@@ -588,7 +588,7 @@ class PinInput {
     this._dots.forEach((dot, i) => {
       const isFilled = i < this._value.length;
       dot.classList.toggle('is-filled', isFilled);
-      
+
       // 숫자 표시 모드
       if (this.options.display === 'numbers') {
         dot.textContent = this._value[i] || '';
@@ -622,10 +622,10 @@ class PinInput {
   setError(isError) {
     this._isError = isError;
     const display = this._container.querySelector('.catui-pin-display');
-    
+
     if (isError) {
       display.classList.add('is-error', 'shake');
-      
+
       // 진동
       if (this.options.haptic && navigator.vibrate) {
         navigator.vibrate([100, 50, 100]);
@@ -675,7 +675,7 @@ class PinInput {
   setTitle(title, subtitle = '') {
     const titleEl = this._container.querySelector('.catui-pin-title');
     const subtitleEl = this._container.querySelector('.catui-pin-subtitle');
-    
+
     if (titleEl) titleEl.textContent = title;
     if (subtitleEl) subtitleEl.textContent = subtitle;
   }
@@ -760,7 +760,7 @@ class PasswordInput {
    */
   _render() {
     this._container.className = 'catui-password-input';
-    
+
     // form으로 감싸서 Chrome 경고 방지
     let html = `
       <form class="catui-password-form" autocomplete="off" onsubmit="return false;">
@@ -779,7 +779,7 @@ class PasswordInput {
         </div>
       </form>
     `;
-    
+
     if (this.options.showStrength) {
       html += `
         <div class="catui-password-strength">
@@ -797,9 +797,9 @@ class PasswordInput {
         </ul>
       `;
     }
-    
+
     this._container.innerHTML = html;
-    
+
     this._input = this._container.querySelector('.catui-password-value');
     this._toggle = this._container.querySelector('.catui-password-toggle');
     this._strengthFill = this._container.querySelector('.catui-password-strength-fill');
@@ -815,7 +815,7 @@ class PasswordInput {
     // 입력 이벤트
     this._handlers.input = () => {
       const value = this._input.value;
-      
+
       if (this.options.showStrength) {
         this._checkStrength(value);
       }
@@ -829,13 +829,13 @@ class PasswordInput {
     this._handlers.toggle = () => {
       this._isVisible = !this._isVisible;
       this._input.type = this._isVisible ? 'text' : 'password';
-      
+
       const icon = this._toggle.querySelector('.material-icons');
       icon.textContent = this._isVisible ? 'visibility_off' : 'visibility';
     };
 
     this._input.addEventListener('input', this._handlers.input);
-    
+
     if (this._toggle) {
       this._toggle.addEventListener('click', this._handlers.toggle);
     }
@@ -876,7 +876,7 @@ class PasswordInput {
     // 강도 바 업데이트
     let strengthLevel = 'weak';
     let strengthText = '약함';
-    
+
     if (this._strength >= 100) {
       strengthLevel = 'strong';
       strengthText = '강함';
@@ -964,9 +964,9 @@ class PasswordInput {
    */
   setError(isError, message = '') {
     this._container.classList.toggle('is-error', isError);
-    
+
     let errorEl = this._container.querySelector('.catui-password-error');
-    
+
     if (isError && message) {
       if (!errorEl) {
         errorEl = document.createElement('div');
@@ -984,7 +984,7 @@ class PasswordInput {
    */
   destroy() {
     this._input.removeEventListener('input', this._handlers.input);
-    
+
     if (this._toggle) {
       this._toggle.removeEventListener('click', this._handlers.toggle);
     }
@@ -1066,7 +1066,7 @@ class SocialLoginButtons {
   _render() {
     const layoutClass = `is-${this.options.layout}`;
     const sizeClass = `is-${this.options.size}`;
-    
+
     this._container.className = `catui-social-login ${layoutClass} ${sizeClass}`;
     if (this.options.iconOnly) {
       this._container.classList.add('is-icon-only');
@@ -1091,7 +1091,7 @@ class SocialLoginButtons {
     if (typeof provider === 'string') {
       return this._defaultProviders[provider] || { name: provider, icon: 'login', color: '#6B7280', textColor: '#FFFFFF' };
     }
-    
+
     const defaultConfig = this._defaultProviders[provider.id] || {};
     return {
       name: provider.name || defaultConfig.name || provider.id,
@@ -1135,7 +1135,7 @@ class SocialLoginButtons {
       if (!btn) return;
 
       const provider = btn.dataset.provider;
-      
+
       if (this.options.onClick) {
         this.options.onClick(provider);
       }
@@ -1158,7 +1158,7 @@ class SocialLoginButtons {
    * @param {string} id
    */
   removeProvider(id) {
-    this.options.providers = this.options.providers.filter(p => 
+    this.options.providers = this.options.providers.filter(p =>
       (typeof p === 'string' ? p : p.id) !== id
     );
     this._render();
@@ -1187,7 +1187,7 @@ class SocialLoginButtons {
     if (btn) {
       btn.classList.toggle('is-loading', loading);
       btn.disabled = loading;
-      
+
       const icon = btn.querySelector('.catui-social-login-icon');
       if (icon) {
         if (loading) {
@@ -1352,10 +1352,10 @@ class BiometricPrompt {
   _startAuthentication() {
     if (this._state !== 'idle') return;
     this._state = 'authenticating';
-    
+
     const iconWrapper = this._overlay.querySelector('.catui-biometric-icon-wrapper');
     iconWrapper?.classList.add('is-authenticating');
-    
+
     this._setStatus('인증 중...', 'info');
 
     if (this.options.onAuthenticate) {
@@ -1384,11 +1384,11 @@ class BiometricPrompt {
 
     const iconWrapper = this._overlay.querySelector('.catui-biometric-icon-wrapper');
     const icon = this._overlay.querySelector('.catui-biometric-icon');
-    
+
     iconWrapper?.classList.remove('is-authenticating');
     iconWrapper?.classList.add('is-success');
     if (icon) icon.textContent = 'check_circle';
-    
+
     this._setStatus('인증 성공', 'success');
 
     const timerId = setTimeout(() => {
@@ -1407,11 +1407,11 @@ class BiometricPrompt {
 
     const iconWrapper = this._overlay.querySelector('.catui-biometric-icon-wrapper');
     const icon = this._overlay.querySelector('.catui-biometric-icon');
-    
+
     iconWrapper?.classList.remove('is-authenticating');
     iconWrapper?.classList.add('is-error');
     if (icon) icon.textContent = 'error';
-    
+
     this._setStatus(message, 'error');
 
     if (this.options.onError) {
@@ -1425,7 +1425,7 @@ class BiometricPrompt {
         iconWrapper?.classList.remove('is-error');
         if (icon) icon.textContent = this._getIcon();
         this._setStatus('다시 시도하려면 탭하세요', 'info');
-        
+
         // 재시도 클릭 핸들러
         this._handlers.retry = () => {
           this._startAuthentication();

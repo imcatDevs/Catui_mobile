@@ -42,7 +42,7 @@ class DatePicker {
     this._backdrop = null;
     this._isOpen = false;
 
-    this._weekdays = this.options.locale === 'ko' 
+    this._weekdays = this.options.locale === 'ko'
       ? ['일', '월', '화', '수', '목', '금', '토']
       : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
@@ -106,7 +106,7 @@ class DatePicker {
     }
 
     // 월 옵션 생성
-    const monthOptions = this._months.map((m, i) => 
+    const monthOptions = this._months.map((m, i) =>
       `<option value="${i}" ${i === month ? 'selected' : ''}>${m}</option>`
     ).join('');
 
@@ -120,14 +120,14 @@ class DatePicker {
             appearance: none; -webkit-appearance: none;
             padding: 8px 24px 8px 12px; border: 1px solid var(--border-color, #e5e7eb);
             border-radius: 8px; font-size: 16px; font-weight: 600;
-            background: var(--bg-secondary, #F9FAFB) url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\"><path fill=\"%236B7280\" d=\"M7 10l5 5 5-5z\"/></svg>') no-repeat right 8px center;
+            background: var(--bg-secondary, #F9FAFB) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'><path fill='%236B7280' d='M7 10l5 5 5-5z'/></svg>") no-repeat right 8px center;
             color: var(--text-primary, #111827); cursor: pointer;
           ">${yearOptions.join('')}</select>
           <select class="catui-picker-month-select" style="
             appearance: none; -webkit-appearance: none;
             padding: 8px 24px 8px 12px; border: 1px solid var(--border-color, #e5e7eb);
             border-radius: 8px; font-size: 16px; font-weight: 600;
-            background: var(--bg-secondary, #F9FAFB) url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\"><path fill=\"%236B7280\" d=\"M7 10l5 5 5-5z\"/></svg>') no-repeat right 8px center;
+            background: var(--bg-secondary, #F9FAFB) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'><path fill='%236B7280' d='M7 10l5 5 5-5z'/></svg>") no-repeat right 8px center;
             color: var(--text-primary, #111827); cursor: pointer;
           ">${monthOptions}</select>
         </div>
@@ -312,14 +312,14 @@ class DatePicker {
   _update() {
     const yearSelect = this._element.querySelector('.catui-picker-year-select');
     const monthSelect = this._element.querySelector('.catui-picker-month-select');
-    
+
     const year = this._viewDate.getFullYear();
     const month = this._viewDate.getMonth();
-    
+
     // Select 값 업데이트
     if (yearSelect) yearSelect.value = year;
     if (monthSelect) monthSelect.value = month;
-    
+
     // 날짜 업데이트
     this._updateDays();
   }
@@ -332,7 +332,7 @@ class DatePicker {
     const body = this._element.querySelector('.catui-picker-body');
     const year = this._viewDate.getFullYear();
     const month = this._viewDate.getMonth();
-    
+
     body.querySelector('.catui-picker-days').innerHTML = this._renderDays(year, month);
   }
 
@@ -359,7 +359,7 @@ class DatePicker {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, '0');
     const d = String(date.getDate()).padStart(2, '0');
-    
+
     return this.options.format
       .replace('YYYY', y)
       .replace('MM', m)
@@ -512,8 +512,6 @@ class TimePicker {
       transform: translateY(100%);
       transition: transform 0.3s ease;
     `;
-
-    const maxHour = this.options.is24Hour ? 23 : 12;
 
     el.innerHTML = `
       <div class="catui-picker-header" style="text-align: center; padding: 16px; border-bottom: 1px solid var(--border-color);">
@@ -801,7 +799,7 @@ class ColorPicker {
         this._value = preset.dataset.color;
         preview.style.background = this._value;
         if (input) input.value = this._value;
-        
+
         presets.forEach(p => p.style.borderColor = 'transparent');
         preset.style.borderColor = 'var(--primary)';
       });
@@ -916,7 +914,7 @@ class Countdown {
   _render() {
     this._container.className = 'catui-countdown';
     this._container.style.cssText = 'display: flex; gap: 8px; justify-content: center;';
-    
+
     const items = [];
     if (this.options.format.includes('DD')) items.push('days');
     if (this.options.format.includes('HH')) items.push('hours');
@@ -940,7 +938,7 @@ class Countdown {
    */
   start() {
     if (this._interval) return;
-    
+
     this._tick();
     this._interval = setInterval(() => this._tick(), 1000);
   }
@@ -1061,7 +1059,7 @@ class DDay {
     if (this._container) {
       this._render();
       this._update();
-      
+
       if (this.options.showTime) {
         this._interval = setInterval(() => this._update(), 1000);
       }
@@ -1075,11 +1073,11 @@ class DDay {
   _render() {
     this._container.className = 'catui-dday';
     this._container.style.cssText = 'text-align: center; padding: 16px;';
-    
+
     this._container.innerHTML = `
       ${this.options.title ? `<div class="catui-dday-title" style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">${this.options.title}</div>` : ''}
       <div class="catui-dday-value" style="font-size: 48px; font-weight: 700; color: var(--primary);"></div>
-      ${this.options.showTime ? `<div class="catui-dday-time" style="font-size: 14px; color: var(--text-tertiary); margin-top: 4px;"></div>` : ''}
+      ${this.options.showTime ? '<div class="catui-dday-time" style="font-size: 14px; color: var(--text-tertiary); margin-top: 4px;"></div>' : ''}
       <div class="catui-dday-date" style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;"></div>
     `;
   }

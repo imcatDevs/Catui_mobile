@@ -57,7 +57,7 @@ class IntroSlider {
     if (this._container) {
       this._render();
       this._bindEvents();
-      
+
       if (this.options.autoplay) {
         this._startAutoplay();
       }
@@ -69,8 +69,8 @@ class IntroSlider {
    * @private
    */
   _render() {
-    const { slides, showSkip, skipText, pagination, animation } = this.options;
-    
+    const { slides, showSkip, skipText, animation } = this.options;
+
     this._container.className = `catui-intro-slider is-${animation}`;
     this._container.innerHTML = `
       <div class="catui-intro-slides">
@@ -100,7 +100,7 @@ class IntroSlider {
    */
   _renderPagination() {
     const { slides, pagination } = this.options;
-    
+
     if (pagination === 'dots') {
       return `
         <div class="catui-intro-dots">
@@ -162,7 +162,7 @@ class IntroSlider {
       this._stopAutoplay();
     };
 
-    this._handlers.touchmove = (e) => {
+    this._handlers.touchmove = (_e) => {
       if (!this._isDragging) return;
       // 스크롤 방지는 필요시 추가
     };
@@ -170,10 +170,10 @@ class IntroSlider {
     this._handlers.touchend = (e) => {
       if (!this._isDragging) return;
       this._isDragging = false;
-      
+
       const endX = e.changedTouches[0].clientX;
       const diff = this._startX - endX;
-      
+
       if (Math.abs(diff) > 50) {
         if (diff > 0) {
           this.next();
@@ -181,7 +181,7 @@ class IntroSlider {
           this.prev();
         }
       }
-      
+
       if (this.options.autoplay) {
         this._startAutoplay();
       }
@@ -191,7 +191,7 @@ class IntroSlider {
     this._container.querySelector('.catui-intro-btn')?.addEventListener('click', this._handlers.btnClick);
     this._container.querySelector('.catui-intro-skip')?.addEventListener('click', this._handlers.skipClick);
     this._container.querySelector('.catui-intro-dots')?.addEventListener('click', this._handlers.dotClick);
-    
+
     const slides = this._container.querySelector('.catui-intro-slides');
     slides?.addEventListener('touchstart', this._handlers.touchstart, { passive: true });
     slides?.addEventListener('touchmove', this._handlers.touchmove, { passive: true });
@@ -231,7 +231,7 @@ class IntroSlider {
     const slides = this._container.querySelectorAll('.catui-intro-slide');
     const dots = this._container.querySelectorAll('.catui-intro-dot');
     const btn = this._container.querySelector('.catui-intro-btn');
-    
+
     // 슬라이드 활성화
     slides.forEach((slide, i) => {
       slide.classList.toggle('is-active', i === this._currentIndex);
@@ -239,31 +239,31 @@ class IntroSlider {
         slide.style.transform = `translateX(${(i - this._currentIndex) * 100}%)`;
       }
     });
-    
+
     // 닷 활성화
     dots.forEach((dot, i) => {
       dot.classList.toggle('is-active', i === this._currentIndex);
     });
-    
+
     // 프로그레스 바
     const progressBar = this._container.querySelector('.catui-intro-progress-bar');
     if (progressBar) {
       progressBar.style.width = `${((this._currentIndex + 1) / this.options.slides.length) * 100}%`;
     }
-    
+
     // 분수
     const currentEl = this._container.querySelector('.catui-intro-current');
     if (currentEl) {
       currentEl.textContent = this._currentIndex + 1;
     }
-    
+
     // 버튼 텍스트
     if (btn) {
-      btn.textContent = this._currentIndex === this.options.slides.length - 1 
-        ? this.options.doneText 
+      btn.textContent = this._currentIndex === this.options.slides.length - 1
+        ? this.options.doneText
         : this.options.nextText;
     }
-    
+
     // 콜백
     if (this.options.onSlideChange) {
       this.options.onSlideChange(this._currentIndex);
@@ -287,13 +287,13 @@ class IntroSlider {
    */
   close() {
     if (!this._container) return;
-    
+
     const container = this._container;
-    
+
     // 페이드 아웃 애니메이션
     container.style.opacity = '0';
     container.style.transition = 'opacity 0.3s';
-    
+
     setTimeout(() => {
       // DOM에서 제거
       container.remove();
@@ -345,12 +345,12 @@ class IntroSlider {
    */
   destroy() {
     this._stopAutoplay();
-    
+
     if (this._container) {
       this._container.querySelector('.catui-intro-btn')?.removeEventListener('click', this._handlers?.btnClick);
       this._container.querySelector('.catui-intro-skip')?.removeEventListener('click', this._handlers?.skipClick);
       this._container.querySelector('.catui-intro-dots')?.removeEventListener('click', this._handlers?.dotClick);
-      
+
       const slides = this._container.querySelector('.catui-intro-slides');
       slides?.removeEventListener('touchstart', this._handlers?.touchstart);
       slides?.removeEventListener('touchmove', this._handlers?.touchmove);
@@ -359,7 +359,7 @@ class IntroSlider {
       this._container.innerHTML = '';
       this._container.className = '';
     }
-    
+
     this._container = null;
     this._handlers = null;
     this.options = null;
@@ -424,9 +424,9 @@ class FeatureSpotlight {
     // 오버레이 생성
     this._element = document.createElement('div');
     this._element.className = 'catui-spotlight';
-    
+
     // 하이라이트 영역 계산
-    const highlightStyle = shape === 'circle' 
+    const highlightStyle = shape === 'circle'
       ? `
           left: ${rect.left - padding}px;
           top: ${rect.top - padding}px;
@@ -445,7 +445,7 @@ class FeatureSpotlight {
     // 툴팁 위치 계산
     let tooltipStyle = '';
     const gap = 16;
-    
+
     switch (position) {
       case 'top':
         tooltipStyle = `bottom: ${window.innerHeight - rect.top + gap}px; left: ${rect.left}px;`;
@@ -516,13 +516,13 @@ class FeatureSpotlight {
     this._isOpen = false;
 
     this._element?.classList.remove('is-visible');
-    
+
     setTimeout(() => {
       this._element?.removeEventListener('click', this._handlers.backdropClick);
       this._element?.querySelector('.catui-spotlight-actions')?.removeEventListener('click', this._handlers.buttonClick);
       this._element?.remove();
       this._element = null;
-      
+
       if (this.options.onClose) this.options.onClose();
     }, 200);
   }
@@ -595,7 +595,7 @@ class Coachmark {
     if (this._isActive || this.options.steps.length === 0) return;
     this._isActive = true;
     this._currentStep = 0;
-    
+
     this._createOverlay();
     this._showStep(0);
   }
@@ -656,7 +656,7 @@ class Coachmark {
     // 툴팁 위치
     let tooltipStyle = '';
     const gap = 16;
-    
+
     switch (position) {
       case 'top':
         tooltipStyle = `bottom: ${window.innerHeight - rect.top + gap}px; left: ${rect.left}px;`;
@@ -689,10 +689,10 @@ class Coachmark {
           </div>
           <div class="catui-coachmark-right">
             ${!isFirst ? `<button class="catui-coachmark-btn" data-action="prev" type="button">${prevText}</button>` : ''}
-            ${isLast 
-              ? `<button class="catui-coachmark-btn is-primary" data-action="done" type="button">${doneText}</button>`
-              : `<button class="catui-coachmark-btn is-primary" data-action="next" type="button">${nextText}</button>`
-            }
+            ${isLast
+    ? `<button class="catui-coachmark-btn is-primary" data-action="done" type="button">${doneText}</button>`
+    : `<button class="catui-coachmark-btn is-primary" data-action="next" type="button">${nextText}</button>`
+}
           </div>
         </div>
       </div>
@@ -766,7 +766,7 @@ class Coachmark {
   _close() {
     this._isActive = false;
     this._element?.classList.remove('is-visible');
-    
+
     setTimeout(() => {
       this._element?.removeEventListener('click', this._handlers.click);
       this._element?.remove();
@@ -841,7 +841,7 @@ class PermissionGuide {
    */
   _render() {
     const { title, description, permissions, buttonText, skipText } = this.options;
-    
+
     const html = `
       <div class="catui-permission-header">
         <h3 class="catui-permission-title">${title}</h3>
@@ -929,7 +929,7 @@ class PermissionGuide {
     this._isOpen = false;
 
     this._element?.classList.remove('is-visible');
-    
+
     setTimeout(() => {
       this._element?.remove();
       this._element = null;
@@ -941,7 +941,7 @@ class PermissionGuide {
    */
   destroy() {
     this.close();
-    
+
     if (this._container) {
       this._container.removeEventListener('click', this._handlers.click);
       this._container.innerHTML = '';

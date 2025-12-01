@@ -88,7 +88,7 @@ class MonthCalendar {
   _render() {
     const year = this._currentDate.getFullYear();
     const month = this._currentDate.getMonth();
-    
+
     this._container.className = 'catui-calendar';
     this._container.innerHTML = `
       <div class="catui-calendar-header">
@@ -120,29 +120,29 @@ class MonthCalendar {
     const lastDay = new Date(year, month + 1, 0);
     const startDay = (firstDay.getDay() - this.options.firstDayOfWeek + 7) % 7;
     const totalDays = lastDay.getDate();
-    
+
     const prevMonthLastDay = new Date(year, month, 0).getDate();
     const days = [];
-    
+
     // 이전 달
     for (let i = startDay - 1; i >= 0; i--) {
       const date = new Date(year, month - 1, prevMonthLastDay - i);
       days.push(this._createDayHtml(date, true));
     }
-    
+
     // 현재 달
     for (let i = 1; i <= totalDays; i++) {
       const date = new Date(year, month, i);
       days.push(this._createDayHtml(date, false));
     }
-    
+
     // 다음 달
     const remaining = 42 - days.length;
     for (let i = 1; i <= remaining; i++) {
       const date = new Date(year, month + 1, i);
       days.push(this._createDayHtml(date, true));
     }
-    
+
     return days.join('');
   }
 
@@ -159,12 +159,12 @@ class MonthCalendar {
     const isWeekend = date.getDay() === 0 || date.getDay() === 6;
     const events = this._getEventsForDate(date);
     const isInRange = this._isInRange(date);
-    
+
     if (isAdjacent && !this.options.showAdjacentMonths) {
       return '<div class="catui-calendar-day is-empty"></div>';
     }
-    
-    let classes = ['catui-calendar-day'];
+
+    const classes = ['catui-calendar-day'];
     if (isAdjacent) classes.push('is-adjacent');
     if (isToday) classes.push('is-today');
     if (isSelected) classes.push('is-selected');
@@ -172,7 +172,7 @@ class MonthCalendar {
     if (isWeekend) classes.push('is-weekend');
     if (isInRange) classes.push('is-in-range');
     if (this._rangeStart && dateStr === this._formatDate(this._rangeStart)) classes.push('is-range-start');
-    
+
     return `
       <div class="${classes.join(' ')}" data-date="${dateStr}">
         <span class="catui-calendar-day-num">${date.getDate()}</span>
@@ -224,10 +224,10 @@ class MonthCalendar {
    */
   _isInRange(date) {
     if (this.options.selectionMode !== 'range' || this._selectedDates.length !== 2) return false;
-    
+
     const start = this._parseDate(this._selectedDates[0]);
     const end = this._parseDate(this._selectedDates[1]);
-    
+
     return date > start && date < end;
   }
 
@@ -237,17 +237,17 @@ class MonthCalendar {
    */
   _isDisabled(date) {
     const dateStr = this._formatDate(date);
-    
+
     // 비활성 날짜
     if (this.options.disabledDates.includes(dateStr)) return true;
-    
+
     // 비활성 요일
     if (this.options.disabledDays.includes(date.getDay())) return true;
-    
+
     // 범위 제한
     if (this.options.minDate && date < new Date(this.options.minDate)) return true;
     if (this.options.maxDate && date > new Date(this.options.maxDate)) return true;
-    
+
     return false;
   }
 
@@ -274,14 +274,14 @@ class MonthCalendar {
         else if (action === 'next') this.nextMonth();
         return;
       }
-      
+
       // 날짜 선택
       const dayEl = e.target.closest('.catui-calendar-day');
       if (dayEl && !dayEl.classList.contains('is-disabled') && !dayEl.classList.contains('is-empty')) {
         this._handleDateSelect(dayEl.dataset.date);
         return;
       }
-      
+
       // 이벤트 클릭
       const eventEl = e.target.closest('.catui-calendar-event');
       if (eventEl && this.options.onEventClick) {
@@ -300,7 +300,7 @@ class MonthCalendar {
    */
   _handleDateSelect(dateStr) {
     const { selectionMode } = this.options;
-    
+
     if (selectionMode === 'single') {
       this._selectedDates = [dateStr];
     } else if (selectionMode === 'multiple') {
@@ -325,9 +325,9 @@ class MonthCalendar {
         this._rangeStart = null;
       }
     }
-    
+
     this._updateDays();
-    
+
     if (this.options.onDateSelect) {
       if (selectionMode === 'single') {
         this.options.onDateSelect(this._parseDate(dateStr));
@@ -358,7 +358,7 @@ class MonthCalendar {
     this._currentDate.setMonth(this._currentDate.getMonth() - 1);
     this._render();
     this._bindEvents();
-    
+
     if (this.options.onMonthChange) {
       this.options.onMonthChange(this._currentDate.getFullYear(), this._currentDate.getMonth());
     }
@@ -371,7 +371,7 @@ class MonthCalendar {
     this._currentDate.setMonth(this._currentDate.getMonth() + 1);
     this._render();
     this._bindEvents();
-    
+
     if (this.options.onMonthChange) {
       this.options.onMonthChange(this._currentDate.getFullYear(), this._currentDate.getMonth());
     }
@@ -386,7 +386,7 @@ class MonthCalendar {
     this._currentDate = new Date(year, month, 1);
     this._render();
     this._bindEvents();
-    
+
     if (this.options.onMonthChange) {
       this.options.onMonthChange(year, month);
     }
@@ -528,7 +528,7 @@ class WeekView {
     const { startHour, endHour, hourHeight } = this.options;
     const days = this._getWeekDays();
     const today = new Date().toDateString();
-    
+
     this._container.className = 'catui-weekview';
     this._container.innerHTML = `
       <div class="catui-weekview-header">
@@ -562,7 +562,7 @@ class WeekView {
   _getWeekDays() {
     const days = [];
     const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
-    
+
     for (let i = 0; i < 7; i++) {
       const date = new Date(this._weekStart);
       date.setDate(date.getDate() + i);
@@ -571,7 +571,7 @@ class WeekView {
         name: dayNames[date.getDay()]
       });
     }
-    
+
     return days;
   }
 
@@ -582,7 +582,7 @@ class WeekView {
   _renderTimeSlots() {
     const { startHour, endHour, hourHeight } = this.options;
     let html = '';
-    
+
     for (let h = startHour; h < endHour; h++) {
       const timeStr = `${String(h).padStart(2, '0')}:00`;
       html += `
@@ -591,7 +591,7 @@ class WeekView {
         </div>
       `;
     }
-    
+
     return html;
   }
 
@@ -605,19 +605,19 @@ class WeekView {
       const eventDate = new Date(e.start || e.date);
       return this._formatDate(eventDate) === dateStr;
     });
-    
+
     const { startHour, hourHeight } = this.options;
-    
+
     return events.map(event => {
       const start = new Date(event.start || event.date);
       const end = event.end ? new Date(event.end) : new Date(start.getTime() + 60 * 60 * 1000);
-      
+
       const startMinutes = (start.getHours() - startHour) * 60 + start.getMinutes();
       const duration = (end - start) / (1000 * 60);
-      
+
       const top = (startMinutes / 60) * hourHeight;
       const height = (duration / 60) * hourHeight;
-      
+
       return `
         <div class="catui-weekview-event" 
              style="top: ${top}px; height: ${height}px; background: ${event.color || 'var(--primary)'};"
@@ -661,7 +661,7 @@ class WeekView {
         if (event) this.options.onEventClick(event);
         return;
       }
-      
+
       const column = e.target.closest('.catui-weekview-column');
       if (column && this.options.onTimeSlotClick) {
         const rect = column.getBoundingClientRect();
@@ -778,7 +778,7 @@ class DateRangePicker {
    */
   _render() {
     const { presets } = this.options;
-    
+
     this._container.className = 'catui-daterange';
     this._container.innerHTML = `
       <div class="catui-daterange-presets">
@@ -811,7 +811,7 @@ class DateRangePicker {
     const year = this._currentMonth.getFullYear();
     const month = this._currentMonth.getMonth();
     const monthName = this._currentMonth.toLocaleDateString(this.options.locale, { year: 'numeric', month: 'long' });
-    
+
     return `
       <div class="catui-daterange-header">
         <button class="catui-daterange-nav" data-action="prev" type="button">
@@ -842,33 +842,33 @@ class DateRangePicker {
     const lastDay = new Date(year, month + 1, 0);
     const startDay = firstDay.getDay();
     const totalDays = lastDay.getDate();
-    
+
     const days = [];
-    
+
     // 빈 칸
     for (let i = 0; i < startDay; i++) {
       days.push('<div class="catui-daterange-day is-empty"></div>');
     }
-    
+
     // 날짜
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     for (let i = 1; i <= totalDays; i++) {
       const date = new Date(year, month, i);
       const dateStr = this._formatDate(date);
-      
-      let classes = ['catui-daterange-day'];
-      
+
+      const classes = ['catui-daterange-day'];
+
       if (date.getTime() === today.getTime()) classes.push('is-today');
       if (this._isDisabled(date)) classes.push('is-disabled');
       if (this._startDate && dateStr === this._formatDate(this._startDate)) classes.push('is-start');
       if (this._endDate && dateStr === this._formatDate(this._endDate)) classes.push('is-end');
       if (this._isInRange(date)) classes.push('is-in-range');
-      
+
       days.push(`<div class="${classes.join(' ')}" data-date="${dateStr}">${i}</div>`);
     }
-    
+
     return days.join('');
   }
 
@@ -922,7 +922,7 @@ class DateRangePicker {
         this._applyPreset(parseInt(presetBtn.dataset.preset));
         return;
       }
-      
+
       // 입력 필드
       const inputEl = e.target.closest('.catui-daterange-input');
       if (inputEl) {
@@ -930,7 +930,7 @@ class DateRangePicker {
         this._updateInputs();
         return;
       }
-      
+
       // 네비게이션
       const navBtn = e.target.closest('.catui-daterange-nav');
       if (navBtn) {
@@ -942,7 +942,7 @@ class DateRangePicker {
         this._updateCalendar();
         return;
       }
-      
+
       // 날짜 선택
       const dayEl = e.target.closest('.catui-daterange-day');
       if (dayEl && !dayEl.classList.contains('is-disabled') && !dayEl.classList.contains('is-empty')) {
@@ -961,7 +961,7 @@ class DateRangePicker {
     const preset = this.options.presets[index];
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     if (preset.type === 'month') {
       this._startDate = new Date(today.getFullYear(), today.getMonth(), 1);
       this._endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
@@ -973,7 +973,7 @@ class DateRangePicker {
       this._startDate = new Date(today);
       this._startDate.setDate(this._startDate.getDate() - (preset.days || 0));
     }
-    
+
     this._render();
     this._bindEvents();
     this._emitChange();
@@ -985,7 +985,7 @@ class DateRangePicker {
    */
   _selectDate(dateStr) {
     const date = new Date(dateStr);
-    
+
     if (this._selecting === 'start') {
       this._startDate = date;
       if (this._endDate && date > this._endDate) {
@@ -1001,7 +1001,7 @@ class DateRangePicker {
       }
       this._selecting = 'start';
     }
-    
+
     this._render();
     this._bindEvents();
     this._emitChange();
@@ -1135,14 +1135,14 @@ class EventCard {
     const { event, compact, locale } = this.options;
     const start = new Date(event.start);
     const end = event.end ? new Date(event.end) : null;
-    
+
     const dateStr = start.toLocaleDateString(locale, { month: 'short', day: 'numeric', weekday: 'short' });
     const timeStr = event.allDay ? '종일' : start.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
     const endTimeStr = end ? end.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' }) : '';
-    
+
     this._container.className = `catui-eventcard ${compact ? 'is-compact' : ''}`;
     this._container.style.setProperty('--event-color', event.color || 'var(--primary)');
-    
+
     this._container.innerHTML = `
       <div class="catui-eventcard-indicator"></div>
       <div class="catui-eventcard-content">
@@ -1198,7 +1198,7 @@ class EventCard {
         }
         return;
       }
-      
+
       if (this.options.onClick) {
         this.options.onClick(this.options.event);
       }

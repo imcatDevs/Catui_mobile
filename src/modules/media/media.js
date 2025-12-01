@@ -321,7 +321,7 @@ class ImageCropper {
     const wrapper = this._container.querySelector('.catui-cropper-wrapper');
     const rect = wrapper.getBoundingClientRect();
 
-    let size = Math.min(rect.width, rect.height) * 0.6;
+    const size = Math.min(rect.width, rect.height) * 0.6;
     let width = size;
     let height = size;
 
@@ -891,7 +891,7 @@ class AudioPlayer {
 
     const coverHtml = this.options.cover
       ? `<img class="catui-audio-cover" src="${this.options.cover}" alt="">`
-      : `<div class="catui-audio-cover catui-audio-cover-default"><span class="material-icons">music_note</span></div>`;
+      : '<div class="catui-audio-cover catui-audio-cover-default"><span class="material-icons">music_note</span></div>';
 
     this._container.innerHTML = `
       <audio 
@@ -1201,10 +1201,10 @@ class MediaPreview {
 
     return `
       <div class="catui-media-item" data-index="${index}" data-type="${item.type || 'image'}">
-        ${thumbnail 
-          ? `<img class="catui-media-thumb" src="${thumbnail}" alt="${item.title || ''}">`
-          : `<div class="catui-media-thumb catui-media-thumb-default"><span class="material-icons">${isAudio ? 'music_note' : 'image'}</span></div>`
-        }
+        ${thumbnail
+    ? `<img class="catui-media-thumb" src="${thumbnail}" alt="${item.title || ''}">`
+    : `<div class="catui-media-thumb catui-media-thumb-default"><span class="material-icons">${isAudio ? 'music_note' : 'image'}</span></div>`
+}
         ${this.options.playable && (isVideo || isAudio) ? `
           <div class="catui-media-play">
             <span class="material-icons">${isVideo ? 'play_arrow' : 'music_note'}</span>

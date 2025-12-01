@@ -116,7 +116,7 @@ class SearchBar {
     // 입력
     this._handlers.input = (e) => {
       const value = e.target.value;
-      
+
       // 지우기 버튼 표시/숨김
       if (this._clearBtn) {
         this._clearBtn.style.display = value ? 'flex' : 'none';
@@ -182,7 +182,7 @@ class SearchBar {
       if (this._clearBtn) {
         this._clearBtn.style.display = 'none';
       }
-      
+
       if (this.options.expandable) {
         this._isExpanded = false;
         this._container.classList.remove('is-expanded');
@@ -481,16 +481,16 @@ class SearchHistory {
    */
   add(text) {
     if (!text || typeof text !== 'string') return;
-    
+
     text = text.trim();
     if (!text) return;
 
     // 중복 제거
     this._items = this._items.filter(item => item !== text);
-    
+
     // 맨 앞에 추가
     this._items.unshift(text);
-    
+
     // 최대 개수 제한
     if (this._items.length > this.options.maxItems) {
       this._items = this._items.slice(0, this.options.maxItems);
@@ -705,7 +705,7 @@ class SearchFilter {
         `;
         break;
 
-      case 'range':
+      case 'range': {
         const value = this._values[filter.id] || filter.min || 0;
         content = `
           <div class="catui-search-filter-range" data-id="${filter.id}">
@@ -718,6 +718,7 @@ class SearchFilter {
           </div>
         `;
         break;
+      }
 
       case 'chips':
         content = `
@@ -764,11 +765,11 @@ class SearchFilter {
       this.options.filters.forEach(filter => {
         this._values[filter.id] = filter.value !== undefined ? filter.value : null;
       });
-      
+
       // UI 업데이트
-      this._overlay.querySelector('.catui-search-filter-body').innerHTML = 
+      this._overlay.querySelector('.catui-search-filter-body').innerHTML =
         this.options.filters.map(filter => this._renderFilter(filter)).join('');
-      
+
       this._bindFilterEvents();
 
       if (this.options.onReset) {
@@ -834,7 +835,7 @@ class SearchFilter {
       const id = container.dataset.id;
       const input = container.querySelector('input');
       const valueEl = container.querySelector('.catui-search-filter-range-value');
-      
+
       input.addEventListener('input', () => {
         this._values[id] = parseInt(input.value);
         valueEl.textContent = input.value;
@@ -893,7 +894,7 @@ class SearchFilter {
    * @returns {number}
    */
   getActiveCount() {
-    return Object.values(this._values).filter(v => 
+    return Object.values(this._values).filter(v =>
       v !== null && v !== undefined && (Array.isArray(v) ? v.length > 0 : true)
     ).length;
   }
@@ -1016,22 +1017,22 @@ class SearchSuggestion {
     this._container.innerHTML = `
       <div class="catui-search-suggestion-list">
         ${this._suggestions.slice(0, this.options.maxItems).map((item, index) => {
-          if (this.options.renderItem) {
-            return this.options.renderItem(item, index, this._query);
-          }
-          
-          const text = typeof item === 'string' ? item : item.text || item.label || item.title;
-          const highlighted = this.options.highlight ? this._highlight(text, this._query) : text;
-          const icon = item.icon || 'search';
+    if (this.options.renderItem) {
+      return this.options.renderItem(item, index, this._query);
+    }
 
-          return `
+    const text = typeof item === 'string' ? item : item.text || item.label || item.title;
+    const highlighted = this.options.highlight ? this._highlight(text, this._query) : text;
+    const icon = item.icon || 'search';
+
+    return `
             <div class="catui-search-suggestion-item ${index === this._selectedIndex ? 'is-selected' : ''}" 
               data-index="${index}">
               <span class="catui-search-suggestion-icon material-icons">${icon}</span>
               <span class="catui-search-suggestion-text">${highlighted}</span>
             </div>
           `;
-        }).join('')}
+  }).join('')}
       </div>
     `;
   }
@@ -1144,8 +1145,8 @@ class SearchSuggestion {
    */
   selectPrev() {
     if (this._suggestions.length === 0) return;
-    this._selectedIndex = this._selectedIndex <= 0 
-      ? this._suggestions.length - 1 
+    this._selectedIndex = this._selectedIndex <= 0
+      ? this._suggestions.length - 1
       : this._selectedIndex - 1;
     this._render();
     this._bindEvents();

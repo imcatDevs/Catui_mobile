@@ -4,6 +4,10 @@ module.exports = {
     es2021: true,
     node: true
   },
+  globals: {
+    CATUI: 'readonly',
+    Kakao: 'readonly'
+  },
   extends: 'eslint:recommended',
   parserOptions: {
     ecmaVersion: 'latest',

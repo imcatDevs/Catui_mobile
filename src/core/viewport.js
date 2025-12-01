@@ -13,10 +13,10 @@ export class ViewportManager {
     this._handlers = new Map();
     this._currentOrientation = this._getOrientation();
     this._viewportMeta = null;
-    
+
     this._onResize = this._handleResize.bind(this);
     this._onOrientationChange = this._handleOrientationChange.bind(this);
-    
+
     window.addEventListener('resize', this._onResize);
     window.addEventListener('orientationchange', this._onOrientationChange);
   }
@@ -52,13 +52,13 @@ export class ViewportManager {
   get safeAreaInsets() {
     const computedStyle = getComputedStyle(document.documentElement);
     return {
-      top: parseInt(computedStyle.getPropertyValue('--sat') || 
+      top: parseInt(computedStyle.getPropertyValue('--sat') ||
            computedStyle.getPropertyValue('env(safe-area-inset-top)') || '0'),
-      right: parseInt(computedStyle.getPropertyValue('--sar') || 
+      right: parseInt(computedStyle.getPropertyValue('--sar') ||
              computedStyle.getPropertyValue('env(safe-area-inset-right)') || '0'),
-      bottom: parseInt(computedStyle.getPropertyValue('--sab') || 
+      bottom: parseInt(computedStyle.getPropertyValue('--sab') ||
               computedStyle.getPropertyValue('env(safe-area-inset-bottom)') || '0'),
-      left: parseInt(computedStyle.getPropertyValue('--sal') || 
+      left: parseInt(computedStyle.getPropertyValue('--sal') ||
             computedStyle.getPropertyValue('env(safe-area-inset-left)') || '0')
     };
   }
@@ -78,7 +78,7 @@ export class ViewportManager {
     };
 
     const settings = { ...defaults, ...options };
-    
+
     let meta = document.querySelector('meta[name="viewport"]');
     if (!meta) {
       meta = document.createElement('meta');
@@ -105,12 +105,12 @@ export class ViewportManager {
   fixVhUnit() {
     // 중복 호출 방지
     if (this._vhHandler) return;
-    
+
     this._vhHandler = () => {
       const vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--vh', `${vh}px`);
     };
-    
+
     this._vhHandler();
     window.addEventListener('resize', this._vhHandler);
   }
@@ -121,7 +121,7 @@ export class ViewportManager {
   setupSafeAreaVariables() {
     // 중복 호출 방지
     if (document.getElementById('catui-safe-area-vars')) return;
-    
+
     const style = document.createElement('style');
     style.id = 'catui-safe-area-vars';
     style.textContent = `
@@ -217,13 +217,13 @@ export class ViewportManager {
   destroy() {
     window.removeEventListener('resize', this._onResize);
     window.removeEventListener('orientationchange', this._onOrientationChange);
-    
+
     // fixVhUnit 리스너 제거
     if (this._vhHandler) {
       window.removeEventListener('resize', this._vhHandler);
       this._vhHandler = null;
     }
-    
+
     this._handlers.clear();
   }
 }
@@ -243,7 +243,7 @@ export class DeviceDetector {
    * @returns {boolean}
    */
   get isIOS() {
-    return /iphone|ipad|ipod/.test(this._ua) || 
+    return /iphone|ipad|ipod/.test(this._ua) ||
            (this._platform === 'macintel' && navigator.maxTouchPoints > 1);
   }
 
@@ -268,7 +268,7 @@ export class DeviceDetector {
    * @returns {boolean}
    */
   get isTablet() {
-    return /tablet|ipad/.test(this._ua) || 
+    return /tablet|ipad/.test(this._ua) ||
            (this.isAndroid && !/mobile/.test(this._ua));
   }
 
@@ -277,7 +277,7 @@ export class DeviceDetector {
    * @returns {boolean}
    */
   get hasTouch() {
-    return 'ontouchstart' in window || 
+    return 'ontouchstart' in window ||
            navigator.maxTouchPoints > 0 ||
            navigator.msMaxTouchPoints > 0;
   }
@@ -296,10 +296,10 @@ export class DeviceDetector {
    * @returns {Object}
    */
   get networkInfo() {
-    const connection = navigator.connection || 
-                       navigator.mozConnection || 
+    const connection = navigator.connection ||
+                       navigator.mozConnection ||
                        navigator.webkitConnection;
-    
+
     if (connection) {
       return {
         type: connection.effectiveType,
@@ -308,7 +308,7 @@ export class DeviceDetector {
         saveData: connection.saveData
       };
     }
-    
+
     return {
       type: 'unknown',
       online: navigator.onLine
@@ -442,7 +442,7 @@ export class KeyboardManager {
   _handleViewportResize() {
     const currentHeight = window.visualViewport.height;
     const keyboardHeight = this._initialViewportHeight - currentHeight;
-    
+
     if (keyboardHeight > 100) {
       if (!this._isKeyboardVisible) {
         this._isKeyboardVisible = true;
@@ -465,7 +465,7 @@ export class KeyboardManager {
   _handleResize() {
     const currentHeight = window.innerHeight;
     const heightDiff = this._initialViewportHeight - currentHeight;
-    
+
     if (heightDiff > 100) {
       if (!this._isKeyboardVisible) {
         this._isKeyboardVisible = true;
@@ -514,7 +514,7 @@ export class KeyboardManager {
   destroy() {
     // 화면 회전 리스너 제거
     window.removeEventListener('orientationchange', this._onOrientationChange);
-    
+
     if ('visualViewport' in window) {
       window.visualViewport.removeEventListener('resize', this._onViewportResize);
     } else {

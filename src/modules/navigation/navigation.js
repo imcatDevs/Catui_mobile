@@ -28,13 +28,13 @@ class TabBar {
       ...options
     };
 
-    this._container = typeof this.options.container === 'string' 
-      ? document.querySelector(this.options.container) 
+    this._container = typeof this.options.container === 'string'
+      ? document.querySelector(this.options.container)
       : this.options.container;
-    
+
     this._activeIndex = this.options.activeIndex;
     this._clickHandler = null;
-    
+
     if (this._container) {
       this._render();
       this._bindEvents();
@@ -114,7 +114,7 @@ class TabBar {
     if (!item) return;
 
     let badgeEl = item.querySelector('.catui-tabbar-badge');
-    
+
     if (badge === null || badge === undefined) {
       badgeEl?.remove();
     } else {
@@ -194,7 +194,7 @@ class SwipeTabs {
       </div>
       <div class="catui-swipe-tabs-content">
         <div class="catui-swipe-tabs-panels" style="transform: translateX(-${this._activeIndex * 100}%);">
-          ${this.options.tabs.map((tab, i) => `
+          ${this.options.tabs.map((tab, _i) => `
             <div class="catui-swipe-tabs-panel">${tab.content}</div>
           `).join('')}
         </div>
@@ -219,7 +219,7 @@ class SwipeTabs {
     // 스와이프
     if (this.options.swipeable) {
       this._panels = this._container.querySelector('.catui-swipe-tabs-panels');
-      
+
       this._handlers.touchstart = (e) => {
         this._startX = e.touches[0].clientX;
         this._isDragging = true;
@@ -237,12 +237,12 @@ class SwipeTabs {
       this._handlers.touchend = () => {
         if (!this._isDragging) return;
         this._isDragging = false;
-        
+
         const diff = this._currentX - this._startX;
         const threshold = this._container.offsetWidth * 0.2;
-        
+
         this._panels.style.transition = `transform ${this.options.animationDuration}ms ease`;
-        
+
         if (diff > threshold && this._activeIndex > 0) {
           this.setActive(this._activeIndex - 1);
         } else if (diff < -threshold && this._activeIndex < this.options.tabs.length - 1) {
@@ -266,7 +266,7 @@ class SwipeTabs {
     const indicator = this._container.querySelector('.catui-swipe-tabs-indicator');
     const tabs = this._container.querySelectorAll('.catui-swipe-tabs-tab');
     const activeTab = tabs[this._activeIndex];
-    
+
     if (indicator && activeTab) {
       indicator.style.width = `${activeTab.offsetWidth}px`;
       indicator.style.transform = `translateX(${activeTab.offsetLeft}px)`;
@@ -366,8 +366,8 @@ class AppBar {
    * @private
    */
   _render() {
-    const variantClass = this.options.variant !== 'default' 
-      ? ` catui-appbar-${this.options.variant}` 
+    const variantClass = this.options.variant !== 'default'
+      ? ` catui-appbar-${this.options.variant}`
       : '';
     const fixedClass = this.options.fixed ? ' catui-appbar-fixed' : '';
 
@@ -515,7 +515,7 @@ class PullToRefresh {
       transition: height 0.2s ease;
       color: var(--text-tertiary, #9CA3AF);
     `;
-    
+
     this._container.style.position = 'relative';
     this._container.insertBefore(this._indicator, this._container.firstChild);
   }
@@ -537,17 +537,17 @@ class PullToRefresh {
 
     this._handlers.touchmove = (e) => {
       if (!this._canPull || this._isRefreshing) return;
-      
+
       const currentY = e.touches[0].clientY;
       this._pullDistance = Math.min(currentY - this._startY, this.options.maxPull);
-      
+
       if (this._pullDistance > 0) {
         this._indicator.style.height = `${this._pullDistance}px`;
-        
+
         const icon = this._indicator.querySelector('.material-icons');
         const rotation = Math.min(this._pullDistance / this.options.threshold * 180, 180);
         icon.style.transform = `rotate(${rotation}deg)`;
-        
+
         if (this._pullDistance >= this.options.threshold) {
           this._indicator.classList.add('is-ready');
         } else {
@@ -580,7 +580,7 @@ class PullToRefresh {
     this._isRefreshing = true;
     this._indicator.style.height = `${this.options.threshold}px`;
     this._indicator.classList.add('is-refreshing');
-    
+
     const icon = this._indicator.querySelector('.material-icons');
     icon.style.animation = 'catui-ptr-spin 1s linear infinite';
 
@@ -596,10 +596,10 @@ class PullToRefresh {
   _endRefresh() {
     this._isRefreshing = false;
     this._indicator.classList.remove('is-refreshing', 'is-ready');
-    
+
     const icon = this._indicator.querySelector('.material-icons');
     icon.style.animation = '';
-    
+
     this._reset();
   }
 
@@ -610,7 +610,7 @@ class PullToRefresh {
   _reset() {
     this._pullDistance = 0;
     this._indicator.style.height = '0';
-    
+
     const icon = this._indicator.querySelector('.material-icons');
     icon.style.transform = '';
   }
@@ -685,7 +685,7 @@ class ScrollSpy {
    */
   _bindEvents() {
     this._scrollHandler = () => this._onScroll();
-    
+
     if (this._container === window) {
       window.addEventListener('scroll', this._scrollHandler, { passive: true });
     } else {
@@ -701,8 +701,8 @@ class ScrollSpy {
    * @private
    */
   _onScroll() {
-    const scrollTop = this._container === window 
-      ? window.scrollY 
+    const scrollTop = this._container === window
+      ? window.scrollY
       : this._container.scrollTop;
 
     let activeSection = null;
@@ -721,7 +721,7 @@ class ScrollSpy {
       if (id !== this._activeId) {
         this._activeId = id;
         this._updateNav(id);
-        
+
         if (this.options.onChange) {
           this.options.onChange(id, activeSection);
         }
@@ -738,7 +738,7 @@ class ScrollSpy {
     this._navItems.forEach(item => {
       const href = item.getAttribute('href');
       const target = item.dataset.spyNav;
-      
+
       if (href === `#${activeId}` || target === activeId) {
         item.classList.add('is-active');
       } else {
@@ -753,12 +753,12 @@ class ScrollSpy {
    * @param {boolean} [smooth=true] - 부드러운 스크롤
    */
   scrollTo(id, smooth = true) {
-    const section = document.getElementById(id) || 
+    const section = document.getElementById(id) ||
                     document.querySelector(`[data-spy-section="${id}"]`);
-    
+
     if (section) {
       const top = section.offsetTop - this.options.offset;
-      
+
       if (this._container === window) {
         window.scrollTo({ top, behavior: smooth ? 'smooth' : 'auto' });
       } else {
@@ -835,7 +835,7 @@ class Collapse {
   _init() {
     this._content.classList.add('catui-collapse-content');
     this._trigger.classList.add('catui-collapse-trigger');
-    
+
     // 초기 상태 설정
     if (this._expanded) {
       this._content.style.height = 'auto';
@@ -868,7 +868,7 @@ class Collapse {
    */
   toggle() {
     if (this._isAnimating) return;
-    
+
     if (this._expanded) {
       this.collapse();
     } else {
@@ -881,7 +881,7 @@ class Collapse {
    */
   expand() {
     if (this._expanded || this._isAnimating) return;
-    
+
     this._isAnimating = true;
     this._expanded = true;
 
@@ -889,10 +889,10 @@ class Collapse {
     this._content.style.height = 'auto';
     const height = this._content.scrollHeight;
     this._content.style.height = '0';
-    
+
     // 리플로우 강제
     this._content.offsetHeight;
-    
+
     this._content.style.overflow = 'hidden';
     this._content.style.height = `${height}px`;
     this._content.classList.add('is-expanded');
@@ -903,7 +903,7 @@ class Collapse {
       this._content.style.height = 'auto';
       this._content.style.overflow = '';
       this._isAnimating = false;
-      
+
       if (this.options.onToggle) {
         this.options.onToggle(true, this);
       }
@@ -915,7 +915,7 @@ class Collapse {
    */
   collapse() {
     if (!this._expanded || this._isAnimating) return;
-    
+
     this._isAnimating = true;
     this._expanded = false;
 
@@ -923,10 +923,10 @@ class Collapse {
     const height = this._content.scrollHeight;
     this._content.style.height = `${height}px`;
     this._content.style.overflow = 'hidden';
-    
+
     // 리플로우 강제
     this._content.offsetHeight;
-    
+
     this._content.style.height = '0';
     this._content.classList.remove('is-expanded');
     this._trigger.classList.remove('is-expanded');
@@ -934,7 +934,7 @@ class Collapse {
 
     setTimeout(() => {
       this._isAnimating = false;
-      
+
       if (this.options.onToggle) {
         this.options.onToggle(false, this);
       }
@@ -956,14 +956,14 @@ class Collapse {
     if (this._clickHandler && this._trigger) {
       this._trigger.removeEventListener('click', this._clickHandler);
     }
-    
+
     if (this._content) {
       this._content.classList.remove('catui-collapse-content', 'is-expanded');
       this._content.style.height = '';
       this._content.style.overflow = '';
       this._content.style.transition = '';
     }
-    
+
     if (this._trigger) {
       this._trigger.classList.remove('catui-collapse-trigger', 'is-expanded');
       this._trigger.removeAttribute('aria-expanded');
@@ -1023,7 +1023,7 @@ class Accordion {
    */
   _render() {
     this._container.className = 'catui-accordion';
-    
+
     if (this.options.items.length > 0) {
       // 옵션으로 전달된 아이템 렌더링
       this._container.innerHTML = this.options.items.map((item, index) => {
@@ -1034,12 +1034,12 @@ class Accordion {
 
     // 아이템 참조 저장
     this._items = Array.from(this._container.querySelectorAll('.catui-accordion-item'));
-    
+
     // 초기 펼침 상태 적용
-    this._items.forEach((item, index) => {
+    this._items.forEach((item, _index) => {
       const content = item.querySelector('.catui-accordion-content');
       const header = item.querySelector('.catui-accordion-header');
-      
+
       if (item.classList.contains('is-expanded')) {
         content.style.height = 'auto';
         header.setAttribute('aria-expanded', 'true');
@@ -1047,7 +1047,7 @@ class Accordion {
         content.style.height = '0';
         header.setAttribute('aria-expanded', 'false');
       }
-      
+
       content.style.transition = `height ${this.options.duration}ms ease`;
       content.style.overflow = 'hidden';
     });
@@ -1060,7 +1060,7 @@ class Accordion {
   _renderItem(item, index, isExpanded) {
     const iconLeft = this.options.iconPosition === 'left';
     const expandedClass = isExpanded ? ' is-expanded' : '';
-    
+
     return `
       <div class="catui-accordion-item${expandedClass}" data-index="${index}">
         <div class="catui-accordion-header${iconLeft ? ' icon-left' : ''}">
@@ -1084,14 +1084,14 @@ class Accordion {
     this._clickHandler = (e) => {
       const header = e.target.closest('.catui-accordion-header');
       if (!header) return;
-      
+
       const item = header.closest('.catui-accordion-item');
       if (!item) return;
-      
+
       const index = parseInt(item.dataset.index, 10);
       this.toggle(index);
     };
-    
+
     this._container.addEventListener('click', this._clickHandler);
   }
 
@@ -1104,7 +1104,7 @@ class Accordion {
     if (!item) return;
 
     const isExpanded = item.classList.contains('is-expanded');
-    
+
     if (isExpanded) {
       this.collapse(index);
     } else {
@@ -1131,15 +1131,15 @@ class Accordion {
 
     const content = item.querySelector('.catui-accordion-content');
     const header = item.querySelector('.catui-accordion-header');
-    
+
     // 높이 계산
     content.style.height = 'auto';
     const height = content.scrollHeight;
     content.style.height = '0';
-    
+
     // 리플로우 강제
     content.offsetHeight;
-    
+
     content.style.height = `${height}px`;
     item.classList.add('is-expanded');
     header.setAttribute('aria-expanded', 'true');
@@ -1163,13 +1163,13 @@ class Accordion {
 
     const content = item.querySelector('.catui-accordion-content');
     const header = item.querySelector('.catui-accordion-header');
-    
+
     // 현재 높이 설정
     content.style.height = `${content.scrollHeight}px`;
-    
+
     // 리플로우 강제
     content.offsetHeight;
-    
+
     content.style.height = '0';
     item.classList.remove('is-expanded');
     header.setAttribute('aria-expanded', 'false');
@@ -1202,13 +1202,13 @@ class Accordion {
   addItem(item, expanded = false) {
     const index = this._items.length;
     this.options.items.push(item);
-    
+
     const html = this._renderItem(item, index, expanded);
     this._container.insertAdjacentHTML('beforeend', html);
-    
+
     const newItem = this._container.querySelector(`.catui-accordion-item[data-index="${index}"]`);
     const content = newItem.querySelector('.catui-accordion-content');
-    
+
     if (expanded) {
       content.style.height = 'auto';
     } else {
@@ -1216,7 +1216,7 @@ class Accordion {
     }
     content.style.transition = `height ${this.options.duration}ms ease`;
     content.style.overflow = 'hidden';
-    
+
     this._items.push(newItem);
   }
 
@@ -1245,7 +1245,7 @@ class Accordion {
     if (this._clickHandler) {
       this._container.removeEventListener('click', this._clickHandler);
     }
-    
+
     this._container = null;
     this._items = [];
     this._clickHandler = null;
@@ -1266,13 +1266,13 @@ class BackButton {
    */
   static init() {
     if (this._initialized) return;
-    
+
     window.addEventListener('popstate', (e) => {
       if (this._handlers.length > 0) {
         e.preventDefault();
         const handler = this._handlers.pop();
         handler();
-        
+
         // 히스토리 다시 추가
         if (this._handlers.length > 0) {
           history.pushState({ backButton: true }, '');
@@ -1290,11 +1290,11 @@ class BackButton {
    */
   static register(handler) {
     this.init();
-    
+
     if (this._handlers.length === 0) {
       history.pushState({ backButton: true }, '');
     }
-    
+
     this._handlers.push(handler);
 
     return () => this.unregister(handler);
@@ -1308,7 +1308,7 @@ class BackButton {
     const index = this._handlers.indexOf(handler);
     if (index !== -1) {
       this._handlers.splice(index, 1);
-      
+
       if (this._handlers.length === 0) {
         history.back();
       }

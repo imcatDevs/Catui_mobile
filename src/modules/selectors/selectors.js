@@ -310,14 +310,14 @@ class RangeSlider {
   _render() {
     this._container.className = 'catui-range-slider' + (this.options.range ? ' is-range' : '');
     this._container.innerHTML = `
-      ${this.options.showValue ? `<div class="catui-range-slider-values">${this.options.range 
-        ? `<span class="catui-range-slider-value" data-thumb="min">${this._formatValue(this._value[0])}</span><span class="catui-range-slider-separator">~</span><span class="catui-range-slider-value" data-thumb="max">${this._formatValue(this._value[1])}</span>`
-        : `<span class="catui-range-slider-value">${this._formatValue(this._value)}</span>`}</div>` : ''}
+      ${this.options.showValue ? `<div class="catui-range-slider-values">${this.options.range
+    ? `<span class="catui-range-slider-value" data-thumb="min">${this._formatValue(this._value[0])}</span><span class="catui-range-slider-separator">~</span><span class="catui-range-slider-value" data-thumb="max">${this._formatValue(this._value[1])}</span>`
+    : `<span class="catui-range-slider-value">${this._formatValue(this._value)}</span>`}</div>` : ''}
       <div class="catui-range-slider-track">
         <div class="catui-range-slider-fill"></div>
-        ${this.options.range 
-          ? '<div class="catui-range-slider-thumb" data-thumb="min" tabindex="0"></div><div class="catui-range-slider-thumb" data-thumb="max" tabindex="0"></div>'
-          : '<div class="catui-range-slider-thumb" tabindex="0"></div>'}
+        ${this.options.range
+    ? '<div class="catui-range-slider-thumb" data-thumb="min" tabindex="0"></div><div class="catui-range-slider-thumb" data-thumb="max" tabindex="0"></div>'
+    : '<div class="catui-range-slider-thumb" tabindex="0"></div>'}
       </div>
       ${this.options.showLabels ? `<div class="catui-range-slider-labels"><span style="left:0%">${this._formatValue(this.options.min)}</span><span style="left:100%">${this._formatValue(this.options.max)}</span></div>` : ''}`;
     this._track = this._container.querySelector('.catui-range-slider-track');
@@ -486,7 +486,7 @@ class TagInput {
 
   _bindEvents() {
     this._handlers = {};
-    
+
     this._handlers.keydown = (e) => {
       const v = this._input.value.trim();
       switch (e.key) {

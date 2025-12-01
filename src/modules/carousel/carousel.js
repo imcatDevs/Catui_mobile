@@ -57,7 +57,7 @@ class Slider {
 
     this._render();
     this._bindEvents();
-    
+
     if (this.options.autoplay) {
       this._startAutoplay();
     }
@@ -70,7 +70,7 @@ class Slider {
     this._container.setAttribute('data-effect', this.options.effect);
     this._container.setAttribute('data-direction', this.options.direction);
 
-    let html = `<div class="catui-slider-wrapper">`;
+    let html = '<div class="catui-slider-wrapper">';
 
     this.options.slides.forEach((slide, index) => {
       const isActive = index === 0 ? 'is-active' : '';
@@ -93,15 +93,15 @@ class Slider {
       }
     });
 
-    html += `</div>`;
+    html += '</div>';
 
     // 페이지네이션
     if (this.options.showPagination) {
-      html += `<div class="catui-slider-pagination">`;
+      html += '<div class="catui-slider-pagination">';
       this.options.slides.forEach((_, index) => {
         html += `<span class="catui-slider-bullet ${index === 0 ? 'is-active' : ''}" data-index="${index}"></span>`;
       });
-      html += `</div>`;
+      html += '</div>';
     }
 
     // 네비게이션
@@ -125,7 +125,7 @@ class Slider {
     // 네비게이션
     const prevBtn = this._container.querySelector('.catui-slider-prev');
     const nextBtn = this._container.querySelector('.catui-slider-next');
-    
+
     if (prevBtn) {
       this._handlers.prev = () => this.prev();
       prevBtn.addEventListener('click', this._handlers.prev);
@@ -148,7 +148,7 @@ class Slider {
       this._handlers.touchStart = (e) => this._onTouchStart(e);
       this._handlers.touchMove = (e) => this._onTouchMove(e);
       this._handlers.touchEnd = (e) => this._onTouchEnd(e);
-      
+
       this._wrapper.addEventListener('touchstart', this._handlers.touchStart, { passive: true });
       this._wrapper.addEventListener('touchmove', this._handlers.touchMove, { passive: false });
       this._wrapper.addEventListener('touchend', this._handlers.touchEnd, { passive: true });
@@ -190,10 +190,10 @@ class Slider {
 
   _onTouchMove(e) {
     if (!this._touchStartX) return;
-    
+
     const diffX = this._touchStartX - e.touches[0].clientX;
     const diffY = this._touchStartY - e.touches[0].clientY;
-    
+
     // 수평 스와이프가 더 큰 경우 스크롤 방지
     if (Math.abs(diffX) > Math.abs(diffY)) {
       e.preventDefault();
@@ -214,7 +214,7 @@ class Slider {
 
     this._touchStartX = 0;
     this._touchStartY = 0;
-    
+
     if (this.options.autoplay) {
       this._startAutoplay();
     }
@@ -226,7 +226,7 @@ class Slider {
 
     this._slides.forEach((slide, index) => {
       slide.classList.remove('is-active', 'is-prev', 'is-next');
-      
+
       if (index === this._currentIndex) {
         slide.classList.add('is-active');
         // 지연 로딩
@@ -246,10 +246,10 @@ class Slider {
 
     // slide 효과
     if (effect === 'slide') {
-      const offset = this.options.direction === 'horizontal' 
+      const offset = this.options.direction === 'horizontal'
         ? `-${this._currentIndex * 100}%`
         : `-${this._currentIndex * 100}%`;
-      
+
       this._wrapper.style.transition = `transform ${speed}ms ease`;
       this._wrapper.style.transform = this.options.direction === 'horizontal'
         ? `translateX(${offset})`
@@ -297,7 +297,7 @@ class Slider {
 
   next() {
     if (this._isAnimating) return;
-    
+
     if (this._currentIndex < this._slides.length - 1) {
       this._currentIndex++;
     } else if (this.options.loop) {
@@ -313,7 +313,7 @@ class Slider {
 
   prev() {
     if (this._isAnimating) return;
-    
+
     if (this._currentIndex > 0) {
       this._currentIndex--;
     } else if (this.options.loop) {
@@ -441,7 +441,7 @@ class Lightbox {
     }
     headerHTML += `
       <div class="catui-lightbox-actions" style="display:flex;gap:8px;">
-        ${this.options.enableZoom ? `<button class="catui-lightbox-btn catui-lightbox-zoom" style="display:flex;padding:8px;background:none;border:none;color:#fff;cursor:pointer;border-radius:50%;"><span class="material-icons">zoom_in</span></button>` : ''}
+        ${this.options.enableZoom ? '<button class="catui-lightbox-btn catui-lightbox-zoom" style="display:flex;padding:8px;background:none;border:none;color:#fff;cursor:pointer;border-radius:50%;"><span class="material-icons">zoom_in</span></button>' : ''}
         <button class="catui-lightbox-btn catui-lightbox-close" style="display:flex;padding:8px;background:none;border:none;color:#fff;cursor:pointer;border-radius:50%;"><span class="material-icons">close</span></button>
       </div>
     `;
@@ -703,9 +703,9 @@ class Lightbox {
   _toggleZoom() {
     const img = this._overlay.querySelector('.catui-lightbox-image');
     const zoomBtn = this._overlay.querySelector('.catui-lightbox-zoom .material-icons');
-    
+
     this._isZoomed = !this._isZoomed;
-    
+
     if (this._isZoomed) {
       img.style.maxWidth = 'none';
       img.style.maxHeight = 'none';
@@ -805,7 +805,7 @@ class Lightbox {
     elements.forEach(el => {
       const group = el.dataset.lightboxGroup || 'default';
       if (!groups[group]) groups[group] = [];
-      
+
       groups[group].push({
         element: el,
         src: el.dataset.lightbox || el.src || el.href,
@@ -818,7 +818,7 @@ class Lightbox {
     // 각 요소에 클릭 이벤트 바인딩
     Object.keys(groups).forEach(group => {
       const images = groups[group];
-      
+
       images.forEach((item, index) => {
         if (Lightbox._boundElements.has(item.element)) return;
 

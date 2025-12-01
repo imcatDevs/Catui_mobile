@@ -109,7 +109,6 @@ class VirtualScroll {
 
     // 보이는 아이템만 렌더링
     const visibleItems = items.slice(startIndex, endIndex);
-    const offsetY = startIndex * itemHeight;
 
     let html = '';
     visibleItems.forEach((item, i) => {
@@ -214,7 +213,7 @@ class InfiniteScroll {
   _bindEvents() {
     this._handlers.scroll = () => {
       if (this._throttleTimer) return;
-      
+
       this._throttleTimer = setTimeout(() => {
         this._throttleTimer = null;
         this._checkScroll();
@@ -253,7 +252,7 @@ class InfiniteScroll {
 
     try {
       const hasMore = await this.options.loadMore?.();
-      
+
       if (hasMore === false) {
         this._hasMore = false;
         this.options.onEnd?.();
@@ -333,7 +332,7 @@ class BackToTop {
     this._button = document.createElement('button');
     this._button.className = `catui-back-to-top catui-back-to-top--${this.options.position}`;
     this._button.setAttribute('aria-label', 'Back to top');
-    
+
     const { bottom, side } = this.options.offset;
     this._button.style.cssText = `
       position: fixed;
@@ -385,8 +384,8 @@ class BackToTop {
   }
 
   _updateVisibility() {
-    const scrollTop = this._scrollContainer === window 
-      ? window.scrollY 
+    const scrollTop = this._scrollContainer === window
+      ? window.scrollY
       : this._scrollContainer.scrollTop;
 
     const shouldShow = scrollTop > this.options.threshold;
@@ -405,7 +404,7 @@ class BackToTop {
       const scrollHeight = this._scrollContainer === window
         ? document.documentElement.scrollHeight - window.innerHeight
         : this._scrollContainer.scrollHeight - this._scrollContainer.clientHeight;
-      
+
       const progress = Math.min(scrollTop / scrollHeight, 1);
       const circle = this._button.querySelector('.catui-back-to-top-progress-bar');
       if (circle) {
@@ -512,7 +511,7 @@ class ScrollProgress {
     };
 
     this._scrollContainer.addEventListener('scroll', this._handlers.scroll, { passive: true });
-    
+
     // 초기 상태
     this._updateProgress();
   }
@@ -635,7 +634,7 @@ class StickyHeader {
       : this._scrollContainer.scrollTop;
 
     const delta = scrollTop - this._lastScrollTop;
-    
+
     // 최소 이동 거리 체크
     if (Math.abs(delta) < this.options.delta) return;
 
@@ -663,7 +662,7 @@ class StickyHeader {
   _hide() {
     if (this._isHidden) return;
     this._isHidden = true;
-    this._header.style.transform = `translateY(-100%)`;
+    this._header.style.transform = 'translateY(-100%)';
     this.options.onHide?.();
   }
 
@@ -683,7 +682,7 @@ class StickyHeader {
   destroy() {
     if (this._rafId) cancelAnimationFrame(this._rafId);
     this._scrollContainer?.removeEventListener('scroll', this._handlers.scroll);
-    
+
     // 스타일 복원
     if (this._header) {
       this._header.style.position = '';
@@ -754,7 +753,7 @@ class ParallaxScroll {
     };
 
     this._scrollContainer.addEventListener('scroll', this._handlers.scroll, { passive: true });
-    
+
     // 초기 상태
     this._updateParallax();
   }
@@ -767,11 +766,11 @@ class ParallaxScroll {
     this._elements.forEach(({ element, speed, direction }) => {
       const rect = element.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      
+
       // 뷰포트에 보이는 경우에만 업데이트
       if (rect.bottom > 0 && rect.top < viewportHeight) {
         const offset = scrollTop * speed;
-        
+
         if (direction === 'vertical') {
           element.style.transform = `translateY(${offset}px)`;
         } else {
@@ -784,7 +783,7 @@ class ParallaxScroll {
   destroy() {
     if (this._rafId) cancelAnimationFrame(this._rafId);
     this._scrollContainer?.removeEventListener('scroll', this._handlers.scroll);
-    
+
     // 스타일 복원
     this._elements.forEach(({ element }) => {
       element.style.transform = '';

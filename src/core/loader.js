@@ -8,7 +8,7 @@
  * @class
  * @description JavaScript 모듈과 CSS를 동적으로 로드하는 클래스입니다.
  * 중복 로드를 방지하고 모듈을 캐싱합니다.
- * 
+ *
  * @example
  * const loader = new ModuleLoader();
  * await loader.load('/modules/chart.js', '/modules/chart.css');
@@ -23,20 +23,20 @@ export class ModuleLoader {
   constructor(options = {}) {
     this.modules = new Map();
     this.loadedCSS = new Set();
-    
+
     // 글로벌 인스턴스 관리
     this.instances = new Map(); // moduleName -> Set<instance>
-    
+
     // 자동 정리에서 제외할 모듈 (페이지 전환 시에도 유지)
     this.excludeFromCleanup = new Set(['overlays', 'navigation', 'theme']);
-    
+
     // dist 폴더 경로 설정 (옵션 또는 자동 감지)
     this.distPath = options.distPath || this._detectDistPath();
-    
+
     // 모듈 base path (distPath 기준)
     this.basePath = `${this.distPath}/modules`;
   }
-  
+
   /**
    * dist 폴더 경로 자동 감지
    * @private
@@ -45,7 +45,7 @@ export class ModuleLoader {
   _detectDistPath() {
     // 현재 스크립트 위치에서 dist 찾기
     const scripts = document.getElementsByTagName('script');
-    for (let script of scripts) {
+    for (const script of scripts) {
       const src = script.src;
       // catui-mobile.js 또는 catui-mobile.min.js 찾기
       if (src && (src.includes('catui-mobile') || src.includes('imcat-ui'))) {
@@ -55,7 +55,7 @@ export class ModuleLoader {
         }
       }
     }
-    
+
     // 기본값: 현재 위치 기준 상대 경로
     return './dist';
   }
@@ -64,11 +64,11 @@ export class ModuleLoader {
    * 모듈 로드
    * @param {...string} moduleNames - 모듈 이름들
    * @returns {Promise<*>} 단일 또는 배열로 모듈 반환
-   * 
+   *
    * @example
    * // 단일 모듈
    * const Modal = await loader.use('modal');
-   * 
+   *
    * // 여러 모듈
    * const [Modal, Dropdown] = await loader.use('modal', 'dropdown');
    */
@@ -89,7 +89,7 @@ export class ModuleLoader {
    * 모듈 사전 로드 (캐싱)
    * @param {...string} moduleNames - 모듈 이름들
    * @returns {Promise<void>}
-   * 
+   *
    * @example
    * await loader.preload('modal', 'dropdown', 'tooltip');
    */
@@ -119,10 +119,10 @@ export class ModuleLoader {
       const esmPath = `${this.basePath}/${moduleName}/${moduleName}.js`;
       const module = await import(esmPath);
       const moduleExport = module.default || module;
-      
+
       // 클래스 래핑 (인스턴스 자동 추적)
       const wrappedExport = this._wrapModuleClasses(moduleName, moduleExport);
-      
+
       // 캐시에 저장
       this.modules.set(moduleName, wrappedExport);
       return wrappedExport;
@@ -132,7 +132,7 @@ export class ModuleLoader {
       throw new Error(`Module "${moduleName}" not found`);
     }
   }
-  
+
   /**
    * 스크립트 로드
    * @private
@@ -175,7 +175,7 @@ export class ModuleLoader {
    * CSS 파일 로드
    * @param {string} url - CSS 파일 URL
    * @returns {Promise<void>}
-   * 
+   *
    * @example
    * await loader.loadCSS('./styles/custom.css');
    */
@@ -208,7 +208,7 @@ export class ModuleLoader {
    * 로드된 모듈 가져오기
    * @param {string} moduleName - 모듈 이름
    * @returns {*|null} 모듈 또는 null
-   * 
+   *
    * @example
    * const Modal = loader.getModule('modal');
    */
@@ -220,7 +220,7 @@ export class ModuleLoader {
    * 모듈 로드 여부 확인
    * @param {string} moduleName - 모듈 이름
    * @returns {boolean}
-   * 
+   *
    * @example
    * if (loader.hasModule('modal')) {
    *   console.log('Modal already loaded');
@@ -233,7 +233,7 @@ export class ModuleLoader {
   /**
    * 기본 경로 설정
    * @param {string} path - 모듈 기본 경로
-   * 
+   *
    * @example
    * loader.setBasePath('./custom/modules');
    */
@@ -244,7 +244,7 @@ export class ModuleLoader {
   /**
    * 모듈 캐시 초기화
    * @param {string} [moduleName] - 특정 모듈만 초기화 (선택)
-   * 
+   *
    * @example
    * loader.clearCache(); // 전체 초기화
    * loader.clearCache('modal'); // 특정 모듈만
@@ -295,7 +295,7 @@ export class ModuleLoader {
     if (typeof moduleExport === 'function') {
       return this._createTrackedClass(moduleName, moduleExport);
     }
-    
+
     // 객체 (여러 클래스 export)인 경우
     if (typeof moduleExport === 'object' && moduleExport !== null) {
       const wrapped = {};
@@ -308,10 +308,10 @@ export class ModuleLoader {
       }
       return wrapped;
     }
-    
+
     return moduleExport;
   }
-  
+
   /**
    * 추적 가능한 클래스 생성
    * @private
@@ -321,18 +321,18 @@ export class ModuleLoader {
    */
   _createTrackedClass(moduleName, OriginalClass) {
     const loader = this;
-    
+
     // Proxy로 new 호출 가로채기
     return new Proxy(OriginalClass, {
       construct(target, args) {
         const instance = new target(...args);
-        
+
         // 인스턴스 맵에 추가
         if (!loader.instances.has(moduleName)) {
           loader.instances.set(moduleName, new Set());
         }
         loader.instances.get(moduleName).add(instance);
-        
+
         // destroy 메서드 래핑 (호출 시 맵에서 제거)
         if (typeof instance.destroy === 'function') {
           const originalDestroy = instance.destroy.bind(instance);
@@ -341,12 +341,12 @@ export class ModuleLoader {
             loader.instances.get(moduleName)?.delete(instance);
           };
         }
-        
+
         return instance;
       }
     });
   }
-  
+
   /**
    * 모든 인스턴스 정리 (제외 모듈 제외)
    * 페이지 전환 시 호출됨
@@ -357,9 +357,9 @@ export class ModuleLoader {
       if (this.excludeFromCleanup.has(moduleName)) {
         continue;
       }
-      
+
       if (instanceSet.size === 0) continue;
-      
+
       // 인스턴스 정리 (Set 순회 중 삭제 방지를 위해 배열로 복사)
       const instances = Array.from(instanceSet);
       for (const instance of instances) {
@@ -371,12 +371,12 @@ export class ModuleLoader {
           console.error(`[CATUI] Error destroying instance from ${moduleName}:`, error);
         }
       }
-      
+
       // Set 비우기
       instanceSet.clear();
     }
   }
-  
+
   /**
    * 특정 모듈의 인스턴스 수
    * @param {string} moduleName - 모듈 이름
@@ -385,7 +385,7 @@ export class ModuleLoader {
   getInstanceCount(moduleName) {
     return this.instances.get(moduleName)?.size || 0;
   }
-  
+
   /**
    * 전체 인스턴스 수 (제외 모듈 제외)
    * @returns {number}
@@ -403,7 +403,7 @@ export class ModuleLoader {
   /**
    * 모듈 로더 정리 (메모리 누수 방지)
    * 모듈 캐시를 정리합니다. CSS는 DOM에 유지됩니다.
-   * 
+   *
    * @example
    * // 애플리케이션 종료 시
    * loader.destroy();
@@ -424,10 +424,10 @@ export class ModuleLoader {
       }
     }
     this.instances.clear();
-    
+
     // 모듈 캐시 정리
     this.modules.clear();
-    
+
     // CSS는 DOM에 남겨둠 (제거 시 스타일 깨짐)
     // 필요시 별도로 CSS 정리 가능
     // this.loadedCSS.clear();

@@ -66,7 +66,7 @@ class FileUpload {
   _bindEvents() {
     this._handlers.change = (e) => this._handleFiles(e.target.files);
     this._handlers.click = () => this._input.click();
-    
+
     this._input.addEventListener('change', this._handlers.change);
     this._dropzone.addEventListener('click', this._handlers.click);
 
@@ -139,12 +139,12 @@ class FileUpload {
     this._previewEl.innerHTML = this._files.map((file, i) => {
       const isImage = file.type.startsWith('image/');
       const size = this._formatSize(file.size);
-      
+
       return `
         <div class="catui-file-upload-item" data-index="${i}">
           <div class="catui-file-upload-item-icon">
-            ${isImage ? `<img src="${URL.createObjectURL(file)}" alt="${file.name}">` : 
-              `<span class="material-icons">${this._getFileIcon(file.type)}</span>`}
+            ${isImage ? `<img src="${URL.createObjectURL(file)}" alt="${file.name}">` :
+    `<span class="material-icons">${this._getFileIcon(file.type)}</span>`}
           </div>
           <div class="catui-file-upload-item-info">
             <span class="catui-file-upload-item-name">${file.name}</span>
@@ -246,7 +246,7 @@ class Rating {
     const iconSize = sizeMap[this.options.size] || sizeMap.md;
 
     this._container.className = `catui-rating catui-rating-${this.options.size}${this.options.readonly ? ' is-readonly' : ''}`;
-    
+
     let html = '<div class="catui-rating-stars">';
     for (let i = 1; i <= this.options.max; i++) {
       html += `
@@ -278,7 +278,7 @@ class Rating {
         const rect = star.getBoundingClientRect();
         const x = e.clientX - rect.left;
         let value = parseInt(star.dataset.value, 10);
-        
+
         if (this.options.step === 0.5 && x < rect.width / 2) {
           value -= 0.5;
         }
@@ -292,7 +292,7 @@ class Rating {
         const rect = star.getBoundingClientRect();
         const x = e.clientX - rect.left;
         let value = parseInt(star.dataset.value, 10);
-        
+
         if (this.options.step === 0.5 && x < rect.width / 2) {
           value -= 0.5;
         }
@@ -413,7 +413,7 @@ class SignaturePad {
     this._canvas = this._container.querySelector('.catui-signature-pad-canvas');
     this._placeholderEl = this._container.querySelector('.catui-signature-pad-placeholder');
     this._ctx = this._canvas.getContext('2d');
-    
+
     this._initCanvas();
   }
 
@@ -421,17 +421,17 @@ class SignaturePad {
     // High DPI 지원
     const dpr = window.devicePixelRatio || 1;
     const rect = this._canvas.getBoundingClientRect();
-    
+
     this._canvas.width = rect.width * dpr;
     this._canvas.height = rect.height * dpr;
     this._canvas.style.width = rect.width + 'px';
     this._canvas.style.height = rect.height + 'px';
-    
+
     this._ctx.scale(dpr, dpr);
     this._ctx.lineCap = 'round';
     this._ctx.lineJoin = 'round';
     this._ctx.lineWidth = this.options.lineWidth;
-    
+
     // CSS 변수를 실제 색상으로 변환
     this._resolveColors();
     this._clear(false);
@@ -439,7 +439,7 @@ class SignaturePad {
 
   _resolveColors() {
     const style = getComputedStyle(document.documentElement);
-    
+
     // lineColor가 CSS 변수면 실제 값으로 변환
     if (this.options.lineColor.startsWith('var(')) {
       const varName = this.options.lineColor.match(/var\(--([^,)]+)/)?.[1];
@@ -447,7 +447,7 @@ class SignaturePad {
         this.options.lineColor = style.getPropertyValue('--' + varName).trim() || '#111827';
       }
     }
-    
+
     // backgroundColor가 CSS 변수면 실제 값으로 변환
     if (this.options.backgroundColor.startsWith('var(')) {
       const varName = this.options.backgroundColor.match(/var\(--([^,)]+)/)?.[1];
@@ -530,7 +530,7 @@ class SignaturePad {
   _redraw() {
     this._clear(false);
     this._ctx.strokeStyle = this.options.lineColor;
-    
+
     this._paths.forEach(path => {
       if (path.length < 2) return;
       this._ctx.beginPath();
@@ -754,21 +754,21 @@ class FormWizard {
     }
     if (this._nextBtn) {
       const isLast = this._currentStep === this.options.steps.length - 1;
-      this._nextBtn.innerHTML = isLast 
-        ? this.options.submitText 
+      this._nextBtn.innerHTML = isLast
+        ? this.options.submitText
         : `${this.options.nextText}<span class="material-icons">chevron_right</span>`;
     }
   }
 
   async next() {
     if (this._currentStep >= this.options.steps.length - 1) return false;
-    
+
     const valid = await this._validateCurrentStep();
     if (!valid) return false;
 
     this._currentStep++;
     this._updateUI();
-    
+
     if (this.options.onStepChange) {
       this.options.onStepChange(this._currentStep, 'next');
     }
@@ -777,10 +777,10 @@ class FormWizard {
 
   prev() {
     if (this._currentStep <= 0) return false;
-    
+
     this._currentStep--;
     this._updateUI();
-    
+
     if (this.options.onStepChange) {
       this.options.onStepChange(this._currentStep, 'prev');
     }
@@ -789,7 +789,7 @@ class FormWizard {
 
   async goTo(step) {
     if (step < 0 || step >= this.options.steps.length || step === this._currentStep) return false;
-    
+
     // 앞으로 갈 때는 현재 스텝 검증
     if (step > this._currentStep) {
       const valid = await this._validateCurrentStep();
@@ -798,7 +798,7 @@ class FormWizard {
 
     this._currentStep = step;
     this._updateUI();
-    
+
     if (this.options.onStepChange) {
       this.options.onStepChange(this._currentStep, 'goto');
     }
@@ -817,7 +817,7 @@ class FormWizard {
   _collectData() {
     const data = {};
     const panels = this._contentEl.querySelectorAll('.catui-form-wizard-panel');
-    panels.forEach((panel, i) => {
+    panels.forEach((panel, _i) => {
       const inputs = panel.querySelectorAll('input, select, textarea');
       inputs.forEach(input => {
         if (input.name) {

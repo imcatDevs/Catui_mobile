@@ -70,7 +70,7 @@ class WordCloud {
   }
 
   // ==================== 마스크 로드 ====================
-  
+
   _loadMask(mask, callback) {
     const containerWidth = this.options.width || this._container.clientWidth || 400;
     const containerHeight = this.options.height;
@@ -185,7 +185,7 @@ class WordCloud {
   _loadSvgMask(url, size, callback) {
     const img = new Image();
     img.crossOrigin = 'anonymous';
-    
+
     img.onload = () => {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
@@ -196,7 +196,7 @@ class WordCloud {
       const scale = Math.min(size / img.width, size / img.height) * 0.9;
       const x = (size - img.width * scale) / 2;
       const y = (size - img.height * scale) / 2;
-      
+
       ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
 
       // 알파 채널 기반으로 마스크 생성
@@ -315,7 +315,7 @@ class WordCloud {
     const pointsCache = [];
     const getPoints = (r) => {
       if (pointsCache[r]) return pointsCache[r];
-      
+
       const pts = [];
       if (r === 0) {
         pts.push([center[0], center[1]]);
@@ -721,7 +721,7 @@ class TagCloud {
     this._container.className = `catui-tagcloud catui-tagcloud--${layout}`;
 
     // 정렬
-    let sortedTags = [...tags];
+    const sortedTags = [...tags];
     if (sortBy === 'alpha') {
       sortedTags.sort((a, b) => a.text.localeCompare(b.text));
     } else if (sortBy === 'random') {

@@ -1,6 +1,6 @@
 {
   "name": "@imcat-ckim/catui-mobile",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Mobile-first, touch-optimized UI framework based on IMCAT UI core with gesture support and mobile-native components",
   "homepage": "https://imcat.dev/mobile",
   "type": "module",
@@ -26,7 +26,13 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "serve": "http-server . -p 3001 -o",
-    "docs": "jsdoc -c jsdoc.json"
+    "docs": "jsdoc -c jsdoc.json",
+    "version:patch": "npm version patch --no-git-tag-version",
+    "version:minor": "npm version minor --no-git-tag-version",
+    "version:major": "npm version major --no-git-tag-version",
+    "prerelease": "npm run lint && npm run build",
+    "release": "npm run prerelease && npm publish",
+    "release:dry": "npm run prerelease && npm publish --dry-run"
   },
   "keywords": [
     "mobile",

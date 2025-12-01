@@ -85,7 +85,7 @@ class ChatUI {
   _renderMessage(msg) {
     const isMe = msg.userId === this.options.currentUser.id;
     const time = this.options.showTimestamp ? this._formatTime(msg.timestamp) : '';
-    const avatar = this.options.showAvatar && !isMe ? 
+    const avatar = this.options.showAvatar && !isMe ?
       `<div class="catui-chat-avatar" style="background-image: url('${msg.avatar || ''}')">
         ${!msg.avatar ? msg.userName?.charAt(0) || '?' : ''}
       </div>` : '';
@@ -219,7 +219,7 @@ class ChatUI {
 
   destroy() {
     if (this._typingTimeout) clearTimeout(this._typingTimeout);
-    
+
     this._container.querySelector('.catui-chat-send-btn')
       ?.removeEventListener('click', this._handlers.sendClick);
     this._inputEl?.removeEventListener('keydown', this._handlers.keydown);
@@ -291,7 +291,7 @@ class Comments {
     const { comments, currentUser, emptyText } = this.options;
 
     let html = '';
-    
+
     // 댓글 입력 폼
     if (currentUser) {
       html += `
@@ -474,7 +474,7 @@ class Comments {
 
   async _handleDelete(id) {
     if (!confirm('댓글을 삭제하시겠습니까?')) return;
-    
+
     try {
       await this.options.onDelete?.(id);
       this.removeComment(id);
@@ -488,7 +488,7 @@ class Comments {
     const d = new Date(date);
     const now = new Date();
     const diff = now - d;
-    
+
     if (diff < 60000) return '방금 전';
     if (diff < 3600000) return `${Math.floor(diff / 60000)}분 전`;
     if (diff < 86400000) return `${Math.floor(diff / 3600000)}시간 전`;
@@ -831,7 +831,7 @@ class Reactions {
   }
 
   _render() {
-    const { style, reactions, counts, userReaction, showCounts } = this.options;
+    const { style } = this.options;
 
     this._container.className = `catui-reactions catui-reactions--${style}`;
 
@@ -885,7 +885,7 @@ class Reactions {
   _renderMinimal() {
     const { counts, userReaction } = this.options;
     const totalCount = Object.values(counts).reduce((a, b) => a + b, 0);
-    
+
     // 상위 3개 이모지 표시
     const topReactions = Object.entries(counts)
       .sort((a, b) => b[1] - a[1])
@@ -977,7 +977,7 @@ class Reactions {
 
   async _react(type) {
     const prevType = this.options.userReaction;
-    
+
     // 카운트 업데이트
     if (prevType && this.options.counts[prevType]) {
       this.options.counts[prevType]--;
@@ -985,7 +985,7 @@ class Reactions {
     if (type) {
       this.options.counts[type] = (this.options.counts[type] || 0) + 1;
     }
-    
+
     this.options.userReaction = type;
     this._render();
     this._bindEvents();
@@ -1026,7 +1026,7 @@ class Reactions {
 
   destroy() {
     if (this._holdTimer) clearTimeout(this._holdTimer);
-    
+
     // document 레벨 이벤트 제거
     if (this._handlers.outsideClick) {
       document.removeEventListener('click', this._handlers.outsideClick);
@@ -1044,7 +1044,7 @@ class Reactions {
 
     this._container?.querySelector('.catui-reactions-popup')
       ?.removeEventListener('click', this._handlers.popupClick);
-    
+
     if (this._handlers.itemClick) {
       this._container?.removeEventListener('click', this._handlers.itemClick);
     }

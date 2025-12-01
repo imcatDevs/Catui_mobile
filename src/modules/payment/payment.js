@@ -102,7 +102,7 @@ class CardInput {
    */
   _render() {
     const { fields, placeholder } = this.options;
-    
+
     this._container.className = 'catui-card-input';
     this._container.innerHTML = `
       <div class="catui-card-input-header">
@@ -203,19 +203,19 @@ class CardInput {
    * @private
    */
   _handleNumberInput(e) {
-    let value = e.target.value.replace(/\D/g, '');
-    
+    const value = e.target.value.replace(/\D/g, '');
+
     // 포맷팅 (4자리마다 공백)
     const formatted = value.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
     e.target.value = formatted;
-    
+
     this._values.number = value;
-    
+
     // 카드사 감지
     if (this.options.detectCardType) {
       this._detectCardType(value);
     }
-    
+
     this._emitChange('number', value, this._validateNumber(value));
     this._checkComplete();
   }
@@ -226,13 +226,13 @@ class CardInput {
    */
   _handleExpiryInput(e) {
     let value = e.target.value.replace(/\D/g, '');
-    
+
     // MM/YY 포맷
     if (value.length >= 2) {
       value = value.slice(0, 2) + '/' + value.slice(2, 4);
     }
     e.target.value = value;
-    
+
     this._values.expiry = value;
     this._emitChange('expiry', value, this._validateExpiry(value));
     this._checkComplete();
@@ -245,7 +245,7 @@ class CardInput {
   _handleCvcInput(e) {
     const value = e.target.value.replace(/\D/g, '');
     e.target.value = value;
-    
+
     this._values.cvc = value;
     this._emitChange('cvc', value, this._validateCvc(value));
     this._checkComplete();
@@ -269,18 +269,18 @@ class CardInput {
    */
   _detectCardType(number) {
     let detected = null;
-    
+
     for (const [type, pattern] of Object.entries(CardInput.CARD_PATTERNS)) {
       if (pattern.test(number) && this.options.supportedCards.includes(type)) {
         detected = type;
         break;
       }
     }
-    
+
     if (detected !== this._cardType) {
       this._cardType = detected;
       this._updateCardTypeUI();
-      
+
       if (this.options.onCardTypeChange) {
         this.options.onCardTypeChange(detected);
       }
@@ -293,8 +293,7 @@ class CardInput {
    */
   _updateCardTypeUI() {
     const typeEl = this._container.querySelector('.catui-card-input-type');
-    const iconEl = this._container.querySelector('.catui-card-input-icon');
-    
+
     if (this._cardType && CardInput.CARD_INFO[this._cardType]) {
       const info = CardInput.CARD_INFO[this._cardType];
       typeEl.textContent = info.name;
@@ -312,7 +311,7 @@ class CardInput {
   _validateField(field) {
     let isValid = false;
     let error = '';
-    
+
     switch (field) {
       case 'number':
         isValid = this._validateNumber(this._values.number);
@@ -327,13 +326,13 @@ class CardInput {
         error = isValid ? '' : '유효하지 않은 CVC입니다';
         break;
     }
-    
+
     this._valid[field] = isValid;
-    
+
     // 에러 UI 업데이트
     const fieldEl = this._container.querySelector(`.catui-card-input-${field}`);
     const errorEl = fieldEl?.parentElement.querySelector('.catui-card-input-error');
-    
+
     if (fieldEl) {
       fieldEl.classList.toggle('is-invalid', !isValid && this._values[field].length > 0);
       fieldEl.classList.toggle('is-valid', isValid);
@@ -341,11 +340,11 @@ class CardInput {
     if (errorEl) {
       errorEl.textContent = error;
     }
-    
+
     if (!isValid && error && this.options.onError) {
       this.options.onError(field, error);
     }
-    
+
     return isValid;
   }
 
@@ -355,23 +354,23 @@ class CardInput {
    */
   _validateNumber(number) {
     if (!number || number.length < 13) return false;
-    
+
     // Luhn 알고리즘
     let sum = 0;
     let isEven = false;
-    
+
     for (let i = number.length - 1; i >= 0; i--) {
       let digit = parseInt(number[i], 10);
-      
+
       if (isEven) {
         digit *= 2;
         if (digit > 9) digit -= 9;
       }
-      
+
       sum += digit;
       isEven = !isEven;
     }
-    
+
     return sum % 10 === 0;
   }
 
@@ -381,20 +380,20 @@ class CardInput {
    */
   _validateExpiry(expiry) {
     if (!expiry || expiry.length < 5) return false;
-    
+
     const [month, year] = expiry.split('/');
     const m = parseInt(month, 10);
     const y = parseInt('20' + year, 10);
-    
+
     if (m < 1 || m > 12) return false;
-    
+
     const now = new Date();
     const currentYear = now.getFullYear();
     const currentMonth = now.getMonth() + 1;
-    
+
     if (y < currentYear) return false;
     if (y === currentYear && m < currentMonth) return false;
-    
+
     return true;
   }
 
@@ -406,8 +405,8 @@ class CardInput {
     const expectedLength = this._cardType && CardInput.CARD_INFO[this._cardType]
       ? CardInput.CARD_INFO[this._cardType].cvcLength
       : 3;
-    
-    return cvc && cvc.length >= 3 && cvc.length <= 4;
+
+    return cvc && cvc.length === expectedLength;
   }
 
   /**
@@ -430,7 +429,7 @@ class CardInput {
       if (field === 'name') return true; // 이름은 선택적
       return this._valid[field];
     });
-    
+
     if (allValid && this.options.onComplete) {
       this.options.onComplete(this.getCardData());
     }
@@ -469,16 +468,16 @@ class CardInput {
     this._values = { number: '', expiry: '', cvc: '', name: '' };
     this._valid = { number: false, expiry: false, cvc: false, name: true };
     this._cardType = null;
-    
+
     const inputs = this._container.querySelectorAll('input');
     inputs.forEach(input => {
       input.value = '';
       input.classList.remove('is-valid', 'is-invalid');
     });
-    
+
     const errors = this._container.querySelectorAll('.catui-card-input-error');
     errors.forEach(el => el.textContent = '');
-    
+
     this._updateCardTypeUI();
   }
 
@@ -583,7 +582,7 @@ class PaymentMethods {
    */
   _render() {
     const { methods, showDescription, layout } = this.options;
-    
+
     this._container.className = `catui-payment-methods is-${layout}`;
     this._container.innerHTML = methods.map(method => `
       <div class="catui-payment-method ${method.id === this._selected ? 'is-selected' : ''} ${method.disabled ? 'is-disabled' : ''}"
@@ -626,17 +625,17 @@ class PaymentMethods {
    */
   select(methodId) {
     if (this._selected === methodId) return;
-    
+
     // 이전 선택 해제
     const prevEl = this._container.querySelector('.catui-payment-method.is-selected');
     if (prevEl) prevEl.classList.remove('is-selected');
-    
+
     // 새 선택
     const newEl = this._container.querySelector(`[data-method="${methodId}"]`);
     if (newEl) {
       newEl.classList.add('is-selected');
       this._selected = methodId;
-      
+
       if (this.options.onChange) {
         const method = this.options.methods.find(m => m.id === methodId);
         this.options.onChange(methodId, method);
@@ -721,7 +720,7 @@ class PriceBreakdown {
    */
   _render() {
     const { items, currency, locale, showTotal, totalLabel } = this.options;
-    
+
     // 합계 계산
     let total = 0;
     items.forEach(item => {
@@ -731,7 +730,7 @@ class PriceBreakdown {
         total += item.amount;
       }
     });
-    
+
     this._container.className = 'catui-price-breakdown';
     this._container.innerHTML = `
       <div class="catui-price-breakdown-items">
@@ -751,7 +750,7 @@ class PriceBreakdown {
         </div>
       ` : ''}
     `;
-    
+
     this._total = total;
   }
 
@@ -858,16 +857,16 @@ class ReceiptView {
   _render() {
     const { receipt, showLogo, logo, printable, currency, locale } = this.options;
     const { orderNumber, date, items = [], payment = {}, store } = receipt;
-    
-    const dateStr = date instanceof Date 
-      ? date.toLocaleString(locale) 
+
+    const dateStr = date instanceof Date
+      ? date.toLocaleString(locale)
       : new Date(date).toLocaleString(locale);
-    
+
     // 상품 합계
     const subtotal = items.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
     const discount = payment.discount || 0;
     const total = subtotal - discount + (payment.deliveryFee || 0);
-    
+
     this._container.className = 'catui-receipt';
     this._container.innerHTML = `
       ${showLogo ? `
@@ -974,7 +973,7 @@ class ReceiptView {
     this._handlers.click = (e) => {
       const btn = e.target.closest('.catui-receipt-btn');
       if (!btn) return;
-      
+
       const action = btn.dataset.action;
       if (action === 'print') {
         if (this.options.onPrint) {
@@ -998,7 +997,7 @@ class ReceiptView {
   print() {
     const printContent = this._container.innerHTML;
     const printWindow = window.open('', '_blank');
-    
+
     printWindow.document.write(`
       <!DOCTYPE html>
       <html>
@@ -1020,7 +1019,7 @@ class ReceiptView {
       <body>${printContent}</body>
       </html>
     `);
-    
+
     printWindow.document.close();
     printWindow.print();
   }

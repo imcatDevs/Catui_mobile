@@ -95,24 +95,24 @@ class Notification {
 
     notification.innerHTML = `
       <div class="catui-notification-header">
-        ${config.avatar 
-          ? `<img class="catui-notification-avatar" src="${config.avatar}" alt="">` 
-          : icon 
-            ? `<span class="catui-notification-icon material-icons">${icon}</span>` 
-            : ''
-        }
+        ${config.avatar
+    ? `<img class="catui-notification-avatar" src="${config.avatar}" alt="">`
+    : icon
+      ? `<span class="catui-notification-icon material-icons">${icon}</span>`
+      : ''
+}
         <div class="catui-notification-content">
           ${config.title ? `<div class="catui-notification-title">${config.title}</div>` : ''}
           <div class="catui-notification-message">${config.message}</div>
           <div class="catui-notification-time">${timeAgo}</div>
         </div>
-        ${config.closable ? `<button class="catui-notification-close"><span class="material-icons">close</span></button>` : ''}
+        ${config.closable ? '<button class="catui-notification-close"><span class="material-icons">close</span></button>' : ''}
       </div>
       ${config.actions.length > 0 ? `
         <div class="catui-notification-actions">
-          ${config.actions.map((action, i) => 
-            `<button class="catui-notification-action${action.primary ? ' is-primary' : ''}" data-index="${i}">${action.text}</button>`
-          ).join('')}
+          ${config.actions.map((action, i) =>
+    `<button class="catui-notification-action${action.primary ? ' is-primary' : ''}" data-index="${i}">${action.text}</button>`
+  ).join('')}
         </div>
       ` : ''}
     `;
@@ -230,26 +230,26 @@ class ProgressTracker {
   _render() {
     this._container.className = `catui-progress-tracker catui-progress-tracker-${this.options.orientation}`;
     const isHorizontal = this.options.orientation === 'horizontal';
-    
+
     const stepsHtml = this.options.steps.map((step, index) => {
-      const status = index < this.options.currentStep ? 'completed' 
-        : index === this.options.currentStep ? 'active' 
-        : 'pending';
+      const status = index < this.options.currentStep ? 'completed'
+        : index === this.options.currentStep ? 'active'
+          : 'pending';
 
       // 세로형일 때만 step 사이에 커넥터 추가
-      const connector = !isHorizontal && index < this.options.steps.length - 1 
-        ? '<div class="catui-progress-connector"><div class="catui-progress-connector-fill"></div></div>' 
+      const connector = !isHorizontal && index < this.options.steps.length - 1
+        ? '<div class="catui-progress-connector"><div class="catui-progress-connector-fill"></div></div>'
         : '';
 
       return `
         <div class="catui-progress-step is-${status}" data-step="${index}" ${this.options.clickable && index <= this.options.currentStep ? 'role="button" tabindex="0"' : ''}>
           <div class="catui-progress-step-indicator">
-            ${status === 'completed' 
-              ? '<span class="material-icons">check</span>' 
-              : step.icon 
-                ? `<span class="material-icons">${step.icon}</span>`
-                : `<span class="catui-progress-step-number">${index + 1}</span>`
-            }
+            ${status === 'completed'
+    ? '<span class="material-icons">check</span>'
+    : step.icon
+      ? `<span class="material-icons">${step.icon}</span>`
+      : `<span class="catui-progress-step-number">${index + 1}</span>`
+}
           </div>
           <div class="catui-progress-step-content">
             <div class="catui-progress-step-title">${step.title}</div>
@@ -261,7 +261,7 @@ class ProgressTracker {
     }).join('');
 
     // 가로형은 배경 커넥터 라인을 먼저 추가
-    const horizontalConnector = isHorizontal 
+    const horizontalConnector = isHorizontal
       ? '<div class="catui-progress-connector"><div class="catui-progress-connector-fill"></div></div>'
       : '';
 
@@ -286,7 +286,7 @@ class ProgressTracker {
   _updateConnectors() {
     const isHorizontal = this.options.orientation === 'horizontal';
     const connectors = this._container.querySelectorAll('.catui-progress-connector-fill');
-    
+
     if (isHorizontal && connectors.length > 0) {
       // 가로형: 단일 커넥터의 너비를 진행률로 계산
       const totalSteps = this.options.steps.length - 1;

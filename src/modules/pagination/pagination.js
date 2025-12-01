@@ -117,7 +117,7 @@ class Pagination {
   }
 
   _renderDefault(totalPages) {
-    const { currentPage, maxVisiblePages, showFirstLast, showPrevNext, firstText, lastText, prevText, nextText } = this.options;
+    const { currentPage, showFirstLast, showPrevNext, firstText, lastText, prevText, nextText } = this.options;
     let html = '<div class="catui-pagination-nav">';
 
     // 처음
@@ -332,7 +332,7 @@ class Pagination {
     try {
       const nextPage = this.options.currentPage + 1;
       const result = await this.options.onLoadMore?.(nextPage);
-      
+
       // result가 false면 더 이상 데이터 없음
       if (result === false) {
         this._hasMore = false;
@@ -568,7 +568,7 @@ class DataList {
     `;
 
     this._listElement = this._container.querySelector('.catui-datalist-content');
-    
+
     // 레이아웃 클래스
     this._listElement.classList.add(`catui-datalist-${this.options.layout}`);
     if (this.options.layout === 'grid') {
@@ -577,8 +577,8 @@ class DataList {
 
     // 페이지네이션 초기화
     const paginationContainer = this._container.querySelector(
-      this.options.paginationPosition === 'top' 
-        ? '.catui-datalist-pagination-top' 
+      this.options.paginationPosition === 'top'
+        ? '.catui-datalist-pagination-top'
         : '.catui-datalist-pagination-bottom'
     );
 
@@ -591,8 +591,8 @@ class DataList {
         style: this.options.paginationStyle,
         showInfo: this.options.showInfo,
         onChange: (page, itemsPerPage) => this._onPageChange(page, itemsPerPage),
-        onLoadMore: this.options.paginationStyle === 'loadmore' 
-          ? (page) => this._onLoadMore(page) 
+        onLoadMore: this.options.paginationStyle === 'loadmore'
+          ? (page) => this._onLoadMore(page)
           : null
       });
     }
@@ -629,7 +629,7 @@ class DataList {
         this._totalItems = result.total || 0;
         this._pagination?.setTotalItems(this._totalItems);
       }
-      
+
       this._renderItems();
     } catch (error) {
       console.error('[DataList] Load failed:', error);
@@ -642,7 +642,7 @@ class DataList {
     if (this.options.fetchData) {
       return this.options.data;
     }
-    
+
     // 클라이언트 페이지네이션
     const { currentPage, itemsPerPage } = this.options;
     const start = (currentPage - 1) * itemsPerPage;
@@ -652,14 +652,14 @@ class DataList {
 
   _renderItems() {
     const items = this._getCurrentPageData();
-    
+
     if (items.length === 0) {
       this._listElement.innerHTML = `<div class="catui-datalist-empty">${this.options.emptyText}</div>`;
       return;
     }
 
     const html = items.map((item, index) => {
-      const content = this.options.renderItem 
+      const content = this.options.renderItem
         ? this.options.renderItem(item, index)
         : `<div>${JSON.stringify(item)}</div>`;
       return `<div class="catui-datalist-item" data-index="${index}">${content}</div>`;
@@ -674,7 +674,7 @@ class DataList {
   }
 
   _showError() {
-    this._listElement.innerHTML = `<div class="catui-datalist-error">데이터를 불러오는데 실패했습니다</div>`;
+    this._listElement.innerHTML = '<div class="catui-datalist-error">데이터를 불러오는데 실패했습니다</div>';
   }
 
   async _onPageChange(page, itemsPerPage) {
@@ -704,7 +704,7 @@ class DataList {
 
   _appendItems(items, startIndex) {
     const html = items.map((item, i) => {
-      const content = this.options.renderItem 
+      const content = this.options.renderItem
         ? this.options.renderItem(item, startIndex + i)
         : `<div>${JSON.stringify(item)}</div>`;
       return `<div class="catui-datalist-item" data-index="${startIndex + i}">${content}</div>`;
@@ -809,7 +809,7 @@ class ImageGallery extends DataList {
           title: item.title,
           description: item.description
         }));
-        
+
         this._lightbox = new Overlays.Lightbox({
           images,
           startIndex,

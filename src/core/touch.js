@@ -31,17 +31,17 @@ export class TouchManager {
    * @param {Object} options - 옵션
    */
   constructor(element, options = {}) {
-    this.element = typeof element === 'string' 
-      ? document.querySelector(element) 
+    this.element = typeof element === 'string'
+      ? document.querySelector(element)
       : element;
-    
+
     if (!this.element) {
       throw new Error('TouchManager: Element not found');
     }
 
     this.options = { ...TouchManager.defaults(), ...options };
     this.handlers = new Map();
-    
+
     // 터치 상태
     this._touchState = {
       startX: 0,
@@ -62,12 +62,12 @@ export class TouchManager {
     this._onTouchMove = this._handleTouchMove.bind(this);
     this._onTouchEnd = this._handleTouchEnd.bind(this);
     this._onTouchCancel = this._handleTouchCancel.bind(this);
-    
+
     // 마우스 이벤트 핸들러 (데스크톱 fallback)
     this._onMouseDown = this._handleMouseDown.bind(this);
     this._onMouseMove = this._handleMouseMove.bind(this);
     this._onMouseUp = this._handleMouseUp.bind(this);
-    
+
     this._isMouseDown = false;
 
     this._bindEvents();
@@ -83,13 +83,13 @@ export class TouchManager {
     this.element.addEventListener('touchmove', this._onTouchMove, { passive: !this.options.preventScroll });
     this.element.addEventListener('touchend', this._onTouchEnd, { passive: true });
     this.element.addEventListener('touchcancel', this._onTouchCancel, { passive: true });
-    
+
     // 마우스 이벤트 (데스크톱 fallback)
     this.element.addEventListener('mousedown', this._onMouseDown);
     document.addEventListener('mousemove', this._onMouseMove);
     document.addEventListener('mouseup', this._onMouseUp);
   }
-  
+
   /**
    * 마우스 다운 핸들러 (데스크톱 fallback)
    * @private
@@ -97,7 +97,7 @@ export class TouchManager {
   _handleMouseDown(e) {
     this._isMouseDown = true;
     const state = this._touchState;
-    
+
     state.startX = e.clientX;
     state.startY = e.clientY;
     state.lastX = e.clientX;
@@ -105,28 +105,28 @@ export class TouchManager {
     state.startTime = Date.now();
     state.isLongPress = false;
     state.isSwiping = false;
-    
+
     if (state.longPressTimer) clearTimeout(state.longPressTimer);
-    
+
     state.longPressTimer = setTimeout(() => {
       state.isLongPress = true;
       this._emit('longpress', { x: state.startX, y: state.startY, target: e.target });
     }, this.options.longPressTimeout);
   }
-  
+
   /**
    * 마우스 이동 핸들러 (데스크톱 fallback)
    * @private
    */
   _handleMouseMove(e) {
     if (!this._isMouseDown) return;
-    
+
     const state = this._touchState;
     if (state.longPressTimer) {
       clearTimeout(state.longPressTimer);
       state.longPressTimer = null;
     }
-    
+
     const deltaX = e.clientX - state.startX;
     const deltaY = e.clientY - state.startY;
     const movementX = e.clientX - state.lastX;
@@ -134,23 +134,23 @@ export class TouchManager {
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     const duration = Date.now() - state.startTime;
     const velocity = distance / Math.max(duration, 1);
-    
+
     // 실시간 스와이프 감지
-    if (!state.isSwiping && 
-        distance >= this.options.swipeThreshold && 
+    if (!state.isSwiping &&
+        distance >= this.options.swipeThreshold &&
         velocity >= this.options.swipeVelocity) {
       state.isSwiping = true;
       const direction = this._getSwipeDirection(deltaX, deltaY);
       this._emit('swipe', { direction, deltaX, deltaY, velocity, distance });
       this._emit(`swipe${direction}`, { deltaX, deltaY, velocity, distance });
     }
-    
+
     this._emit('pan', { deltaX, deltaY, movementX, movementY, x: e.clientX, y: e.clientY });
-    
+
     state.lastX = e.clientX;
     state.lastY = e.clientY;
   }
-  
+
   /**
    * 마우스 업 핸들러 (데스크톱 fallback)
    * @private
@@ -158,25 +158,25 @@ export class TouchManager {
   _handleMouseUp(e) {
     if (!this._isMouseDown) return;
     this._isMouseDown = false;
-    
+
     const state = this._touchState;
     const now = Date.now();
     const duration = now - state.startTime;
-    
+
     if (state.longPressTimer) {
       clearTimeout(state.longPressTimer);
       state.longPressTimer = null;
     }
-    
+
     if (state.isLongPress || state.isSwiping) {
       state.isSwiping = false;
       return;
     }
-    
+
     const deltaX = e.clientX - state.startX;
     const deltaY = e.clientY - state.startY;
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    
+
     // 탭 감지
     if (duration < this.options.tapTimeout && distance < 15) {
       if (now - state.lastTapTime < this.options.doubleTapTimeout) {
@@ -247,7 +247,7 @@ export class TouchManager {
     if (e.touches.length === 2) {
       const currentDistance = this._getDistance(e.touches[0], e.touches[1]);
       const scale = currentDistance / state.initialDistance;
-      
+
       if (Math.abs(scale - state.initialScale) > this.options.pinchThreshold) {
         this._emit('pinch', {
           scale: scale,
@@ -269,8 +269,8 @@ export class TouchManager {
       const velocity = distance / Math.max(duration, 1);
 
       // 실시간 스와이프 감지 (touchMove 중에)
-      if (!state.isSwiping && 
-          distance >= this.options.swipeThreshold && 
+      if (!state.isSwiping &&
+          distance >= this.options.swipeThreshold &&
           velocity >= this.options.swipeVelocity) {
         state.isSwiping = true;
         const direction = this._getSwipeDirection(deltaX, deltaY);
@@ -351,12 +351,12 @@ export class TouchManager {
    */
   _handleTouchCancel() {
     const state = this._touchState;
-    
+
     if (state.longPressTimer) {
       clearTimeout(state.longPressTimer);
       state.longPressTimer = null;
     }
-    
+
     state.isLongPress = false;
   }
 
@@ -451,7 +451,7 @@ export class TouchManager {
     this.element.removeEventListener('touchmove', this._onTouchMove);
     this.element.removeEventListener('touchend', this._onTouchEnd);
     this.element.removeEventListener('touchcancel', this._onTouchCancel);
-    
+
     // 마우스 이벤트 리스너 제거
     this.element.removeEventListener('mousedown', this._onMouseDown);
     document.removeEventListener('mousemove', this._onMouseMove);
@@ -495,8 +495,8 @@ export class GestureRecognizer {
    * @param {Object} options - 옵션
    */
   constructor(element, options = {}) {
-    this.element = typeof element === 'string' 
-      ? document.querySelector(element) 
+    this.element = typeof element === 'string'
+      ? document.querySelector(element)
       : element;
 
     if (!this.element) {
@@ -505,7 +505,7 @@ export class GestureRecognizer {
 
     this.options = { ...GestureRecognizer.defaults(), ...options };
     this.handlers = new Map();
-    
+
     this._state = {
       initialAngle: 0,
       isDragging: false,
@@ -516,7 +516,7 @@ export class GestureRecognizer {
     this._onTouchStart = this._handleTouchStart.bind(this);
     this._onTouchMove = this._handleTouchMove.bind(this);
     this._onTouchEnd = this._handleTouchEnd.bind(this);
-    
+
     // 마우스 이벤트 핸들러 (데스크톱 fallback)
     this._onMouseDown = this._handleMouseDown.bind(this);
     this._onMouseMove = this._handleMouseMove.bind(this);
@@ -531,13 +531,13 @@ export class GestureRecognizer {
     this.element.addEventListener('touchstart', this._onTouchStart, { passive: false });
     this.element.addEventListener('touchmove', this._onTouchMove, { passive: false });
     this.element.addEventListener('touchend', this._onTouchEnd, { passive: true });
-    
+
     // 마우스 이벤트 (데스크톱 fallback)
     this.element.addEventListener('mousedown', this._onMouseDown);
     document.addEventListener('mousemove', this._onMouseMove);
     document.addEventListener('mouseup', this._onMouseUp);
   }
-  
+
   /**
    * 마우스 다운 핸들러 (데스크톱 fallback)
    * @private
@@ -548,18 +548,18 @@ export class GestureRecognizer {
     this._state.dragStartY = e.clientY;
     this._state.isDragging = false;
   }
-  
+
   /**
    * 마우스 이동 핸들러 (데스크톱 fallback)
    * @private
    */
   _handleMouseMove(e) {
     if (!this._isMouseDown) return;
-    
+
     const deltaX = e.clientX - this._state.dragStartX;
     const deltaY = e.clientY - this._state.dragStartY;
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    
+
     if (!this._state.isDragging && distance > this.options.dragThreshold) {
       this._state.isDragging = true;
       this._emit('dragstart', {
@@ -567,7 +567,7 @@ export class GestureRecognizer {
         y: this._state.dragStartY
       });
     }
-    
+
     if (this._state.isDragging) {
       this._emit('drag', {
         x: e.clientX,
@@ -577,7 +577,7 @@ export class GestureRecognizer {
       });
     }
   }
-  
+
   /**
    * 마우스 업 핸들러 (데스크톱 fallback)
    * @private
@@ -585,7 +585,7 @@ export class GestureRecognizer {
   _handleMouseUp(e) {
     if (!this._isMouseDown) return;
     this._isMouseDown = false;
-    
+
     if (this._state.isDragging) {
       this._emit('dragend', {
         x: e.clientX,
@@ -599,7 +599,7 @@ export class GestureRecognizer {
     if (e.touches.length === 2) {
       this._state.initialAngle = this._getAngle(e.touches[0], e.touches[1]);
     }
-    
+
     if (e.touches.length === 1) {
       this._state.dragStartX = e.touches[0].clientX;
       this._state.dragStartY = e.touches[0].clientY;
@@ -673,7 +673,7 @@ export class GestureRecognizer {
 
   off(event, handler) {
     if (!this.handlers.has(event)) return;
-    
+
     if (handler) {
       const handlers = this.handlers.get(event);
       const index = handlers.indexOf(handler);
@@ -699,12 +699,12 @@ export class GestureRecognizer {
     this.element.removeEventListener('touchstart', this._onTouchStart);
     this.element.removeEventListener('touchmove', this._onTouchMove);
     this.element.removeEventListener('touchend', this._onTouchEnd);
-    
+
     // 마우스 이벤트 리스너 제거
     this.element.removeEventListener('mousedown', this._onMouseDown);
     document.removeEventListener('mousemove', this._onMouseMove);
     document.removeEventListener('mouseup', this._onMouseUp);
-    
+
     this.handlers.clear();
     this.element = null;
     this._isMouseDown = false;
@@ -727,8 +727,8 @@ export class PullToRefresh {
   }
 
   constructor(element, options = {}) {
-    this.element = typeof element === 'string' 
-      ? document.querySelector(element) 
+    this.element = typeof element === 'string'
+      ? document.querySelector(element)
       : element;
 
     if (!this.element) {
@@ -784,7 +784,7 @@ export class PullToRefresh {
     if (!this._state.isPulling || this._state.isRefreshing) return;
 
     const deltaY = e.touches[0].clientY - this._state.startY;
-    
+
     if (deltaY > 0 && this.element.scrollTop === 0) {
       e.preventDefault();
       this._state.pullDistance = deltaY / this.options.resistance;
@@ -808,7 +808,7 @@ export class PullToRefresh {
     const progress = Math.min(this._state.pullDistance / this.options.threshold, 1);
     this._indicator.style.transform = `translateY(${this._state.pullDistance}px)`;
     this._indicator.style.opacity = progress;
-    
+
     if (progress >= 1) {
       this._indicator.classList.add('ptr-ready');
     } else {
@@ -845,11 +845,11 @@ export class PullToRefresh {
     this.element.removeEventListener('touchstart', this._onTouchStart);
     this.element.removeEventListener('touchmove', this._onTouchMove);
     this.element.removeEventListener('touchend', this._onTouchEnd);
-    
+
     if (this._indicator && !this.options.indicatorElement) {
       this._indicator.remove();
     }
-    
+
     this.element = null;
     this._indicator = null;
   }

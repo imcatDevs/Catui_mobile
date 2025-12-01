@@ -45,7 +45,7 @@ class SwipeableList {
     this._items = [...this.options.items];
     this._handlers = {};
     this._timers = [];  // setTimeout 관리
-    
+
     // 스와이프 상태
     this._touchState = {
       item: null,
@@ -57,7 +57,7 @@ class SwipeableList {
       isSwiping: false,
       startTime: 0
     };
-    
+
     // 현재 열린 아이템
     this._openedItem = null;
 
@@ -73,7 +73,7 @@ class SwipeableList {
    */
   _render() {
     this._container.className = 'catui-swipeable-list';
-    this._container.innerHTML = this._items.map((item, index) => 
+    this._container.innerHTML = this._items.map((item, index) =>
       this._renderItem(item, index)
     ).join('');
   }
@@ -83,11 +83,11 @@ class SwipeableList {
    * @private
    */
   _renderItem(item, index) {
-    const content = this.options.renderItem 
+    const content = this.options.renderItem
       ? this.options.renderItem(item, index)
       : `<div class="catui-swipeable-text">${item.content || item.title || ''}</div>`;
 
-    const leftActionsHtml = this.options.leftActions.length > 0 
+    const leftActionsHtml = this.options.leftActions.length > 0
       ? `<div class="catui-swipeable-actions catui-swipeable-actions-left">
           ${this.options.leftActions.map((action, i) => `
             <button class="catui-swipeable-action" data-action-index="${i}" data-side="left"
@@ -131,13 +131,13 @@ class SwipeableList {
     this._handlers.touchStart = (e) => {
       // 액션 버튼 클릭은 무시
       if (e.target.closest('.catui-swipeable-action')) return;
-      
+
       const item = e.target.closest('.catui-swipeable-item');
       if (!item) return;
 
       const touch = e.touches[0];
       const currentOffset = parseFloat(item.dataset.offset) || 0;
-      
+
       this._touchState = {
         item: item,
         startX: touch.clientX,
@@ -183,11 +183,11 @@ class SwipeableList {
 
         // 새 위치 계산
         let newOffset = state.offsetX + deltaX;
-        
+
         // 범위 제한
         const leftWidth = this._getActionsWidth('left');
         const rightWidth = this._getActionsWidth('right');
-        
+
         // 왼쪽으로 스와이프 (오른쪽 액션 노출) - 음수
         // 오른쪽으로 스와이프 (왼쪽 액션 노출) - 양수
         if (newOffset < 0) {
@@ -209,7 +209,7 @@ class SwipeableList {
 
       const item = state.item;
       const content = item.querySelector('.catui-swipeable-content');
-      
+
       // transition 복구
       content.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
 
@@ -223,7 +223,7 @@ class SwipeableList {
       const leftWidth = this._getActionsWidth('left');
       const rightWidth = this._getActionsWidth('right');
       const threshold = this.options.threshold;
-      
+
       // 스와이프 속도 계산
       const duration = Date.now() - state.startTime;
       const velocity = Math.abs(state.deltaX) / duration;
@@ -312,7 +312,7 @@ class SwipeableList {
       if (!item) return;
 
       const offset = parseFloat(item.dataset.offset) || 0;
-      
+
       // 열린 아이템 클릭 시 닫기
       if (offset !== 0) {
         this._closeItem(item);
@@ -365,12 +365,12 @@ class SwipeableList {
    */
   _closeItem(item) {
     if (!item) return;
-    
+
     const content = item.querySelector('.catui-swipeable-content');
     content.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
     content.style.transform = 'translateX(0)';
     item.dataset.offset = '0';
-    
+
     if (this._openedItem === item) {
       this._openedItem = null;
     }
@@ -401,7 +401,7 @@ class SwipeableList {
 
     const width = this._getActionsWidth(side);
     const offset = side === 'left' ? -width : width;
-    
+
     const content = item.querySelector('.catui-swipeable-content');
     content.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
     this._setItemOffset(item, offset);
@@ -439,7 +439,7 @@ class SwipeableList {
     if (index < 0 || index >= this._items.length) return;
 
     const item = this._container.querySelector(`[data-index="${index}"]`);
-    
+
     if (animate && item) {
       item.style.transition = 'height 0.3s ease, opacity 0.3s ease';
       item.style.height = `${item.offsetHeight}px`;
@@ -471,7 +471,7 @@ class SwipeableList {
   updateItem(index, data) {
     if (index < 0 || index >= this._items.length) return;
     this._items[index] = { ...this._items[index], ...data };
-    
+
     const itemEl = this._container.querySelector(`[data-index="${index}"]`);
     if (itemEl) {
       const content = itemEl.querySelector('.catui-swipeable-content');
@@ -529,7 +529,7 @@ class SwipeableList {
       this._container.innerHTML = '';
       this._container.className = '';
     }
-    
+
     document.removeEventListener('touchstart', this._handlers.documentTouch);
 
     // 참조 해제
@@ -601,7 +601,7 @@ class ReorderableList {
    */
   _render() {
     this._container.className = 'catui-reorderable-list';
-    this._container.innerHTML = this._items.map((item, index) => 
+    this._container.innerHTML = this._items.map((item, index) =>
       this._renderItem(item, index)
     ).join('');
   }
@@ -611,11 +611,11 @@ class ReorderableList {
    * @private
    */
   _renderItem(item, index) {
-    const content = this.options.renderItem 
+    const content = this.options.renderItem
       ? this.options.renderItem(item, index)
       : `<div class="catui-reorderable-text">${item.content || item.title || ''}</div>`;
 
-    const handleHtml = this.options.handle 
+    const handleHtml = this.options.handle
       ? ''
       : '<div class="catui-reorderable-handle"><span class="material-icons">drag_indicator</span></div>';
 
@@ -633,10 +633,10 @@ class ReorderableList {
    */
   _bindEvents() {
     this._handlers.touchStart = (e) => {
-      const handle = this.options.handle 
+      const handle = this.options.handle
         ? e.target.closest(this.options.handle)
         : e.target.closest('.catui-reorderable-handle');
-      
+
       if (!handle) return;
 
       const item = e.target.closest('.catui-reorderable-item');
@@ -893,7 +893,7 @@ class CheckList {
    */
   _render() {
     this._container.className = 'catui-checklist';
-    
+
     let html = '';
 
     // 전체 선택
@@ -921,11 +921,11 @@ class CheckList {
 
     // 아이템 목록
     html += '<div class="catui-checklist-items">';
-    
+
     this._items.forEach((item, index) => {
       html += this._renderItem(item, index);
     });
-    
+
     html += '</div>';
 
     this._container.innerHTML = html;
@@ -1137,7 +1137,7 @@ class CheckList {
     this._items.forEach((item, index) => {
       if (!item.disabled) {
         item.checked = checked;
-        
+
         // DOM 업데이트
         const label = this._container.querySelector(`.catui-checklist-item[data-index="${index}"]`);
         if (label) {
@@ -1147,14 +1147,14 @@ class CheckList {
         }
       }
     });
-    
+
     // 전체 선택 체크박스 업데이트
     const selectAllInput = this._container.querySelector('.catui-checklist-selectall-input');
     if (selectAllInput) {
       selectAllInput.checked = checked;
       selectAllInput.indeterminate = false;
     }
-    
+
     // 카운트 업데이트
     this._updateSelectAllState();
 
@@ -1342,7 +1342,7 @@ class GroupedList {
    */
   _render() {
     this._container.className = `catui-groupedlist${this.options.stickyHeaders ? ' has-sticky-headers' : ''}`;
-    
+
     let html = '';
 
     this._groups.forEach((group, groupIndex) => {

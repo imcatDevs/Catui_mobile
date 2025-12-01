@@ -29,11 +29,11 @@ import { ViewportManager, DeviceDetector, KeyboardManager } from './viewport.js'
  * @description CATUI Mobile 프레임워크의 핵심 클래스입니다.
  * 모든 코어 모듈을 통합하고 전역 CATUI 객체를 생성합니다.
  * 터치 이벤트, 제스처, 뷰포트 관리 등 모바일 전용 기능을 제공합니다.
- * 
+ *
  * @example
  * const element = CATUI('#app');
  * element.addClass('active').text('Hello');
- * 
+ *
  * // 터치 이벤트
  * CATUI.touch('#swipeable').on('swipeleft', () => console.log('Swiped!'));
  */
@@ -48,32 +48,32 @@ class CATUIMobileCore {
     this.loader = new ModuleLoader();
     this.router = new ViewRouter();
     this.loadingIndicator = LoadingIndicator;
-    
+
     // 모바일 전용 인스턴스
     this.viewportManager = new ViewportManager();
     this.deviceDetector = new DeviceDetector();
     this.keyboardManager = new KeyboardManager();
-    
+
     // 이벤트 리스너 추적 (메모리 관리용)
     this._clickHandler = null;
     this._domReadyHandler = null;
-    
+
     // Router에 Loading 통합 (URL 변경 없이 내부 렌더링만)
-    this.router.init({ 
+    this.router.init({
       loading: this.loadingIndicator,
       useHistory: false
     });
-    
+
     // Router에 Loader 연결 (인스턴스 자동 정리용)
     this.router.setLoader(this.loader);
-    
+
     // catui-href 자동 바인딩 (DOM ready 후)
     this._bindSPALinks();
-    
+
     // 모바일 최적화 초기화
     this._initMobileOptimizations();
   }
-  
+
   /**
    * 모바일 최적화 초기화
    * @private
@@ -81,13 +81,13 @@ class CATUIMobileCore {
   _initMobileOptimizations() {
     // 100vh 문제 해결
     this.viewportManager.fixVhUnit();
-    
+
     // 세이프 에어리어 CSS 변수 설정
     this.viewportManager.setupSafeAreaVariables();
-    
+
     // 뷰포트 메타 설정 (기본값)
     this.viewportManager.setViewportMeta();
-    
+
     // 터치 하이라이트 제거
     if (this.deviceDetector.hasTouch) {
       document.documentElement.style.setProperty('-webkit-tap-highlight-color', 'transparent');
@@ -104,28 +104,28 @@ class CATUIMobileCore {
     const bindLinks = () => {
       // 기본 컨테이너 자동 감지
       this._detectRouterContainer();
-      
+
       // 클릭 핸들러 생성 (나중에 제거할 수 있도록 저장)
       this._clickHandler = (e) => {
         // catui-href를 가진 요소 찾기
         const link = e.target.closest('[catui-href]');
-        
+
         if (link) {
           // 이벤트 기본 동작 방지 (중복 네비게이션 방지)
           e.preventDefault();
           e.stopPropagation();
-          
+
           const path = link.getAttribute('catui-href');
           const target = link.getAttribute('catui-target');
-          
+
           if (path) {
             // 링크별 타겟이 있으면 임시로 변경
             const originalContainer = this.router.container;
-            
+
             if (target) {
               this.router.setContainer(`#${target}`);
             }
-            
+
             // 네비게이션 실행
             this.router.navigate(path).then(() => {
               // 원래 컨테이너로 복원 (타겟이 지정된 경우만)
@@ -136,7 +136,7 @@ class CATUIMobileCore {
           }
         }
       };
-      
+
       // capture 단계에서 이벤트 캡처 (더 일찍 처리)
       document.addEventListener('click', this._clickHandler, true);
     };
@@ -149,7 +149,7 @@ class CATUIMobileCore {
       bindLinks();
     }
   }
-  
+
   /**
    * Router 컨테이너 자동 감지
    * catui-target 속성 또는 기본 선택자 사용
@@ -165,7 +165,7 @@ class CATUIMobileCore {
         return;
       }
     }
-    
+
     // 2. 일반적인 선택자들 시도 (우선순위 순)
     const defaultSelectors = ['#app-content', '#content', '#app', 'main'];
     for (const selector of defaultSelectors) {
@@ -174,7 +174,7 @@ class CATUIMobileCore {
         return;
       }
     }
-    
+
     // 3. 기본값
     this.router.setContainer('#content');
   }
@@ -463,9 +463,9 @@ class CATUIMobileCore {
   get version() {
     return '1.0.0';
   }
-  
+
   // ===== Mobile Specific API =====
-  
+
   /**
    * 터치 관리자 생성
    * @param {string|HTMLElement} element - 대상 요소
@@ -475,7 +475,7 @@ class CATUIMobileCore {
   touch(element, options = {}) {
     return new TouchManager(element, options);
   }
-  
+
   /**
    * 제스처 인식기 생성
    * @param {string|HTMLElement} element - 대상 요소
@@ -485,7 +485,7 @@ class CATUIMobileCore {
   gesture(element, options = {}) {
     return new GestureRecognizer(element, options);
   }
-  
+
   /**
    * Pull-to-Refresh 생성
    * @param {string|HTMLElement} element - 대상 요소
@@ -495,7 +495,7 @@ class CATUIMobileCore {
   pullToRefresh(element, options = {}) {
     return new PullToRefresh(element, options);
   }
-  
+
   /**
    * 뷰포트 관리자
    * @returns {ViewportManager}
@@ -503,7 +503,7 @@ class CATUIMobileCore {
   get viewport() {
     return this.viewportManager;
   }
-  
+
   /**
    * 디바이스 정보
    * @returns {DeviceDetector}
@@ -511,7 +511,7 @@ class CATUIMobileCore {
   get device() {
     return this.deviceDetector;
   }
-  
+
   /**
    * 키보드 관리자
    * @returns {KeyboardManager}
@@ -523,7 +523,7 @@ class CATUIMobileCore {
   /**
    * 프레임워크 정리 (메모리 누수 방지)
    * SPA 재시작 또는 테스트 환경에서 사용
-   * 
+   *
    * @example
    * // 애플리케이션 종료 시
    * CATUI.destroy();
@@ -560,7 +560,7 @@ class CATUIMobileCore {
     if (this.loadingIndicator && typeof this.loadingIndicator.destroy === 'function') {
       this.loadingIndicator.destroy();
     }
-    
+
     // 모바일 전용 모듈 정리
     if (this.viewportManager && typeof this.viewportManager.destroy === 'function') {
       this.viewportManager.destroy();
@@ -568,7 +568,7 @@ class CATUIMobileCore {
     if (this.keyboardManager && typeof this.keyboardManager.destroy === 'function') {
       this.keyboardManager.destroy();
     }
-    
+
     // 참조 정리 (메모리 누수 방지)
     this.router = null;
     this.loader = null;
@@ -586,10 +586,10 @@ const coreInstance = new CATUIMobileCore();
 /**
  * CATUI 전역 함수
  * jQuery 스타일로 요소 선택 가능하면서 모든 API에 접근 가능
- * 
+ *
  * @param {string|HTMLElement} selector - 선택자
  * @returns {DOMElement}
- * 
+ *
  * @example
  * CATUI('#app').addClass('active');
  * CATUI.touch('#swipe').on('swipeleft', handler);
@@ -597,9 +597,7 @@ const coreInstance = new CATUIMobileCore();
  */
 const CATUI = Object.assign(
   // 함수로서 동작 (selector)
-  function(selector) {
-    return coreInstance.$(selector);
-  },
+  (selector) => coreInstance.$(selector),
   // 모든 메서드 바인딩
   {
     // Core API
@@ -607,18 +605,18 @@ const CATUI = Object.assign(
     create: (tag, attrs) => coreInstance.create(tag, attrs),
     use: (...args) => coreInstance.use(...args),
     ready: (cb) => coreInstance.ready(cb),
-    
+
     // Event Bus
     on: (...args) => coreInstance.on(...args),
     once: (...args) => coreInstance.once(...args),
     off: (...args) => coreInstance.off(...args),
     emit: (...args) => coreInstance.emit(...args),
-    
+
     // Security
     escape: (str) => coreInstance.escape(str),
     sanitize: (html) => coreInstance.sanitize(html),
     validatePath: (path) => coreInstance.validatePath(path),
-    
+
     // Utils
     isString: (v) => coreInstance.isString(v),
     isNumber: (v) => coreInstance.isNumber(v),
@@ -630,16 +628,16 @@ const CATUI = Object.assign(
     debounce: (fn, wait) => coreInstance.debounce(fn, wait),
     throttle: (fn, limit) => coreInstance.throttle(fn, limit),
     randomId: (prefix) => coreInstance.randomId(prefix),
-    
+
     // Mobile API
     touch: (el, opts) => coreInstance.touch(el, opts),
     gesture: (el, opts) => coreInstance.gesture(el, opts),
     pullToRefresh: (el, opts) => coreInstance.pullToRefresh(el, opts),
-    
+
     // Instance Management
     getInstanceCount: () => coreInstance.getInstanceCount(),
     destroyInstances: () => coreInstance.destroyInstances(),
-    
+
     // Destroy
     destroy: () => coreInstance.destroy()
   }
