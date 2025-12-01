@@ -1,127 +1,154 @@
-<div class="demo-page">
-  <h1 class="demo-title">Form Components</h1>
-  <p class="demo-subtitle">고급 폼 컴포넌트 - FileUpload, Rating, SignaturePad, FormWizard</p>
-
+<div class="fade-in">
   <!-- FileUpload -->
-  <section class="demo-section">
-    <h2 class="demo-section-title">FileUpload</h2>
-    
-    <div class="card mb-4">
-      <div class="card-header">기본 파일 업로드</div>
-      <div class="card-body">
-        <div id="file-upload-basic"></div>
-        <div id="file-upload-result" class="mt-3 text-secondary text-sm"></div>
-      </div>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">upload_file</span>
+        FileUpload
+      </h3>
     </div>
-
-    <div class="card mb-4">
-      <div class="card-header">이미지 전용 (다중 선택)</div>
-      <div class="card-body">
-        <div id="file-upload-images"></div>
-      </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">파일 업로드 컴포넌트</p>
+      
+      <p class="text-sm font-medium mb-2">기본 파일 업로드</p>
+      <div id="file-upload-basic" class="mb-4"></div>
+      <p id="file-upload-result" class="text-sm p-3 bg-secondary rounded mb-4">파일을 선택하세요</p>
+      
+      <p class="text-sm font-medium mb-2">이미지 전용 (다중 선택)</p>
+      <div id="file-upload-images"></div>
     </div>
-  </section>
+  </div>
 
   <!-- Rating -->
-  <section class="demo-section">
-    <h2 class="demo-section-title">Rating</h2>
-    
-    <div class="card mb-4">
-      <div class="card-header">기본 별점</div>
-      <div class="card-body">
-        <div class="demo-row">
-          <span class="demo-label">평점:</span>
-          <div id="rating-basic"></div>
-        </div>
-        <div id="rating-result" class="mt-3 text-secondary text-sm"></div>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">star</span>
+        Rating
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">별점 평가 컴포넌트</p>
+      
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-sm text-secondary" style="min-width: 80px;">기본:</span>
+        <div id="rating-basic"></div>
+      </div>
+      <p id="rating-result" class="text-sm p-3 bg-secondary rounded mb-4">별점을 선택하세요</p>
+      
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-sm text-secondary" style="min-width: 80px;">반 별점:</span>
+        <div id="rating-half"></div>
+      </div>
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-sm text-secondary" style="min-width: 80px;">읽기 전용:</span>
+        <div id="rating-readonly"></div>
+      </div>
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-sm text-secondary" style="min-width: 80px;">하트:</span>
+        <div id="rating-hearts"></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-sm text-secondary" style="min-width: 80px;">크기:</span>
+        <div id="rating-sm"></div>
+        <div id="rating-md"></div>
+        <div id="rating-lg"></div>
       </div>
     </div>
-
-    <div class="card mb-4">
-      <div class="card-header">다양한 옵션</div>
-      <div class="card-body">
-        <div class="demo-row mb-3">
-          <span class="demo-label">반 별점:</span>
-          <div id="rating-half"></div>
-        </div>
-        <div class="demo-row mb-3">
-          <span class="demo-label">읽기 전용:</span>
-          <div id="rating-readonly"></div>
-        </div>
-        <div class="demo-row mb-3">
-          <span class="demo-label">하트 아이콘:</span>
-          <div id="rating-hearts"></div>
-        </div>
-        <div class="demo-row">
-          <span class="demo-label">크기 비교:</span>
-          <div class="d-flex align-items-center gap-3">
-            <div id="rating-sm"></div>
-            <div id="rating-md"></div>
-            <div id="rating-lg"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  </div>
 
   <!-- SignaturePad -->
-  <section class="demo-section">
-    <h2 class="demo-section-title">SignaturePad</h2>
-    
-    <div class="card mb-4">
-      <div class="card-header">서명 패드</div>
-      <div class="card-body">
-        <div id="signature-pad"></div>
-        <div class="mt-3 d-flex gap-2">
-          <button id="sig-save" class="btn btn-primary btn-sm">저장</button>
-          <button id="sig-preview" class="btn btn-outline btn-sm">미리보기</button>
-        </div>
-        <div id="signature-preview" class="mt-3"></div>
-      </div>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">draw</span>
+        SignaturePad
+      </h3>
     </div>
-  </section>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">서명 입력 컴포넌트</p>
+      
+      <div id="signature-pad" class="mb-4"></div>
+      
+      <div class="flex gap-2 mb-4">
+        <button id="sig-save" class="btn btn-primary">저장</button>
+        <button id="sig-preview" class="btn btn-outline">미리보기</button>
+      </div>
+      
+      <div id="signature-preview"></div>
+    </div>
+  </div>
 
   <!-- FormWizard -->
-  <section class="demo-section">
-    <h2 class="demo-section-title">FormWizard</h2>
-    
-    <div class="card mb-4">
-      <div class="card-header">단계별 폼</div>
-      <div class="card-body">
-        <div id="form-wizard"></div>
-      </div>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">assignment</span>
+        FormWizard
+      </h3>
     </div>
-    
-    <div id="wizard-result" class="card mb-4" style="display: none;">
-      <div class="card-header">제출 결과</div>
-      <div class="card-body">
-        <pre id="wizard-result-data" class="text-sm"></pre>
-      </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">단계별 폼 컴포넌트</p>
+      <div id="form-wizard"></div>
     </div>
-  </section>
+  </div>
+  
+  <div id="wizard-result" class="card" style="display: none;">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--success);">check_circle</span>
+        제출 결과
+      </h3>
+    </div>
+    <div class="card-body">
+      <pre id="wizard-result-data" class="text-sm p-3 bg-secondary rounded"></pre>
+    </div>
+  </div>
+
+  <!-- 사용 예시 -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">code</span>
+        사용 예시
+      </h3>
+    </div>
+    <div class="card-body">
+      <pre class="demo-code"><code>// 모듈 로드
+const Forms = await CATUI.use('forms');
+
+// FileUpload
+const upload = new Forms.FileUpload({
+  container: '#upload',
+  accept: 'image/*',
+  multiple: true,
+  maxFiles: 5
+});
+
+// Rating
+const rating = new Forms.Rating({
+  container: '#rating',
+  value: 3,
+  onChange: (v) => console.log(v)
+});
+
+// SignaturePad
+const sig = new Forms.SignaturePad({
+  container: '#sig',
+  width: 350,
+  height: 150
+});
+
+// FormWizard
+const wizard = new Forms.FormWizard({
+  container: '#wizard',
+  steps: [...]
+});</code></pre>
+    </div>
+  </div>
 </div>
 
 <style>
-.demo-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.demo-label {
-  min-width: 80px;
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-.d-flex { display: flex; }
-.align-items-center { align-items: center; }
-.gap-2 { gap: 8px; }
-.gap-3 { gap: 12px; }
-.mb-3 { margin-bottom: 12px; }
-.mb-4 { margin-bottom: 16px; }
-.mt-3 { margin-top: 12px; }
-.text-sm { font-size: 14px; }
-.text-secondary { color: var(--text-secondary); }
-
 /* Wizard 폼 스타일 */
 .wizard-form-group {
   margin-bottom: 16px;
@@ -279,7 +306,7 @@
     }
   });
 
-  document.getElementById('sig-save').addEventListener('click', () => {
+  CATUI('#sig-save').on('click', () => {
     if (signaturePad.isEmpty()) {
       Toast.warning('서명을 입력해주세요');
       return;
@@ -289,13 +316,13 @@
     Toast.success('서명이 저장되었습니다');
   });
 
-  document.getElementById('sig-preview').addEventListener('click', () => {
-    const preview = document.getElementById('signature-preview');
+  CATUI('#sig-preview').on('click', () => {
+    const preview = CATUI('#signature-preview');
     if (signaturePad.isEmpty()) {
-      preview.innerHTML = '<p class="text-secondary">서명이 비어있습니다</p>';
+      preview.html('<p class="text-secondary">서명이 비어있습니다</p>');
       return;
     }
-    preview.innerHTML = `<img src="${signaturePad.toDataURL()}" alt="서명 미리보기" style="max-width: 100%; border: 1px solid var(--border-color); border-radius: 8px;">`;
+    preview.html(`<img src="${signaturePad.toDataURL()}" alt="서명 미리보기" style="max-width: 100%; border: 1px solid var(--border-color); border-radius: 8px;">`);
   });
 
   // ============ FormWizard ============
@@ -406,26 +433,9 @@
       console.log('Form submitted:', data);
       Toast.success('폼이 제출되었습니다!');
       
-      const resultEl = document.getElementById('wizard-result');
-      const resultData = document.getElementById('wizard-result-data');
-      resultEl.style.display = 'block';
-      resultData.textContent = JSON.stringify(data, null, 2);
+      CATUI('#wizard-result').css({ display: 'block' });
+      CATUI('#wizard-result-data').text(JSON.stringify(data, null, 2));
     }
-  });
-
-  // Cleanup
-  window.addEventListener('beforeunload', () => {
-    fileUploadBasic.destroy();
-    fileUploadImages.destroy();
-    ratingBasic.destroy();
-    ratingHalf.destroy();
-    ratingReadonly.destroy();
-    ratingHearts.destroy();
-    ratingSm.destroy();
-    ratingMd.destroy();
-    ratingLg.destroy();
-    signaturePad.destroy();
-    formWizard.destroy();
   });
 })();
 </script>

@@ -29,9 +29,6 @@ export class ViewRouter {
       afterLoad: [],
       onError: []
     };
-    // 인스턴스 관리
-    this.instances = new Map();
-    this.currentViewInstances = [];
     this.loading = null;
     this._popstateHandler = null;
     
@@ -264,55 +261,25 @@ export class ViewRouter {
   }
 
   /**
-   * 인스턴스 등록 (메모리 누수 방지)
-   * @param {Object} instance - destroy() 메서드를 가진 인스턴스
-   * @returns {Object} 등록된 인스턴스
-   * 
-   * @example
-   * const modal = new Modal();
-   * router.registerInstance(modal);
-   * // 뷰 전환 시 modal.destroy() 자동 호출됨
+   * 모듈 로더 설정 (인스턴스 정리용)
+   * @param {ModuleLoader} loader - 모듈 로더
    */
-  registerInstance(instance) {
-    if (instance && typeof instance.destroy === 'function') {
-      this.currentViewInstances.push(instance);
-      return instance;
-    }
-    console.warn('Instance must have destroy() method');
-    return instance;
+  setLoader(loader) {
+    this._loader = loader;
   }
 
   /**
-   * 현재 뷰의 모든 인스턴스 정리
+   * 현재 뷰 정리
    * @private
    */
   async _cleanupCurrentView() {
     // beforeUnload 훅 실행
     await this._emitHook('beforeUnload', this.currentPath);
     
-    // 글로벌 cleanup 함수 실행 (페이지별 정리)
-    if (typeof window._pageCleanup === 'function') {
-      try {
-        window._pageCleanup();
-      } catch (error) {
-        console.error('Error in page cleanup:', error);
-      }
-      window._pageCleanup = null;
+    // 모듈 인스턴스 정리 (overlays, navigation 제외)
+    if (this._loader && typeof this._loader.destroyInstances === 'function') {
+      this._loader.destroyInstances();
     }
-    
-    // 현재 뷰의 모든 인스턴스 정리
-    this.currentViewInstances.forEach(instance => {
-      try {
-        if (instance && typeof instance.destroy === 'function') {
-          instance.destroy();
-        }
-      } catch (error) {
-        console.error('Error destroying instance:', error);
-      }
-    });
-
-    // 인스턴스 배열 초기화
-    this.currentViewInstances = [];
   }
 
   /**
@@ -418,14 +385,6 @@ export class ViewRouter {
   }
 
   /**
-   * 등록된 인스턴스 수
-   * @returns {number}
-   */
-  getInstanceCount() {
-    return this.currentViewInstances.length;
-  }
-
-  /**
    * 라우터 정리 (메모리 누수 방지)
    * 이벤트 리스너와 인스턴스 모두 정리
    */
@@ -436,9 +395,6 @@ export class ViewRouter {
       this._popstateHandler = null;
     }
 
-    // 현재 뷰의 인스턴스 정리
-    this._cleanupCurrentView();
-
     // 모든 훅 제거
     this.clearHooks();
 
@@ -447,9 +403,10 @@ export class ViewRouter {
       this.loading.forceHide();
     }
 
-    // 상태 초기화
+    // 상태 및 참조 초기화 (메모리 누수 방지)
     this.currentPath = '';
-    this.instances.clear();
+    this._loader = null;
+    this.loading = null;
   }
 }
 

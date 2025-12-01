@@ -1,0 +1,276 @@
+<div class="fade-in">
+  <!-- CardInput -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">credit_card</span>
+        CardInput
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">카드 정보 입력 (Luhn 알고리즘 검증)</p>
+      
+      <div id="card-input-demo" class="mb-4"></div>
+      
+      <p class="text-sm font-medium mb-2">입력 상태</p>
+      <p id="card-status" class="text-sm p-3 bg-secondary rounded">카드 정보를 입력하세요</p>
+    </div>
+  </div>
+
+  <!-- PaymentMethods -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">payment</span>
+        PaymentMethods
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">결제수단 선택</p>
+      
+      <div id="payment-methods-demo" class="mb-4"></div>
+      
+      <p class="text-sm font-medium mb-2">선택된 결제수단</p>
+      <p id="method-status" class="text-sm p-3 bg-secondary rounded">결제수단을 선택하세요</p>
+    </div>
+  </div>
+
+  <!-- PriceBreakdown -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">receipt</span>
+        PriceBreakdown
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">가격 상세 내역</p>
+      
+      <div id="price-breakdown-demo"></div>
+    </div>
+  </div>
+
+  <!-- ReceiptView -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">receipt_long</span>
+        ReceiptView
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">결제 완료 영수증</p>
+      
+      <button id="show-receipt" class="btn btn-primary mb-4">영수증 보기</button>
+      
+      <div id="receipt-demo" style="display: none;"></div>
+    </div>
+  </div>
+
+  <!-- 사용 예시 -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">code</span>
+        사용 예시
+      </h3>
+    </div>
+    <div class="card-body">
+      <pre class="demo-code"><code>// 모듈 로드
+const Payment = await CATUI.use('payment');
+
+// CardInput - 카드 정보 입력
+const cardInput = new Payment.CardInput({
+  container: '#card-form',
+  fields: ['number', 'expiry', 'cvc', 'name'],
+  detectCardType: true,
+  supportedCards: ['visa', 'mastercard', 'amex'],
+  onCardTypeChange: (type) => console.log('카드사:', type),
+  onComplete: (data) => console.log('완료:', data)
+});
+
+// PaymentMethods - 결제수단 선택
+const methods = new Payment.PaymentMethods({
+  container: '#methods',
+  methods: [
+    { id: 'card', name: '신용카드', icon: 'credit_card' },
+    { id: 'kakao', name: '카카오페이', badge: '추천' },
+    { id: 'naver', name: '네이버페이' }
+  ],
+  onChange: (id, method) => console.log('선택:', method)
+});
+
+// PriceBreakdown - 가격 상세
+const price = new Payment.PriceBreakdown({
+  container: '#price',
+  items: [
+    { label: '상품금액', amount: 50000 },
+    { label: '할인', amount: 5000, type: 'discount' },
+    { label: '배송비', amount: 3000 }
+  ],
+  currency: '₩'
+});
+
+// ReceiptView - 영수증
+const receipt = new Payment.ReceiptView({
+  container: '#receipt',
+  receipt: {
+    orderNumber: 'ORD-2024-001234',
+    date: new Date(),
+    items: [{ name: '상품명', price: 50000, quantity: 1 }],
+    payment: { method: '신용카드', discount: 5000 }
+  }
+});</code></pre>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+(async () => {
+  const Payment = await CATUI.use('payment');
+  const { Toast } = await CATUI.use('overlays');
+
+  // ========================================
+  // CardInput
+  // ========================================
+  const cardStatus = CATUI('#card-status');
+
+  const cardInput = new Payment.CardInput({
+    container: '#card-input-demo',
+    fields: ['number', 'expiry', 'cvc'],
+    detectCardType: true,
+    supportedCards: ['visa', 'mastercard', 'amex', 'jcb'],
+    validateOnBlur: true,
+    onCardTypeChange: (type) => {
+      if (type) {
+        cardStatus.text(`카드사 감지: ${type.toUpperCase()}`);
+      }
+    },
+    onChange: (field, value, isValid) => {
+      const status = isValid ? '✅' : '⏳';
+      cardStatus.text(`${field}: ${status} ${value ? '입력됨' : '비어있음'}`);
+    },
+    onComplete: (data) => {
+      cardStatus.text(`✅ 카드 정보 완료! (${data.cardType || 'unknown'})`);
+      Toast.success('카드 정보가 유효합니다!');
+    },
+    onError: (field, error) => {
+      cardStatus.text(`❌ ${error}`);
+    }
+  });
+
+  // ========================================
+  // PaymentMethods
+  // ========================================
+  const methodStatus = CATUI('#method-status');
+
+  const paymentMethods = new Payment.PaymentMethods({
+    container: '#payment-methods-demo',
+    methods: [
+      { 
+        id: 'card', 
+        name: '신용/체크카드', 
+        icon: 'credit_card',
+        description: '국내/해외 카드 모두 사용 가능'
+      },
+      { 
+        id: 'kakao', 
+        name: '카카오페이', 
+        icon: 'chat',
+        description: '카카오톡으로 간편 결제',
+        badge: '추천'
+      },
+      { 
+        id: 'naver', 
+        name: '네이버페이', 
+        icon: 'public',
+        description: '네이버 포인트 적립'
+      },
+      { 
+        id: 'phone', 
+        name: '휴대폰 결제', 
+        icon: 'phone_android',
+        description: '통신사 요금과 합산'
+      },
+      { 
+        id: 'bank', 
+        name: '계좌이체', 
+        icon: 'account_balance',
+        description: '실시간 계좌이체',
+        disabled: true
+      }
+    ],
+    selected: 'kakao',
+    showDescription: true,
+    onChange: (id, method) => {
+      methodStatus.text(`선택됨: ${method.name}`);
+      Toast.info(`${method.name} 선택됨`);
+    }
+  });
+
+  // ========================================
+  // PriceBreakdown
+  // ========================================
+  const priceBreakdown = new Payment.PriceBreakdown({
+    container: '#price-breakdown-demo',
+    items: [
+      { label: '상품금액 (2개)', amount: 89000 },
+      { label: '회원 할인', amount: 8900, type: 'discount' },
+      { label: '쿠폰 할인', amount: 5000, type: 'discount', highlight: true },
+      { label: '배송비', amount: 0 }
+    ],
+    currency: '₩',
+    locale: 'ko-KR',
+    showTotal: true,
+    totalLabel: '최종 결제 금액'
+  });
+
+  // ========================================
+  // ReceiptView
+  // ========================================
+  const receiptContainer = CATUI('#receipt-demo');
+  let receiptView = null;
+
+  CATUI('#show-receipt').on('click', () => {
+    receiptContainer.css({ display: 'block' });
+    
+    if (receiptView) {
+      receiptView.destroy();
+    }
+
+    receiptView = new Payment.ReceiptView({
+      container: '#receipt-demo',
+      receipt: {
+        orderNumber: 'ORD-2024-123456',
+        date: new Date(),
+        items: [
+          { name: 'CATUI 프리미엄 라이선스', price: 79000, quantity: 1 },
+          { name: '기술 지원 (1년)', price: 10000, quantity: 1 }
+        ],
+        payment: {
+          method: '카카오페이',
+          discount: 13900,
+          deliveryFee: 0
+        },
+        store: {
+          name: 'IMCAT Store',
+          address: '서울특별시 강남구 테헤란로 123',
+          tel: '02-1234-5678'
+        }
+      },
+      showLogo: true,
+      printable: true,
+      onPrint: () => {
+        Toast.info('인쇄 준비 중...');
+        receiptView.print();
+      },
+      onShare: (receipt) => {
+        Toast.success('영수증이 공유되었습니다');
+        console.log('Share receipt:', receipt);
+      }
+    });
+
+    Toast.success('결제가 완료되었습니다!');
+  });
+})();
+</script>

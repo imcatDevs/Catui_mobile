@@ -1,0 +1,492 @@
+@use '../../styles/abstracts' as *;
+
+// ========================================
+// CardInput
+// ========================================
+.catui-card-input {
+  background: var(--bg-primary, $bg-primary);
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-lg;
+  padding: $spacing-4;
+}
+
+.catui-card-input-header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  margin-bottom: $spacing-4;
+  padding-bottom: $spacing-3;
+  border-bottom: 1px solid var(--border-color, $border-color);
+}
+
+.catui-card-input-icon {
+  font-size: $icon-size-lg;
+  color: var(--text-secondary, $text-secondary);
+  
+  .catui-card-input[data-card-type="visa"] & { color: #1A1F71; }
+  .catui-card-input[data-card-type="mastercard"] & { color: #EB001B; }
+  .catui-card-input[data-card-type="amex"] & { color: #006FCF; }
+  .catui-card-input[data-card-type="jcb"] & { color: #0E4C96; }
+}
+
+.catui-card-input-type {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-card-input-fields {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+}
+
+.catui-card-input-field {
+  flex: 1;
+  
+  &.is-full {
+    width: 100%;
+  }
+  
+  input {
+    width: 100%;
+    padding: $spacing-3 $spacing-4;
+    border: 1px solid var(--border-color, $border-color);
+    border-radius: $radius-default;
+    font-size: $font-size-base;
+    background: var(--bg-primary, $bg-primary);
+    color: var(--text-primary, $text-primary);
+    transition: border-color $duration-fast $ease-in-out, box-shadow $duration-fast $ease-in-out;
+    
+    &::placeholder {
+      color: var(--text-tertiary, $text-tertiary);
+    }
+    
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    }
+    
+    &.is-valid {
+      border-color: $success;
+    }
+    
+    &.is-invalid {
+      border-color: $error;
+    }
+  }
+}
+
+.catui-card-input-row {
+  display: flex;
+  gap: $spacing-3;
+}
+
+.catui-card-input-error {
+  display: block;
+  font-size: $font-size-xs;
+  color: $error;
+  margin-top: $spacing-1;
+  min-height: 1rem;
+}
+
+// ========================================
+// PaymentMethods
+// ========================================
+.catui-payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+  
+  &.is-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-3;
+  }
+}
+
+.catui-payment-method {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-4;
+  background: var(--bg-primary, $bg-primary);
+  border: 2px solid var(--border-color, $border-color);
+  border-radius: $radius-lg;
+  cursor: pointer;
+  transition: border-color $duration-fast $ease-in-out, background $duration-fast $ease-in-out;
+  
+  &:hover:not(.is-disabled) {
+    border-color: $primary;
+    background: var(--bg-secondary, $bg-secondary);
+  }
+  
+  &.is-selected {
+    border-color: $primary;
+    background: rgba($primary, 0.05);
+    
+    .catui-payment-method-check {
+      background: $primary;
+      
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+  
+  &.is-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.catui-payment-method-radio {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.catui-payment-method-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-color, $border-color);
+  border-radius: $radius-full;
+  transition: background $duration-fast $ease-in-out, border-color $duration-fast $ease-in-out;
+  
+  &::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: $radius-full;
+    opacity: 0;
+    transition: opacity $duration-fast $ease-in-out;
+  }
+  
+  .is-selected & {
+    border-color: $primary;
+  }
+}
+
+.catui-payment-method-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-secondary, $bg-secondary);
+  border-radius: $radius-default;
+  flex-shrink: 0;
+  
+  .material-icons {
+    font-size: $icon-size-md;
+    color: var(--text-primary, $text-primary);
+  }
+}
+
+.catui-payment-method-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.catui-payment-method-name {
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-payment-method-desc {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+  margin-top: $spacing-1;
+}
+
+.catui-payment-method-badge {
+  padding: $spacing-1 $spacing-2;
+  background: $primary;
+  color: white;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  border-radius: $radius-sm;
+}
+
+// ========================================
+// PriceBreakdown
+// ========================================
+.catui-price-breakdown {
+  background: var(--bg-primary, $bg-primary);
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-lg;
+  padding: $spacing-4;
+}
+
+.catui-price-breakdown-items {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+.catui-price-breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-2 0;
+  
+  &.is-discount {
+    .catui-price-breakdown-amount {
+      color: $error;
+    }
+  }
+  
+  &.is-highlight {
+    background: rgba($primary, 0.05);
+    margin: 0 (-$spacing-4);
+    padding: $spacing-2 $spacing-4;
+    border-radius: $radius-default;
+  }
+}
+
+.catui-price-breakdown-label {
+  font-size: $font-size-base;
+  color: var(--text-secondary, $text-secondary);
+}
+
+.catui-price-breakdown-amount {
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-price-breakdown-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: $spacing-4;
+  padding-top: $spacing-4;
+  border-top: 2px solid var(--text-primary, $text-primary);
+}
+
+.catui-price-breakdown-total-label {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-price-breakdown-total-amount {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $primary;
+}
+
+// ========================================
+// ReceiptView
+// ========================================
+.catui-receipt {
+  background: var(--bg-primary, $bg-primary);
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-lg;
+  padding: $spacing-6;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.catui-receipt-header {
+  text-align: center;
+  margin-bottom: $spacing-4;
+}
+
+.catui-receipt-logo {
+  max-width: 120px;
+  height: auto;
+}
+
+.catui-receipt-icon {
+  font-size: 48px;
+  color: $success;
+}
+
+.catui-receipt-title {
+  text-align: center;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary, $text-primary);
+  margin-bottom: $spacing-4;
+}
+
+.catui-receipt-info {
+  background: var(--bg-secondary, $bg-secondary);
+  border-radius: $radius-default;
+  padding: $spacing-3;
+  margin-bottom: $spacing-4;
+}
+
+.catui-receipt-info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: $spacing-2 0;
+  font-size: $font-size-sm;
+  
+  span:first-child {
+    color: var(--text-secondary, $text-secondary);
+  }
+  
+  span:last-child {
+    color: var(--text-primary, $text-primary);
+    font-weight: $font-weight-medium;
+  }
+}
+
+.catui-receipt-divider {
+  border: none;
+  border-top: 1px dashed var(--border-color, $border-color);
+  margin: $spacing-4 0;
+}
+
+.catui-receipt-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.catui-receipt-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: $spacing-2 0;
+}
+
+.catui-receipt-item-name {
+  font-size: $font-size-base;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-receipt-item-qty {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+  margin-left: $spacing-2;
+}
+
+.catui-receipt-item-price {
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-receipt-summary {
+  margin-top: $spacing-4;
+}
+
+.catui-receipt-summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: $spacing-2 0;
+  font-size: $font-size-sm;
+  
+  span:first-child {
+    color: var(--text-secondary, $text-secondary);
+  }
+  
+  span:last-child {
+    color: var(--text-primary, $text-primary);
+  }
+  
+  &.is-discount span:last-child {
+    color: $error;
+  }
+}
+
+.catui-receipt-summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: $spacing-3;
+  padding-top: $spacing-3;
+  border-top: 2px solid var(--text-primary, $text-primary);
+  
+  span:first-child {
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: var(--text-primary, $text-primary);
+  }
+  
+  span:last-child {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $primary;
+  }
+}
+
+.catui-receipt-store {
+  text-align: center;
+  margin-top: $spacing-6;
+  padding-top: $spacing-4;
+  border-top: 1px solid var(--border-color, $border-color);
+}
+
+.catui-receipt-store-name {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+  margin-bottom: $spacing-2;
+}
+
+.catui-receipt-store-info {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+}
+
+.catui-receipt-actions {
+  display: flex;
+  gap: $spacing-3;
+  margin-top: $spacing-6;
+}
+
+.catui-receipt-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-2;
+  padding: $spacing-3 $spacing-4;
+  background: var(--bg-secondary, $bg-secondary);
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-default;
+  font-size: $font-size-base;
+  color: var(--text-primary, $text-primary);
+  cursor: pointer;
+  transition: background $duration-fast $ease-in-out;
+  
+  &:hover {
+    background: var(--bg-tertiary, $bg-tertiary);
+  }
+  
+  .material-icons {
+    font-size: $icon-size-sm;
+  }
+}
+
+// ========================================
+// Dark Mode
+// ========================================
+[data-theme="dark"] {
+  .catui-card-input,
+  .catui-payment-method,
+  .catui-price-breakdown,
+  .catui-receipt {
+    background: $dark-bg-secondary;
+    border-color: $dark-border-color;
+  }
+  
+  .catui-card-input-field input {
+    background: $dark-bg-primary;
+    border-color: $dark-border-color;
+    color: $dark-text-primary;
+  }
+  
+  .catui-payment-method-icon {
+    background: $dark-bg-tertiary;
+  }
+}

@@ -64,6 +64,9 @@ class CATUIMobileCore {
       useHistory: false
     });
     
+    // Router에 Loader 연결 (인스턴스 자동 정리용)
+    this.router.setLoader(this.loader);
+    
     // catui-href 자동 바인딩 (DOM ready 후)
     this._bindSPALinks();
     
@@ -202,6 +205,30 @@ class CATUIMobileCore {
    */
   use(...moduleNames) {
     return this.loader.use(...moduleNames);
+  }
+
+  // ===== Instance Management API =====
+  /**
+   * 인스턴스 맵 (읽기 전용)
+   * @returns {Map}
+   */
+  get instances() {
+    return this.loader.instances;
+  }
+
+  /**
+   * 전체 인스턴스 수 (제외 모듈 제외)
+   * @returns {number}
+   */
+  getInstanceCount() {
+    return this.loader.getTotalInstanceCount();
+  }
+
+  /**
+   * 모든 인스턴스 정리 (제외 모듈 제외)
+   */
+  destroyInstances() {
+    return this.loader.destroyInstances();
   }
 
   // ===== View Router API =====
@@ -541,6 +568,15 @@ class CATUIMobileCore {
     if (this.keyboardManager && typeof this.keyboardManager.destroy === 'function') {
       this.keyboardManager.destroy();
     }
+    
+    // 참조 정리 (메모리 누수 방지)
+    this.router = null;
+    this.loader = null;
+    this.eventBus = null;
+    this.loadingIndicator = null;
+    this.viewportManager = null;
+    this.deviceDetector = null;
+    this.keyboardManager = null;
   }
 }
 
@@ -600,6 +636,10 @@ const CATUI = Object.assign(
     gesture: (el, opts) => coreInstance.gesture(el, opts),
     pullToRefresh: (el, opts) => coreInstance.pullToRefresh(el, opts),
     
+    // Instance Management
+    getInstanceCount: () => coreInstance.getInstanceCount(),
+    destroyInstances: () => coreInstance.destroyInstances(),
+    
     // Destroy
     destroy: () => coreInstance.destroy()
   }
@@ -622,6 +662,7 @@ CATUI.animation = coreInstance.animation;
 CATUI.viewport = coreInstance.viewport;
 CATUI.device = coreInstance.device;
 CATUI.keyboard = coreInstance.keyboard;
+CATUI.instances = coreInstance.instances;
 
 // 브라우저 전역에 등록 (ES Module 환경에서만 사용)
 // IIFE 빌드에서는 rollup.config.js의 footer에서 처리

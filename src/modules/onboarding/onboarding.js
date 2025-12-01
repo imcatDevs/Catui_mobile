@@ -278,6 +278,27 @@ class IntroSlider {
     if (this.options.onDone) {
       this.options.onDone();
     }
+    // 슬라이더 닫기
+    this.close();
+  }
+
+  /**
+   * 슬라이더 닫기
+   */
+  close() {
+    if (!this._container) return;
+    
+    const container = this._container;
+    
+    // 페이드 아웃 애니메이션
+    container.style.opacity = '0';
+    container.style.transition = 'opacity 0.3s';
+    
+    setTimeout(() => {
+      // DOM에서 제거
+      container.remove();
+      this.destroy();
+    }, 300);
   }
 
   /**
@@ -325,17 +346,20 @@ class IntroSlider {
   destroy() {
     this._stopAutoplay();
     
-    this._container.querySelector('.catui-intro-btn')?.removeEventListener('click', this._handlers.btnClick);
-    this._container.querySelector('.catui-intro-skip')?.removeEventListener('click', this._handlers.skipClick);
-    this._container.querySelector('.catui-intro-dots')?.removeEventListener('click', this._handlers.dotClick);
-    
-    const slides = this._container.querySelector('.catui-intro-slides');
-    slides?.removeEventListener('touchstart', this._handlers.touchstart);
-    slides?.removeEventListener('touchmove', this._handlers.touchmove);
-    slides?.removeEventListener('touchend', this._handlers.touchend);
+    if (this._container) {
+      this._container.querySelector('.catui-intro-btn')?.removeEventListener('click', this._handlers?.btnClick);
+      this._container.querySelector('.catui-intro-skip')?.removeEventListener('click', this._handlers?.skipClick);
+      this._container.querySelector('.catui-intro-dots')?.removeEventListener('click', this._handlers?.dotClick);
+      
+      const slides = this._container.querySelector('.catui-intro-slides');
+      slides?.removeEventListener('touchstart', this._handlers?.touchstart);
+      slides?.removeEventListener('touchmove', this._handlers?.touchmove);
+      slides?.removeEventListener('touchend', this._handlers?.touchend);
 
-    this._container.innerHTML = '';
-    this._container.className = '';
+      this._container.innerHTML = '';
+      this._container.className = '';
+    }
+    
     this._container = null;
     this._handlers = null;
     this.options = null;

@@ -74,6 +74,8 @@ CATUI.ready(async () => {
     { icon: 'lock', label: '인증', nav: 'auth-demo', outlined: true },
     { icon: 'search', label: '검색', nav: 'search-demo', outlined: true },
     { icon: 'start', label: '온보딩', nav: 'onboarding-demo', outlined: true },
+    { icon: 'payment', label: '결제', nav: 'payment-demo', outlined: true },
+    { icon: 'calendar_month', label: '캘린더', nav: 'calendar-demo', outlined: true },
     { icon: 'phone_iphone', label: '모바일', nav: 'mobile', outlined: true },
     { icon: 'touch_app', label: '터치', nav: 'touch', outlined: true },
     { icon: 'more_horiz', label: '더보기', nav: 'more', outlined: true }

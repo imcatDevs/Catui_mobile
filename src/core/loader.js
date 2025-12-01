@@ -24,6 +24,12 @@ export class ModuleLoader {
     this.modules = new Map();
     this.loadedCSS = new Set();
     
+    // 글로벌 인스턴스 관리
+    this.instances = new Map(); // moduleName -> Set<instance>
+    
+    // 자동 정리에서 제외할 모듈 (페이지 전환 시에도 유지)
+    this.excludeFromCleanup = new Set(['overlays', 'navigation', 'theme']);
+    
     // dist 폴더 경로 설정 (옵션 또는 자동 감지)
     this.distPath = options.distPath || this._detectDistPath();
     
@@ -114,9 +120,12 @@ export class ModuleLoader {
       const module = await import(esmPath);
       const moduleExport = module.default || module;
       
+      // 클래스 래핑 (인스턴스 자동 추적)
+      const wrappedExport = this._wrapModuleClasses(moduleName, moduleExport);
+      
       // 캐시에 저장
-      this.modules.set(moduleName, moduleExport);
-      return moduleExport;
+      this.modules.set(moduleName, wrappedExport);
+      return wrappedExport;
 
     } catch (error) {
       console.error(`Failed to load module "${moduleName}":`, error);
@@ -275,6 +284,123 @@ export class ModuleLoader {
   }
 
   /**
+   * 모듈 클래스 래핑 (인스턴스 자동 추적)
+   * @private
+   * @param {string} moduleName - 모듈 이름
+   * @param {*} moduleExport - 모듈 export
+   * @returns {*} 래핑된 모듈
+   */
+  _wrapModuleClasses(moduleName, moduleExport) {
+    // 단일 클래스인 경우
+    if (typeof moduleExport === 'function') {
+      return this._createTrackedClass(moduleName, moduleExport);
+    }
+    
+    // 객체 (여러 클래스 export)인 경우
+    if (typeof moduleExport === 'object' && moduleExport !== null) {
+      const wrapped = {};
+      for (const [key, value] of Object.entries(moduleExport)) {
+        if (typeof value === 'function') {
+          wrapped[key] = this._createTrackedClass(moduleName, value);
+        } else {
+          wrapped[key] = value;
+        }
+      }
+      return wrapped;
+    }
+    
+    return moduleExport;
+  }
+  
+  /**
+   * 추적 가능한 클래스 생성
+   * @private
+   * @param {string} moduleName - 모듈 이름
+   * @param {Function} OriginalClass - 원본 클래스
+   * @returns {Function} 래핑된 클래스
+   */
+  _createTrackedClass(moduleName, OriginalClass) {
+    const loader = this;
+    
+    // Proxy로 new 호출 가로채기
+    return new Proxy(OriginalClass, {
+      construct(target, args) {
+        const instance = new target(...args);
+        
+        // 인스턴스 맵에 추가
+        if (!loader.instances.has(moduleName)) {
+          loader.instances.set(moduleName, new Set());
+        }
+        loader.instances.get(moduleName).add(instance);
+        
+        // destroy 메서드 래핑 (호출 시 맵에서 제거)
+        if (typeof instance.destroy === 'function') {
+          const originalDestroy = instance.destroy.bind(instance);
+          instance.destroy = () => {
+            originalDestroy();
+            loader.instances.get(moduleName)?.delete(instance);
+          };
+        }
+        
+        return instance;
+      }
+    });
+  }
+  
+  /**
+   * 모든 인스턴스 정리 (제외 모듈 제외)
+   * 페이지 전환 시 호출됨
+   */
+  destroyInstances() {
+    for (const [moduleName, instanceSet] of this.instances) {
+      // 제외 모듈은 스킵
+      if (this.excludeFromCleanup.has(moduleName)) {
+        continue;
+      }
+      
+      if (instanceSet.size === 0) continue;
+      
+      // 인스턴스 정리 (Set 순회 중 삭제 방지를 위해 배열로 복사)
+      const instances = Array.from(instanceSet);
+      for (const instance of instances) {
+        try {
+          if (instance && typeof instance.destroy === 'function') {
+            instance.destroy();
+          }
+        } catch (error) {
+          console.error(`[CATUI] Error destroying instance from ${moduleName}:`, error);
+        }
+      }
+      
+      // Set 비우기
+      instanceSet.clear();
+    }
+  }
+  
+  /**
+   * 특정 모듈의 인스턴스 수
+   * @param {string} moduleName - 모듈 이름
+   * @returns {number}
+   */
+  getInstanceCount(moduleName) {
+    return this.instances.get(moduleName)?.size || 0;
+  }
+  
+  /**
+   * 전체 인스턴스 수 (제외 모듈 제외)
+   * @returns {number}
+   */
+  getTotalInstanceCount() {
+    let count = 0;
+    for (const [moduleName, instanceSet] of this.instances) {
+      if (!this.excludeFromCleanup.has(moduleName)) {
+        count += instanceSet.size;
+      }
+    }
+    return count;
+  }
+
+  /**
    * 모듈 로더 정리 (메모리 누수 방지)
    * 모듈 캐시를 정리합니다. CSS는 DOM에 유지됩니다.
    * 
@@ -283,6 +409,22 @@ export class ModuleLoader {
    * loader.destroy();
    */
   destroy() {
+    // 모든 인스턴스 정리 (제외 모듈 포함)
+    for (const [, instanceSet] of this.instances) {
+      // Set 순회 중 삭제 방지를 위해 배열로 복사
+      const instances = Array.from(instanceSet);
+      for (const instance of instances) {
+        try {
+          if (instance && typeof instance.destroy === 'function') {
+            instance.destroy();
+          }
+        } catch (error) {
+          console.error('[CATUI] Error destroying instance:', error);
+        }
+      }
+    }
+    this.instances.clear();
+    
     // 모듈 캐시 정리
     this.modules.clear();
     

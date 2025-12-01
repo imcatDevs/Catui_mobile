@@ -1,141 +1,178 @@
-<div class="demo-page">
-  <h1 class="demo-title">Feedback & Loading</h1>
-  <p class="demo-subtitle">Toast, Notification, ProgressTracker, Skeleton, Loading 컴포넌트</p>
-
+<div class="fade-in">
   <!-- Toast -->
-  <section class="demo-section">
-    <h2 class="demo-section-title">Toast</h2>
-    
-    <div class="card mb-4">
-      <div class="card-header">토스트 알림 메시지</div>
-      <div class="card-body">
-        <div class="flex flex-wrap gap-2">
-          <button class="btn btn-primary" id="toast-default">기본 토스트</button>
-          <button class="btn btn-success" id="toast-success">성공</button>
-          <button class="btn btn-danger" id="toast-error">에러</button>
-          <button class="btn btn-warning" id="toast-warning">경고</button>
-          <button class="btn btn-outline" id="toast-action">액션 포함</button>
-        </div>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">notifications</span>
+        Toast
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">토스트 알림 메시지</p>
+      <div class="flex flex-wrap gap-2">
+        <button class="btn btn-primary" id="toast-default">기본</button>
+        <button class="btn btn-success" id="toast-success">성공</button>
+        <button class="btn btn-danger" id="toast-error">에러</button>
+        <button class="btn btn-warning" id="toast-warning">경고</button>
+        <button class="btn btn-outline" id="toast-action">액션 포함</button>
       </div>
     </div>
-  </section>
+  </div>
 
   <!-- Notification -->
-  <section class="demo-section">
-    <h2 class="demo-section-title">Notification</h2>
-    
-    <div class="card mb-4">
-      <div class="card-header">알림 센터 (액션 버튼, 자동 닫기)</div>
-      <div class="card-body">
-        <div class="flex flex-wrap gap-2">
-          <button class="btn btn-primary" id="notification-simple">기본 알림</button>
-          <button class="btn btn-success" id="notification-success">성공 알림</button>
-          <button class="btn btn-outline" id="notification-actions">액션 포함</button>
-          <button class="btn btn-secondary" id="notification-clear">전체 닫기</button>
-        </div>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">mark_email_unread</span>
+        Notification
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">알림 센터 (액션 버튼, 자동 닫기)</p>
+      <div class="flex flex-wrap gap-2">
+        <button class="btn btn-primary" id="notification-simple">기본 알림</button>
+        <button class="btn btn-success" id="notification-success">성공 알림</button>
+        <button class="btn btn-outline" id="notification-actions">액션 포함</button>
+        <button class="btn btn-secondary" id="notification-clear">전체 닫기</button>
       </div>
     </div>
-  </section>
+  </div>
 
   <!-- Progress Tracker -->
-  <section class="demo-section">
-    <h2 class="demo-section-title">Progress Tracker</h2>
-    
-    <div class="card mb-4">
-      <div class="card-header">가로형</div>
-      <div class="card-body">
-        <div id="progress-horizontal" class="mb-4"></div>
-        <div class="flex gap-2">
-          <button class="btn btn-secondary btn-sm" id="progress-prev">이전</button>
-          <button class="btn btn-primary btn-sm" id="progress-next">다음</button>
-        </div>
-      </div>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">trending_up</span>
+        ProgressTracker
+      </h3>
     </div>
-
-    <div class="card mb-4">
-      <div class="card-header">세로형</div>
-      <div class="card-body">
-        <div id="progress-vertical"></div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">진행 상태 표시 (가로/세로)</p>
+      
+      <p class="text-sm font-medium mb-2">가로형</p>
+      <div id="progress-horizontal" class="mb-4"></div>
+      <div class="flex gap-2 mb-4">
+        <button class="btn btn-outline" id="progress-prev">이전</button>
+        <button class="btn btn-primary" id="progress-next">다음</button>
       </div>
+      
+      <p class="text-sm font-medium mb-2">세로형</p>
+      <div id="progress-vertical"></div>
     </div>
-  </section>
+  </div>
 
   <!-- Skeleton -->
-  <section class="demo-section">
-    <h2 class="demo-section-title">Skeleton</h2>
-    
-    <div class="grid grid-cols-2 gap-4 mb-4">
-      <div class="card">
-        <div class="card-header">텍스트</div>
-        <div class="card-body">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">hourglass_empty</span>
+        Skeleton
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">로딩 스켈레톤 UI</p>
+      
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <p class="text-sm font-medium mb-2">텍스트</p>
           <div id="skeleton-text"></div>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">아바타 + 텍스트</div>
-        <div class="card-body">
+        <div>
+          <p class="text-sm font-medium mb-2">아바타 + 텍스트</p>
           <div class="flex gap-3 items-start">
             <div id="skeleton-avatar"></div>
             <div id="skeleton-text2" style="flex: 1;"></div>
           </div>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">카드</div>
-        <div class="card-body">
+        <div>
+          <p class="text-sm font-medium mb-2">카드</p>
           <div id="skeleton-card"></div>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">리스트</div>
-        <div class="card-body">
+        <div>
+          <p class="text-sm font-medium mb-2">리스트</p>
           <div id="skeleton-list"></div>
         </div>
       </div>
+      
+      <button class="btn btn-primary" id="skeleton-toggle">로딩 완료 시뮬레이션</button>
     </div>
-
-    <button class="btn btn-primary" id="skeleton-toggle">로딩 완료 시뮬레이션</button>
-  </section>
+  </div>
 
   <!-- Loading -->
-  <section class="demo-section">
-    <h2 class="demo-section-title">Loading</h2>
-    
-    <div class="grid grid-cols-2 gap-4 mb-4">
-      <div class="card" style="position: relative; min-height: 150px;">
-        <div class="card-header">Spinner</div>
-        <div class="card-body">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">sync</span>
+        Loading
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">로딩 인디케이터</p>
+      
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div class="p-4 bg-secondary rounded" style="min-height: 100px;">
+          <p class="text-sm font-medium mb-2">Spinner</p>
           <div id="loading-spinner"></div>
         </div>
-      </div>
-
-      <div class="card" style="position: relative; min-height: 150px;">
-        <div class="card-header">Dots</div>
-        <div class="card-body">
+        <div class="p-4 bg-secondary rounded" style="min-height: 100px;">
+          <p class="text-sm font-medium mb-2">Dots</p>
           <div id="loading-dots"></div>
         </div>
-      </div>
-
-      <div class="card" style="position: relative; min-height: 150px;">
-        <div class="card-header">Bar</div>
-        <div class="card-body">
+        <div class="p-4 bg-secondary rounded" style="min-height: 100px;">
+          <p class="text-sm font-medium mb-2">Bar</p>
           <div id="loading-bar"></div>
         </div>
-      </div>
-
-      <div class="card" style="position: relative; min-height: 150px;">
-        <div class="card-header">Pulse</div>
-        <div class="card-body">
+        <div class="p-4 bg-secondary rounded" style="min-height: 100px;">
+          <p class="text-sm font-medium mb-2">Pulse</p>
           <div id="loading-pulse"></div>
         </div>
       </div>
+      
+      <button class="btn btn-primary" id="loading-fullscreen">전체화면 로딩</button>
     </div>
+  </div>
 
-    <button class="btn btn-primary" id="loading-fullscreen">전체화면 로딩</button>
-  </section>
+  <!-- 사용 예시 -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">code</span>
+        사용 예시
+      </h3>
+    </div>
+    <div class="card-body">
+      <pre class="demo-code"><code>// 모듈 로드
+const Feedback = await CATUI.use('feedback');
+const { Toast } = await CATUI.use('overlays');
+
+// Toast
+Toast.success('성공 메시지');
+Toast.error('에러 메시지');
+
+// Notification
+const noti = new Feedback.Notification({
+  position: 'top-right'
+});
+noti.show({ title: '알림', message: '내용' });
+
+// ProgressTracker
+const progress = new Feedback.ProgressTracker({
+  container: '#progress',
+  steps: [...],
+  currentStep: 1
+});
+
+// Skeleton
+const skeleton = new Feedback.Skeleton({
+  container: '#skeleton',
+  type: 'card'
+});
+
+// Loading
+Feedback.Loading.show({ text: '로딩중...' });
+Feedback.Loading.hide();</code></pre>
+    </div>
+  </div>
 </div>
 
 <script>

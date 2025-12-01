@@ -1,0 +1,302 @@
+<div class="fade-in">
+  <!-- MonthCalendar -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">calendar_month</span>
+        MonthCalendar
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">월간 캘린더 (이벤트 표시, 날짜 선택)</p>
+      
+      <div id="month-calendar-demo" class="mb-4"></div>
+      
+      <p class="text-sm font-medium mb-2">선택된 날짜</p>
+      <p id="calendar-status" class="text-sm p-3 bg-secondary rounded">날짜를 선택하세요</p>
+    </div>
+  </div>
+
+  <!-- DateRangePicker -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">date_range</span>
+        DateRangePicker
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">기간 선택 (프리셋 지원)</p>
+      
+      <div id="daterange-demo" class="mb-4"></div>
+      
+      <p class="text-sm font-medium mb-2">선택된 기간</p>
+      <p id="daterange-status" class="text-sm p-3 bg-secondary rounded">기간을 선택하세요</p>
+    </div>
+  </div>
+
+  <!-- WeekView -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">view_week</span>
+        WeekView
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">주간 타임라인 뷰</p>
+      
+      <div class="flex gap-2 mb-4">
+        <button id="week-prev" class="btn btn-outline btn-sm">이전 주</button>
+        <button id="week-next" class="btn btn-outline btn-sm">다음 주</button>
+      </div>
+      
+      <div id="weekview-demo" style="height: 400px; overflow: auto;"></div>
+    </div>
+  </div>
+
+  <!-- EventCard -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">event</span>
+        EventCard
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">일정 카드</p>
+      
+      <div id="eventcard-demo" class="mb-3"></div>
+      <div id="eventcard-compact-demo"></div>
+    </div>
+  </div>
+
+  <!-- 사용 예시 -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">code</span>
+        사용 예시
+      </h3>
+    </div>
+    <div class="card-body">
+      <pre class="demo-code"><code>// 모듈 로드
+const Calendar = await CATUI.use('calendar');
+
+// MonthCalendar - 월간 캘린더
+const calendar = new Calendar.MonthCalendar({
+  container: '#calendar',
+  selectionMode: 'range', // single, multiple, range
+  events: [
+    { date: '2024-12-25', title: '크리스마스', color: '#EF4444' }
+  ],
+  onDateSelect: (dates) => console.log(dates),
+  onEventClick: (event) => console.log(event)
+});
+
+// DateRangePicker - 기간 선택
+const range = new Calendar.DateRangePicker({
+  container: '#range',
+  presets: [
+    { label: '오늘', days: 0 },
+    { label: '최근 7일', days: 7 }
+  ],
+  onChange: ({ start, end }) => console.log(start, end)
+});
+
+// WeekView - 주간 뷰
+const week = new Calendar.WeekView({
+  container: '#week',
+  events: [
+    { 
+      title: '회의', 
+      start: '2024-12-01T10:00:00',
+      end: '2024-12-01T11:30:00',
+      color: '#3B82F6'
+    }
+  ],
+  onEventClick: (event) => console.log(event)
+});
+
+// EventCard - 일정 카드
+const card = new Calendar.EventCard({
+  container: '#card',
+  event: {
+    title: '팀 미팅',
+    start: new Date(),
+    location: '회의실 A',
+    color: '#10B981'
+  },
+  onClick: (event) => console.log(event)
+});</code></pre>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+(async () => {
+  const Calendar = await CATUI.use('calendar');
+  const { Toast } = await CATUI.use('overlays');
+
+  // ========================================
+  // MonthCalendar
+  // ========================================
+  const calendarStatus = CATUI('#calendar-status');
+  
+  // 샘플 이벤트
+  const today = new Date();
+  const events = [
+    { 
+      id: '1',
+      date: formatDate(today), 
+      title: '오늘 일정', 
+      color: '#3B82F6' 
+    },
+    { 
+      id: '2',
+      date: formatDate(new Date(today.getFullYear(), today.getMonth(), 15)), 
+      title: '중요 회의', 
+      color: '#EF4444' 
+    },
+    { 
+      id: '3',
+      date: formatDate(new Date(today.getFullYear(), today.getMonth(), 20)), 
+      title: '프로젝트 마감', 
+      color: '#10B981' 
+    },
+    { 
+      id: '4',
+      date: formatDate(new Date(today.getFullYear(), today.getMonth(), 20)), 
+      title: '팀 회식', 
+      color: '#F59E0B' 
+    }
+  ];
+
+  const monthCalendar = new Calendar.MonthCalendar({
+    container: '#month-calendar-demo',
+    date: today,
+    events: events,
+    selectionMode: 'single',
+    showAdjacentMonths: true,
+    onDateSelect: (date) => {
+      calendarStatus.text(`선택됨: ${date.toLocaleDateString('ko-KR')}`);
+    },
+    onMonthChange: (year, month) => {
+      Toast.info(`${year}년 ${month + 1}월`);
+    },
+    onEventClick: (event) => {
+      Toast.info(`이벤트: ${event.title}`);
+    }
+  });
+
+  function formatDate(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  // ========================================
+  // DateRangePicker
+  // ========================================
+  const daterangeStatus = CATUI('#daterange-status');
+
+  const dateRange = new Calendar.DateRangePicker({
+    container: '#daterange-demo',
+    presets: [
+      { label: '오늘', days: 0 },
+      { label: '최근 7일', days: 7 },
+      { label: '최근 30일', days: 30 },
+      { label: '이번 달', type: 'month' },
+      { label: '지난 달', type: 'lastMonth' }
+    ],
+    onChange: ({ start, end }) => {
+      const startStr = start.toLocaleDateString('ko-KR');
+      const endStr = end.toLocaleDateString('ko-KR');
+      daterangeStatus.text(`${startStr} ~ ${endStr}`);
+      Toast.success('기간이 선택되었습니다');
+    }
+  });
+
+  // ========================================
+  // WeekView
+  // ========================================
+  const weekEvents = [
+    {
+      id: '1',
+      title: '팀 미팅',
+      start: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 10, 0),
+      end: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 11, 30),
+      color: '#3B82F6'
+    },
+    {
+      id: '2',
+      title: '점심 약속',
+      start: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12, 0),
+      end: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 13, 0),
+      color: '#10B981'
+    },
+    {
+      id: '3',
+      title: '코드 리뷰',
+      start: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 14, 0),
+      end: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 15, 30),
+      color: '#8B5CF6'
+    },
+    {
+      id: '4',
+      title: '1:1 미팅',
+      start: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2, 16, 0),
+      end: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2, 17, 0),
+      color: '#F59E0B'
+    }
+  ];
+
+  const weekView = new Calendar.WeekView({
+    container: '#weekview-demo',
+    date: today,
+    events: weekEvents,
+    startHour: 8,
+    endHour: 20,
+    hourHeight: 50,
+    onEventClick: (event) => {
+      Toast.info(`${event.title}`);
+    },
+    onTimeSlotClick: (date, hour) => {
+      Toast.info(`${date} ${hour}:00 클릭`);
+    }
+  });
+
+  CATUI('#week-prev').on('click', () => weekView.prevWeek());
+  CATUI('#week-next').on('click', () => weekView.nextWeek());
+
+  // ========================================
+  // EventCard
+  // ========================================
+  const eventCard = new Calendar.EventCard({
+    container: '#eventcard-demo',
+    event: {
+      title: '분기별 사업 검토 회의',
+      start: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 14, 0),
+      end: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 16, 0),
+      location: '본사 대회의실 (10층)',
+      description: '3분기 실적 검토 및 4분기 목표 설정. 각 팀별 발표 자료 준비 필수.',
+      color: '#3B82F6'
+    },
+    onEdit: (event) => Toast.info('수정 클릭'),
+    onDelete: (event) => Toast.error('삭제 클릭'),
+    onClick: (event) => console.log('Event clicked:', event)
+  });
+
+  const eventCardCompact = new Calendar.EventCard({
+    container: '#eventcard-compact-demo',
+    event: {
+      title: '주간 스탠드업',
+      start: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 9, 30),
+      color: '#10B981'
+    },
+    compact: true,
+    onClick: (event) => Toast.info(event.title)
+  });
+})();
+</script>

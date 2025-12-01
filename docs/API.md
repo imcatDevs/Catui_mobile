@@ -365,15 +365,6 @@ CATUI.view.onError((error) => {
 });
 ```
 
-### 인스턴스 관리 (메모리 누수 방지)
-
-```javascript
-// 뷰 내에서 생성한 인스턴스 등록
-// → 뷰 전환 시 자동으로 destroy() 호출됨
-const modal = new Modal();
-CATUI.view.registerInstance(modal);
-```
-
 ---
 
 ## Event Bus

@@ -114,6 +114,8 @@ const moduleConfigs = [
   'search',
   'media',
   'onboarding',
+  'payment',
+  'calendar',
 ].filter(Boolean).map(createModuleConfig);
 
 // 코어 + 모듈 빌드

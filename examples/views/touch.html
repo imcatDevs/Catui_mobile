@@ -1,22 +1,29 @@
 <div class="fade-in">
   <!-- 탭 & 롱프레스 -->
   <div class="card">
-    <div class="card-title">
-      <span class="material-icons">ads_click</span>
-      탭 & 롱프레스
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">ads_click</span>
+        탭 & 롱프레스
+      </h3>
     </div>
+    <div class="card-body">
     <div class="demo-area" id="tap-area">
       탭 또는 길게 누르세요
     </div>
     <div class="output-log" id="tap-log"></div>
+    </div>
   </div>
 
   <!-- 스와이프 -->
   <div class="card">
-    <div class="card-title">
-      <span class="material-icons">swipe</span>
-      스와이프
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">swipe</span>
+        스와이프
+      </h3>
     </div>
+    <div class="card-body">
     <div class="swipe-container">
       <div class="swipe-card" id="swipe-area">
         <span class="material-icons" style="font-size: 48px;">swipe</span>
@@ -24,32 +31,41 @@
         <div class="swipe-hint" id="swipe-hint">← 또는 →</div>
       </div>
     </div>
+    </div>
   </div>
 
   <!-- 드래그 -->
   <div class="card">
-    <div class="card-title">
-      <span class="material-icons">drag_indicator</span>
-      드래그
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">drag_indicator</span>
+        드래그
+      </h3>
     </div>
+    <div class="card-body">
     <div class="demo-area" style="height: 200px; position: relative;">
       <div class="demo-box" id="drag-box">
         드래그
       </div>
     </div>
+    </div>
   </div>
 
   <!-- 핀치 줌 -->
   <div class="card">
-    <div class="card-title">
-      <span class="material-icons">pinch</span>
-      핀치 줌
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">pinch</span>
+        핀치 줌
+      </h3>
     </div>
+    <div class="card-body">
     <div class="demo-area" id="pinch-area" style="height: 150px;">
       <div id="pinch-target" style="font-size: 48px; transition: transform 0.1s;">
         🐱
       </div>
       <div id="pinch-info" style="margin-top: 10px;">두 손가락으로 확대/축소</div>
+    </div>
     </div>
   </div>
 </div>
@@ -205,16 +221,5 @@
     if (match) baseScale = parseFloat(match[1]);
   });
 
-  // ========================================
-  // 정리
-  // ========================================
-  if (CATUI.view && CATUI.view.registerInstance) {
-    CATUI.view.registerInstance({ destroy: () => {
-      tapTouch.destroy();
-      swipeTouch.destroy();
-      dragTouch.destroy();
-      pinchTouch.destroy();
-    }});
-  }
 })();
 </script>

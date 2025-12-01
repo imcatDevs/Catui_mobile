@@ -1,0 +1,620 @@
+@use '../../styles/abstracts' as *;
+
+// ========================================
+// MonthCalendar
+// ========================================
+.catui-calendar {
+  background: var(--bg-primary, $bg-primary);
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-lg;
+  padding: $spacing-4;
+  user-select: none;
+}
+
+.catui-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-4;
+}
+
+.catui-calendar-title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-calendar-nav {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-default;
+  color: var(--text-primary, $text-primary);
+  cursor: pointer;
+  transition: background $duration-fast $ease-in-out;
+  
+  &:hover {
+    background: var(--bg-secondary, $bg-secondary);
+  }
+  
+  .material-icons {
+    font-size: $icon-size-md;
+  }
+}
+
+.catui-calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: $spacing-1;
+  margin-bottom: $spacing-2;
+}
+
+.catui-calendar-weekday {
+  text-align: center;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary, $text-secondary);
+  padding: $spacing-2;
+  
+  &.is-weekend {
+    color: $error;
+  }
+}
+
+.catui-calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: $spacing-1;
+}
+
+.catui-calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: $spacing-1;
+  border-radius: $radius-default;
+  cursor: pointer;
+  transition: background $duration-fast $ease-in-out;
+  position: relative;
+  
+  &:hover:not(.is-disabled):not(.is-empty) {
+    background: var(--bg-secondary, $bg-secondary);
+  }
+  
+  &.is-adjacent {
+    .catui-calendar-day-num {
+      color: var(--text-tertiary, $text-tertiary);
+    }
+  }
+  
+  &.is-today {
+    .catui-calendar-day-num {
+      background: $primary;
+      color: white;
+      border-radius: $radius-full;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  
+  &.is-selected {
+    background: rgba($primary, 0.1);
+    
+    .catui-calendar-day-num {
+      background: $primary;
+      color: white;
+      border-radius: $radius-full;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  
+  &.is-in-range {
+    background: rgba($primary, 0.1);
+  }
+  
+  &.is-range-start {
+    border-radius: $radius-default 0 0 $radius-default;
+  }
+  
+  &.is-disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  
+  &.is-weekend {
+    .catui-calendar-day-num {
+      color: $error;
+    }
+    
+    &.is-selected .catui-calendar-day-num,
+    &.is-today .catui-calendar-day-num {
+      color: white;
+    }
+  }
+  
+  &.is-empty {
+    cursor: default;
+  }
+}
+
+.catui-calendar-day-num {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-calendar-events {
+  display: flex;
+  gap: 2px;
+  margin-top: $spacing-1;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.catui-calendar-event {
+  width: 6px;
+  height: 6px;
+  border-radius: $radius-full;
+}
+
+.catui-calendar-more {
+  font-size: 10px;
+  color: var(--text-secondary, $text-secondary);
+}
+
+// ========================================
+// WeekView
+// ========================================
+.catui-weekview {
+  background: var(--bg-primary, $bg-primary);
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-lg;
+  overflow: hidden;
+}
+
+.catui-weekview-header {
+  display: flex;
+  border-bottom: 1px solid var(--border-color, $border-color);
+}
+
+.catui-weekview-corner {
+  width: 50px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border-color, $border-color);
+}
+
+.catui-weekview-day-header {
+  flex: 1;
+  text-align: center;
+  padding: $spacing-3;
+  border-right: 1px solid var(--border-color, $border-color);
+  
+  &:last-child {
+    border-right: none;
+  }
+  
+  &.is-today {
+    background: rgba($primary, 0.1);
+    
+    .catui-weekview-day-num {
+      background: $primary;
+      color: white;
+      border-radius: $radius-full;
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+.catui-weekview-day-name {
+  display: block;
+  font-size: $font-size-xs;
+  color: var(--text-secondary, $text-secondary);
+  margin-bottom: $spacing-1;
+}
+
+.catui-weekview-day-num {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-weekview-body {
+  display: flex;
+  overflow-y: auto;
+}
+
+.catui-weekview-times {
+  width: 50px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border-color, $border-color);
+}
+
+.catui-weekview-time {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: $spacing-1;
+  
+  span {
+    font-size: $font-size-xs;
+    color: var(--text-secondary, $text-secondary);
+  }
+}
+
+.catui-weekview-grid {
+  flex: 1;
+  display: flex;
+}
+
+.catui-weekview-column {
+  flex: 1;
+  position: relative;
+  border-right: 1px solid var(--border-color, $border-color);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 59px,
+    var(--border-color, $border-color) 59px,
+    var(--border-color, $border-color) 60px
+  );
+  
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.catui-weekview-event {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  border-radius: $radius-sm;
+  padding: $spacing-1 $spacing-2;
+  color: white;
+  font-size: $font-size-xs;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 1;
+  
+  &:hover {
+    filter: brightness(0.9);
+  }
+}
+
+.catui-weekview-event-title {
+  font-weight: $font-weight-medium;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.catui-weekview-event-time {
+  opacity: 0.8;
+  font-size: 10px;
+}
+
+// ========================================
+// DateRangePicker
+// ========================================
+.catui-daterange {
+  background: var(--bg-primary, $bg-primary);
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-lg;
+  padding: $spacing-4;
+}
+
+.catui-daterange-presets {
+  display: flex;
+  gap: $spacing-2;
+  margin-bottom: $spacing-4;
+  overflow-x: auto;
+  padding-bottom: $spacing-2;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.catui-daterange-preset {
+  padding: $spacing-2 $spacing-3;
+  background: var(--bg-secondary, $bg-secondary);
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-full;
+  font-size: $font-size-sm;
+  color: var(--text-primary, $text-primary);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all $duration-fast $ease-in-out;
+  
+  &:hover {
+    border-color: $primary;
+    color: $primary;
+  }
+}
+
+.catui-daterange-inputs {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  margin-bottom: $spacing-4;
+}
+
+.catui-daterange-input {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  padding: $spacing-3;
+  background: var(--bg-secondary, $bg-secondary);
+  border: 2px solid transparent;
+  border-radius: $radius-default;
+  cursor: pointer;
+  transition: border-color $duration-fast $ease-in-out;
+  
+  &.is-active {
+    border-color: $primary;
+  }
+  
+  .material-icons {
+    font-size: $icon-size-sm;
+    color: var(--text-secondary, $text-secondary);
+  }
+}
+
+.catui-daterange-value {
+  font-size: $font-size-sm;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-daterange-separator {
+  color: var(--text-tertiary, $text-tertiary);
+}
+
+.catui-daterange-calendar {
+  border-top: 1px solid var(--border-color, $border-color);
+  padding-top: $spacing-4;
+}
+
+.catui-daterange-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-3;
+}
+
+.catui-daterange-month {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+}
+
+.catui-daterange-nav {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary, $text-secondary);
+  cursor: pointer;
+  border-radius: $radius-default;
+  
+  &:hover {
+    background: var(--bg-secondary, $bg-secondary);
+  }
+}
+
+.catui-daterange-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: $spacing-2;
+}
+
+.catui-daterange-weekday {
+  text-align: center;
+  font-size: $font-size-xs;
+  color: var(--text-secondary, $text-secondary);
+  padding: $spacing-2;
+}
+
+.catui-daterange-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: $spacing-1;
+}
+
+.catui-daterange-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-sm;
+  color: var(--text-primary, $text-primary);
+  border-radius: $radius-default;
+  cursor: pointer;
+  transition: all $duration-fast $ease-in-out;
+  
+  &:hover:not(.is-disabled):not(.is-empty) {
+    background: var(--bg-secondary, $bg-secondary);
+  }
+  
+  &.is-today {
+    font-weight: $font-weight-bold;
+    color: $primary;
+  }
+  
+  &.is-start,
+  &.is-end {
+    background: $primary;
+    color: white;
+  }
+  
+  &.is-in-range {
+    background: rgba($primary, 0.1);
+  }
+  
+  &.is-disabled {
+    color: var(--text-tertiary, $text-tertiary);
+    cursor: not-allowed;
+  }
+  
+  &.is-empty {
+    cursor: default;
+  }
+}
+
+// ========================================
+// EventCard
+// ========================================
+.catui-eventcard {
+  display: flex;
+  background: var(--bg-primary, $bg-primary);
+  border: 1px solid var(--border-color, $border-color);
+  border-radius: $radius-lg;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow $duration-fast $ease-in-out;
+  
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+  
+  &.is-compact {
+    .catui-eventcard-content {
+      padding: $spacing-3;
+    }
+    
+    .catui-eventcard-title {
+      font-size: $font-size-sm;
+    }
+    
+    .catui-eventcard-meta {
+      font-size: $font-size-xs;
+    }
+  }
+}
+
+.catui-eventcard-indicator {
+  width: 4px;
+  background: var(--event-color, $primary);
+  flex-shrink: 0;
+}
+
+.catui-eventcard-content {
+  flex: 1;
+  padding: $spacing-4;
+  min-width: 0;
+}
+
+.catui-eventcard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $spacing-2;
+  margin-bottom: $spacing-2;
+}
+
+.catui-eventcard-title {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary, $text-primary);
+  margin: 0;
+}
+
+.catui-eventcard-actions {
+  display: flex;
+  gap: $spacing-1;
+  flex-shrink: 0;
+}
+
+.catui-eventcard-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: $radius-default;
+  color: var(--text-secondary, $text-secondary);
+  cursor: pointer;
+  transition: background $duration-fast $ease-in-out;
+  
+  &:hover {
+    background: var(--bg-secondary, $bg-secondary);
+  }
+  
+  .material-icons {
+    font-size: $icon-size-sm;
+  }
+}
+
+.catui-eventcard-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-3;
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+  margin-bottom: $spacing-2;
+  
+  span {
+    display: flex;
+    align-items: center;
+    gap: $spacing-1;
+  }
+  
+  .material-icons {
+    font-size: $icon-size-sm;
+  }
+}
+
+.catui-eventcard-location {
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+  margin-bottom: $spacing-2;
+  
+  .material-icons {
+    font-size: $icon-size-sm;
+    color: $primary;
+  }
+}
+
+.catui-eventcard-desc {
+  font-size: $font-size-sm;
+  color: var(--text-secondary, $text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+// ========================================
+// Dark Mode
+// ========================================
+[data-theme="dark"] {
+  .catui-calendar,
+  .catui-weekview,
+  .catui-daterange,
+  .catui-eventcard {
+    background: $dark-bg-secondary;
+    border-color: $dark-border-color;
+  }
+}
