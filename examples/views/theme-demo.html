@@ -1,0 +1,523 @@
+<div class="fade-in">
+  <!-- 현재 테마 상태 -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">palette</span>
+        현재 테마
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <div class="text-lg font-semibold" id="current-theme">-</div>
+          <div class="text-sm text-secondary" id="resolved-theme">-</div>
+        </div>
+        <div class="theme-indicator" id="theme-indicator">
+          <span class="material-icons">light_mode</span>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-outline" id="btn-light">
+          <span class="material-icons">light_mode</span>
+          Light
+        </button>
+        <button class="btn btn-outline" id="btn-dark">
+          <span class="material-icons">dark_mode</span>
+          Dark
+        </button>
+        <button class="btn btn-outline" id="btn-system">
+          <span class="material-icons">settings_suggest</span>
+          System
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 전환 효과 선택 -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">animation</span>
+        전환 효과
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="form-group mb-4">
+        <label class="form-label">효과 선택</label>
+        <select class="form-select" id="transition-select">
+          <option value="none">없음 (즉시 전환)</option>
+          <option value="fade">페이드</option>
+          <option value="slide">슬라이드</option>
+          <option value="circle" selected>원형 - 우하단</option>
+          <option value="circle-top-left">원형 - 좌상단</option>
+          <option value="circle-top-right">원형 - 우상단</option>
+          <option value="circle-bottom-left">원형 - 좌하단</option>
+          <option value="circle-center">원형 - 중앙</option>
+        </select>
+      </div>
+
+      <div class="form-group mb-4">
+        <label class="form-label">전환 시간: <span id="duration-value">800</span>ms</label>
+        <input type="range" class="form-range" id="duration-range" min="200" max="1500" step="50" value="800">
+      </div>
+
+      <button class="btn btn-primary btn-block" id="btn-toggle">
+        <span class="material-icons">swap_horiz</span>
+        테마 토글
+      </button>
+    </div>
+  </div>
+
+  <!-- 클릭 위치 기반 전환 -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">touch_app</span>
+        클릭 위치 기반 전환
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-3">
+        아래 영역을 클릭하면 클릭한 위치에서 원형으로 테마가 전환됩니다.
+      </p>
+      <div class="touch-area" id="touch-area">
+        <span class="material-icons">ads_click</span>
+        <span>여기를 터치/클릭</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 커스텀 브랜드 테마 -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">brush</span>
+        커스텀 브랜드 테마
+      </h3>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-secondary mb-4">
+        브랜드 색상으로 커스텀 테마를 등록하고 적용할 수 있습니다.
+      </p>
+      
+      <div class="brand-themes mb-4">
+        <button class="brand-theme-btn" id="brand-ocean" style="--brand-bg: linear-gradient(135deg, #0077B6, #00B4D8);">
+          <span class="material-icons">water</span>
+          Ocean
+        </button>
+        <button class="brand-theme-btn" id="brand-forest" style="--brand-bg: linear-gradient(135deg, #2D6A4F, #40916C);">
+          <span class="material-icons">forest</span>
+          Forest
+        </button>
+        <button class="brand-theme-btn" id="brand-sunset" style="--brand-bg: linear-gradient(135deg, #F77F00, #D62828);">
+          <span class="material-icons">wb_twilight</span>
+          Sunset
+        </button>
+        <button class="brand-theme-btn" id="brand-purple" style="--brand-bg: linear-gradient(135deg, #7209B7, #560BAD);">
+          <span class="material-icons">auto_awesome</span>
+          Purple
+        </button>
+      </div>
+      
+      <button class="btn btn-outline btn-block" id="btn-reset-brand">
+        <span class="material-icons">restart_alt</span>
+        기본 테마로 복원
+      </button>
+    </div>
+  </div>
+
+  <!-- 테마 미리보기 -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">preview</span>
+        스타일 미리보기
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="preview-section">
+        <div class="preview-item">
+          <div class="preview-label">Primary</div>
+          <div class="preview-color bg-brand"></div>
+        </div>
+        <div class="preview-item">
+          <div class="preview-label">Background</div>
+          <div class="preview-color bg-primary border"></div>
+        </div>
+        <div class="preview-item">
+          <div class="preview-label">Secondary</div>
+          <div class="preview-color bg-secondary"></div>
+        </div>
+        <div class="preview-item">
+          <div class="preview-label">Tertiary</div>
+          <div class="preview-color bg-tertiary"></div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="stack stack-2">
+        <div class="text-primary">텍스트 Primary</div>
+        <div class="text-secondary">텍스트 Secondary</div>
+        <div class="text-tertiary">텍스트 Tertiary</div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="flex gap-2 flex-wrap">
+        <button class="btn btn-primary btn-sm">Primary</button>
+        <button class="btn btn-secondary btn-sm">Secondary</button>
+        <button class="btn btn-outline btn-sm">Outline</button>
+        <button class="btn btn-ghost btn-sm">Ghost</button>
+      </div>
+
+      <hr class="divider">
+
+      <div class="alert alert-info">
+        <span class="material-icons alert-icon">info</span>
+        <div class="alert-content">
+          <div class="alert-text">테마에 따라 색상이 자동으로 변경됩니다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 코드 예제 -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">
+        <span class="material-icons" style="color: var(--primary);">code</span>
+        사용법
+      </h3>
+    </div>
+    <div class="card-body">
+      <pre class="code-block"><code>// 테마 모듈 로드
+const { createTheme } = await CATUI.use('theme');
+
+// 전환 효과와 함께 초기화
+const theme = createTheme({
+  transition: 'circle',
+  transitionDuration: 400
+});
+
+// 테마 토글
+theme.toggle();
+
+// 클릭 위치 기반 전환
+btn.addEventListener('click', (e) => {
+  theme.toggleWithEvent(e);
+});
+
+// 런타임에 효과 변경
+theme.setTransition('fade', 300);</code></pre>
+    </div>
+  </div>
+</div>
+
+<style>
+.theme-indicator {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  transition: all 0.3s ease;
+}
+
+.theme-indicator .material-icons {
+  font-size: 28px;
+  color: var(--primary);
+}
+
+[data-theme="dark"] .theme-indicator {
+  background: var(--bg-secondary);
+}
+
+.touch-area {
+  height: 150px;
+  border: 2px dashed var(--border-color);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.touch-area:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.touch-area:active {
+  transform: scale(0.98);
+  background: var(--bg-tertiary);
+}
+
+.touch-area .material-icons {
+  font-size: 48px;
+  opacity: 0.5;
+}
+
+.preview-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.preview-item {
+  text-align: center;
+}
+
+.preview-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-bottom: 4px;
+}
+
+.preview-color {
+  height: 40px;
+  border-radius: 8px;
+}
+
+.code-block {
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.code-block code {
+  font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .code-block {
+  background: var(--bg-secondary);
+}
+
+.brand-themes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.brand-theme-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--brand-bg);
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.brand-theme-btn .material-icons {
+  font-size: 28px;
+}
+
+.brand-theme-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.brand-theme-btn:active {
+  transform: scale(0.98);
+}
+
+.brand-theme-btn.is-active {
+  border-color: white;
+  box-shadow: 0 0 0 3px var(--primary);
+}
+</style>
+
+<script>
+(async function() {
+  // 테마 모듈 로드
+  const { createTheme, getTheme } = await CATUI.use('theme');
+  
+  // 기존 테마 인스턴스 가져오거나 새로 생성
+  let theme = getTheme();
+  if (!theme) {
+    theme = createTheme({
+      transition: 'circle',
+      transitionDuration: 800
+    });
+  }
+  
+  // 전환 효과 기본값 설정
+  theme.setTransition('circle', 800);
+  
+  // 커스텀 브랜드 테마 정의
+  const brandThemes = {
+    ocean: {
+      '--primary': '#0077B6',
+      '--primary-hover': '#005F8A',
+      '--bg-primary': '#E8F4F8',
+      '--bg-secondary': '#D0E8F0',
+      '--text-primary': '#023E58'
+    },
+    forest: {
+      '--primary': '#2D6A4F',
+      '--primary-hover': '#1B4332',
+      '--bg-primary': '#E8F5E9',
+      '--bg-secondary': '#D4EDDA',
+      '--text-primary': '#1B4332'
+    },
+    sunset: {
+      '--primary': '#F77F00',
+      '--primary-hover': '#D62828',
+      '--bg-primary': '#FFF3E0',
+      '--bg-secondary': '#FFE0B2',
+      '--text-primary': '#B71C1C'
+    },
+    purple: {
+      '--primary': '#7209B7',
+      '--primary-hover': '#560BAD',
+      '--bg-primary': '#F3E5F5',
+      '--bg-secondary': '#E1BEE7',
+      '--text-primary': '#4A148C'
+    }
+  };
+  
+  // 브랜드 테마 등록
+  Object.entries(brandThemes).forEach(([name, vars]) => {
+    theme.register(name, vars);
+  });
+
+  // UI 요소 (DOM 직접 참조)
+  const currentThemeEl = CATUI('#current-theme');
+  const resolvedThemeEl = CATUI('#resolved-theme');
+  const indicatorEl = CATUI('#theme-indicator');
+  const transitionSelectEl = document.getElementById('transition-select');
+  const durationRangeEl = document.getElementById('duration-range');
+  const durationValueEl = document.getElementById('duration-value');
+
+  // 테마 상태 업데이트
+  function updateUI() {
+    const current = theme.get();
+    const resolved = theme.getResolved();
+    
+    currentThemeEl.text(current.charAt(0).toUpperCase() + current.slice(1));
+    resolvedThemeEl.text(`실제 적용: ${resolved}`);
+    
+    // 아이콘 업데이트
+    const icon = resolved === 'dark' ? 'dark_mode' : 'light_mode';
+    indicatorEl.find('.material-icons').text(icon);
+  }
+
+  // 초기 상태
+  updateUI();
+
+  // 테마 변경 리스너
+  theme.onChange(() => {
+    updateUI();
+  });
+
+  // Light 버튼
+  CATUI('#btn-light').on('click', () => {
+    theme.set('light');
+  });
+
+  // Dark 버튼
+  CATUI('#btn-dark').on('click', () => {
+    theme.set('dark');
+  });
+
+  // System 버튼
+  CATUI('#btn-system').on('click', () => {
+    theme.set('system');
+  });
+
+  // 전환 효과 선택
+  transitionSelectEl.addEventListener('change', (e) => {
+    const transition = e.target.value;
+    const duration = parseInt(durationRangeEl.value);
+    theme.setTransition(transition, duration);
+  });
+
+  // 전환 시간 변경
+  durationRangeEl.addEventListener('input', (e) => {
+    const duration = e.target.value;
+    durationValueEl.textContent = duration;
+    theme.setTransition(transitionSelectEl.value, parseInt(duration));
+  });
+
+  // 토글 버튼
+  CATUI('#btn-toggle').on('click', () => {
+    theme.toggle();
+  });
+
+  // 터치 영역 클릭 - 클릭 위치 기반 전환
+  CATUI('#touch-area').on('click', (e) => {
+    theme.toggleWithEvent(e);
+  });
+
+  // 브랜드 테마 버튼들
+  const brandBtns = document.querySelectorAll('.brand-theme-btn');
+  
+  function updateBrandBtnState(activeName) {
+    brandBtns.forEach(btn => {
+      const name = btn.id.replace('brand-', '');
+      btn.classList.toggle('is-active', name === activeName);
+    });
+  }
+
+  // Ocean 테마
+  CATUI('#brand-ocean').on('click', (e) => {
+    theme.setWithCircleAt('ocean', e.clientX, e.clientY);
+    updateBrandBtnState('ocean');
+  });
+
+  // Forest 테마
+  CATUI('#brand-forest').on('click', (e) => {
+    theme.setWithCircleAt('forest', e.clientX, e.clientY);
+    updateBrandBtnState('forest');
+  });
+
+  // Sunset 테마
+  CATUI('#brand-sunset').on('click', (e) => {
+    theme.setWithCircleAt('sunset', e.clientX, e.clientY);
+    updateBrandBtnState('sunset');
+  });
+
+  // Purple 테마
+  CATUI('#brand-purple').on('click', (e) => {
+    theme.setWithCircleAt('purple', e.clientX, e.clientY);
+    updateBrandBtnState('purple');
+  });
+
+  // 기본 테마 복원
+  CATUI('#btn-reset-brand').on('click', () => {
+    theme.set('light');
+    updateBrandBtnState(null);
+  });
+
+  // 페이지 정리
+  window._pageCleanup = () => {
+    // 테마 인스턴스는 싱글톤이므로 destroy하지 않음
+    console.log('[Theme Demo] Cleanup');
+  };
+
+  console.log('[Theme Demo] Loaded');
+})();
+</script>

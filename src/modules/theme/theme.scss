@@ -1,0 +1,207 @@
+/**
+ * CATUI Mobile - Theme Module Styles
+ * @description 테마 전환 관련 스타일
+ */
+
+@use '../../styles/abstracts' as *;
+
+// ========================================
+// Theme Transition Overlay
+// ========================================
+.catui-theme-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  pointer-events: none;
+}
+
+// ========================================
+// Theme Variables (Light Mode - Default)
+// ========================================
+:root,
+[data-theme="light"],
+.theme-light {
+  // Text colors
+  --text-primary: #{$text-primary};
+  --text-secondary: #{$text-secondary};
+  --text-tertiary: #{$text-tertiary};
+  --text-disabled: #{$text-disabled};
+  --text-inverse: #{$text-inverse};
+
+  // Background colors
+  --bg-primary: #{$bg-primary};
+  --bg-secondary: #{$bg-secondary};
+  --bg-tertiary: #{$bg-tertiary};
+
+  // Border colors
+  --border-color: #{$border-color};
+
+  // Semantic colors
+  --primary: #{$primary};
+  --secondary: #{$secondary};
+  --success: #{$success};
+  --warning: #{$warning};
+  --danger: #{$danger};
+  --error: #{$error};
+  --info: #{$info};
+}
+
+// ========================================
+// Theme Variables (Dark Mode)
+// ========================================
+[data-theme="dark"],
+.theme-dark {
+  // Text colors
+  --text-primary: #{$dark-text-primary};
+  --text-secondary: #{$dark-text-secondary};
+  --text-tertiary: #{$dark-text-tertiary};
+  --text-disabled: #{$dark-text-disabled};
+  --text-inverse: #{$dark-text-inverse};
+
+  // Background colors
+  --bg-primary: #{$dark-bg-primary};
+  --bg-secondary: #{$dark-bg-secondary};
+  --bg-tertiary: #{$dark-bg-tertiary};
+
+  // Border colors
+  --border-color: #{$dark-border-color};
+
+  // 다크모드 색상 보정
+  color-scheme: dark;
+}
+
+// ========================================
+// Smooth Color Transitions (Optional)
+// ========================================
+.theme-transition-colors {
+  *,
+  *::before,
+  *::after {
+    transition: 
+      background-color $duration-slow $ease-in-out,
+      border-color $duration-slow $ease-in-out,
+      color $duration-slow $ease-in-out,
+      fill $duration-slow $ease-in-out,
+      stroke $duration-slow $ease-in-out !important;
+  }
+}
+
+// ========================================
+// Theme Toggle Button
+// ========================================
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all $duration-fast $ease-in-out;
+  border: none;
+  @include no-tap-highlight;
+
+  &:hover {
+    background: var(--bg-secondary);
+    color: var(--primary);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  .material-icons,
+  .material-icons-outlined {
+    font-size: 24px;
+    transition: transform $duration-base $ease-in-out;
+  }
+
+  // 아이콘 회전 효과
+  &.is-rotating .material-icons,
+  &.is-rotating .material-icons-outlined {
+    transform: rotate(360deg);
+  }
+}
+
+// 작은 토글 버튼
+.theme-toggle-sm {
+  width: 36px;
+  height: 36px;
+
+  .material-icons,
+  .material-icons-outlined {
+    font-size: 20px;
+  }
+}
+
+// 큰 토글 버튼
+.theme-toggle-lg {
+  width: 56px;
+  height: 56px;
+
+  .material-icons,
+  .material-icons-outlined {
+    font-size: 28px;
+  }
+}
+
+// ========================================
+// Theme Indicator
+// ========================================
+.theme-indicator {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  padding: $spacing-2 $spacing-3;
+  background: var(--bg-tertiary);
+  border-radius: $radius-full;
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+
+  .material-icons,
+  .material-icons-outlined {
+    font-size: 18px;
+    color: var(--primary);
+  }
+}
+
+// ========================================
+// Theme Switcher (3-way: Light/System/Dark)
+// ========================================
+.theme-switcher {
+  display: inline-flex;
+  background: var(--bg-tertiary);
+  border-radius: $radius-full;
+  padding: 4px;
+  gap: 2px;
+}
+
+.theme-switcher-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 36px;
+  border-radius: $radius-full;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all $duration-fast $ease-in-out;
+  @include no-tap-highlight;
+
+  &:hover {
+    color: var(--text-secondary);
+  }
+
+  &.is-active {
+    background: var(--bg-primary);
+    color: var(--primary);
+    box-shadow: $shadow-sm;
+  }
+
+  .material-icons,
+  .material-icons-outlined {
+    font-size: 20px;
+  }
+}

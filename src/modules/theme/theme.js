@@ -1,7 +1,7 @@
 /**
  * CATUI Mobile - Theme Module
  * @module theme
- * @description 라이트/다크 모드 및 커스텀 테마 관리
+ * @description 라이트/다크 모드 및 커스텀 테마 관리 (전환 효과 포함)
  */
 
 /**
@@ -10,19 +10,41 @@
  */
 class Theme {
   /**
+   * 전환 효과 타입
+   * @static
+   */
+  static TRANSITIONS = {
+    NONE: 'none',
+    FADE: 'fade',
+    SLIDE: 'slide',
+    CIRCLE: 'circle',           // 원형 확대
+    CIRCLE_TOP_LEFT: 'circle-top-left',
+    CIRCLE_TOP_RIGHT: 'circle-top-right',
+    CIRCLE_BOTTOM_LEFT: 'circle-bottom-left',
+    CIRCLE_BOTTOM_RIGHT: 'circle-bottom-right',
+    CIRCLE_CENTER: 'circle-center'
+  };
+
+  /**
    * @constructor
    * @param {Object} options - 테마 옵션
    * @param {string} [options.defaultTheme='system'] - 기본 테마 ('light', 'dark', 'system')
    * @param {string} [options.storageKey='catui-theme'] - localStorage 키
    * @param {Object} [options.themes] - 커스텀 테마 정의
+   * @param {string} [options.transition='none'] - 전환 효과 ('none', 'fade', 'slide', 'circle', 'circle-top-left' 등)
+   * @param {number} [options.transitionDuration=400] - 전환 시간 (ms)
    */
   constructor(options = {}) {
     this.options = {
       defaultTheme: 'system',
       storageKey: 'catui-theme',
       themes: {},
+      transition: 'none',
+      transitionDuration: 800,
       ...options
     };
+
+    this._isTransitioning = false;
 
     this._currentTheme = null;
     this._listeners = new Set();
@@ -129,11 +151,28 @@ class Theme {
   }
 
   /**
-   * 테마 CSS 변수 적용
+   * 테마 CSS 변수 적용 (전환 효과 포함)
    * @private
    * @param {string} themeName - 실제 적용할 테마 ('light' 또는 'dark')
+   * @param {boolean} [animate=true] - 전환 애니메이션 적용 여부
    */
-  _applyTheme(themeName) {
+  _applyTheme(themeName, animate = true) {
+    const { transition, transitionDuration } = this.options;
+    
+    // 전환 효과가 있고, 애니메이션 적용 시
+    if (animate && transition !== 'none' && !this._isTransitioning) {
+      this._applyWithTransition(themeName);
+    } else {
+      this._applyThemeImmediate(themeName);
+    }
+  }
+
+  /**
+   * 테마 즉시 적용 (전환 효과 없음)
+   * @private
+   * @param {string} themeName
+   */
+  _applyThemeImmediate(themeName) {
     const root = document.documentElement;
     
     // 모든 테마 클래스 제거
@@ -156,6 +195,205 @@ class Theme {
 
     // meta theme-color 업데이트 (모바일 브라우저 상태바)
     this._updateMetaThemeColor(themeName);
+  }
+
+  /**
+   * 전환 효과와 함께 테마 적용
+   * @private
+   * @param {string} themeName
+   */
+  _applyWithTransition(themeName) {
+    const { transition, transitionDuration } = this.options;
+    this._isTransitioning = true;
+
+    switch (transition) {
+      case 'fade':
+        this._transitionFade(themeName, transitionDuration);
+        break;
+      case 'slide':
+        this._transitionSlide(themeName, transitionDuration);
+        break;
+      case 'circle':
+      case 'circle-bottom-right':
+        this._transitionCircle(themeName, transitionDuration, 'bottom-right');
+        break;
+      case 'circle-top-left':
+        this._transitionCircle(themeName, transitionDuration, 'top-left');
+        break;
+      case 'circle-top-right':
+        this._transitionCircle(themeName, transitionDuration, 'top-right');
+        break;
+      case 'circle-bottom-left':
+        this._transitionCircle(themeName, transitionDuration, 'bottom-left');
+        break;
+      case 'circle-center':
+        this._transitionCircle(themeName, transitionDuration, 'center');
+        break;
+      default:
+        this._applyThemeImmediate(themeName);
+        this._isTransitioning = false;
+    }
+  }
+
+  /**
+   * 페이드 전환 효과
+   * @private
+   */
+  _transitionFade(themeName, duration) {
+    const overlay = this._createOverlay();
+    overlay.style.cssText = `
+      position: fixed;
+      inset: 0;
+      background: ${themeName === 'dark' ? '#111827' : '#ffffff'};
+      opacity: 0;
+      z-index: 999999;
+      pointer-events: none;
+      transition: opacity ${duration / 2}ms ease-in-out;
+    `;
+    
+    document.body.appendChild(overlay);
+    
+    // 페이드 인
+    requestAnimationFrame(() => {
+      overlay.style.opacity = '1';
+      
+      setTimeout(() => {
+        // 테마 적용
+        this._applyThemeImmediate(themeName);
+        
+        // 페이드 아웃
+        overlay.style.opacity = '0';
+        
+        setTimeout(() => {
+          overlay.remove();
+          this._isTransitioning = false;
+        }, duration / 2);
+      }, duration / 2);
+    });
+  }
+
+  /**
+   * 슬라이드 전환 효과
+   * @private
+   */
+  _transitionSlide(themeName, duration) {
+    const overlay = this._createOverlay();
+    overlay.style.cssText = `
+      position: fixed;
+      inset: 0;
+      background: ${themeName === 'dark' ? '#111827' : '#ffffff'};
+      z-index: 999999;
+      pointer-events: none;
+      transform: translateY(-100%);
+      transition: transform ${duration / 2}ms ease-in-out;
+    `;
+    
+    document.body.appendChild(overlay);
+    
+    // 슬라이드 다운
+    requestAnimationFrame(() => {
+      overlay.style.transform = 'translateY(0)';
+      
+      setTimeout(() => {
+        // 테마 적용
+        this._applyThemeImmediate(themeName);
+        
+        // 슬라이드 업
+        overlay.style.transform = 'translateY(100%)';
+        
+        setTimeout(() => {
+          overlay.remove();
+          this._isTransitioning = false;
+        }, duration / 2);
+      }, duration / 2);
+    });
+  }
+
+  /**
+   * 원형 확대 전환 효과 (마스크 방식)
+   * 새 테마가 원형으로 드러나는 효과
+   * @private
+   * @param {string} themeName
+   * @param {number} duration
+   * @param {string} origin - 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'center'
+   */
+  _transitionCircle(themeName, duration, origin = 'bottom-right') {
+    const { x, y } = this._getCircleOrigin(origin);
+    
+    // 화면 대각선 길이 계산
+    const maxRadius = Math.ceil(
+      Math.sqrt(
+        Math.pow(Math.max(x, window.innerWidth - x), 2) +
+        Math.pow(Math.max(y, window.innerHeight - y), 2)
+      )
+    );
+
+    // 현재 테마 색상 (오버레이가 될 색상)
+    const currentTheme = this.getResolved();
+    const overlayColor = currentTheme === 'dark' ? '#111827' : '#ffffff';
+    
+    // 1. 먼저 새 테마를 적용
+    this._applyThemeImmediate(themeName);
+    
+    // 2. 이전 테마 색상으로 전체 화면 오버레이 생성
+    const overlay = this._createOverlay();
+    overlay.style.cssText = `
+      position: fixed;
+      inset: 0;
+      background: ${overlayColor};
+      z-index: 999999;
+      pointer-events: none;
+      clip-path: circle(${maxRadius}px at ${x}px ${y}px);
+      transition: clip-path ${duration}ms ease-out;
+    `;
+    
+    document.body.appendChild(overlay);
+    
+    // 3. 오버레이를 원형으로 축소 → 새 테마가 드러남
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        overlay.style.clipPath = `circle(0px at ${x}px ${y}px)`;
+        
+        setTimeout(() => {
+          overlay.remove();
+          this._isTransitioning = false;
+        }, duration);
+      });
+    });
+  }
+
+  /**
+   * 원형 효과 시작점 좌표 계산
+   * @private
+   */
+  _getCircleOrigin(origin) {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    
+    switch (origin) {
+      case 'top-left':
+        return { x: 0, y: 0 };
+      case 'top-right':
+        return { x: w, y: 0 };
+      case 'bottom-left':
+        return { x: 0, y: h };
+      case 'bottom-right':
+        return { x: w, y: h };
+      case 'center':
+        return { x: w / 2, y: h / 2 };
+      default:
+        return { x: w, y: h };
+    }
+  }
+
+  /**
+   * 오버레이 요소 생성
+   * @private
+   */
+  _createOverlay() {
+    const overlay = document.createElement('div');
+    overlay.className = 'catui-theme-transition-overlay';
+    return overlay;
   }
 
   /**
@@ -227,8 +465,9 @@ class Theme {
    * 테마 설정
    * @param {string} theme - 'light', 'dark', 또는 'system'
    * @param {boolean} [save=true] - localStorage에 저장 여부
+   * @param {boolean} [animate=true] - 전환 애니메이션 적용 여부
    */
-  set(theme, save = true) {
+  set(theme, save = true, animate = true) {
     const validThemes = ['light', 'dark', 'system', ...Object.keys(this.options.themes)];
     
     if (!validThemes.includes(theme)) {
@@ -236,11 +475,18 @@ class Theme {
       theme = 'light';
     }
 
+    // 같은 테마면 무시
+    const resolvedTheme = theme === 'system' ? this.getSystemTheme() : theme;
+    const currentResolved = this.getResolved();
+    
+    if (this._currentTheme === theme || (animate && resolvedTheme === currentResolved)) {
+      return;
+    }
+
     this._currentTheme = theme;
 
     // 실제 테마 적용
-    const resolvedTheme = theme === 'system' ? this.getSystemTheme() : theme;
-    this._applyTheme(resolvedTheme);
+    this._applyTheme(resolvedTheme, animate);
 
     // 저장
     if (save) {
@@ -253,10 +499,102 @@ class Theme {
 
   /**
    * 테마 토글 (light ↔ dark)
+   * @param {boolean} [animate=true] - 전환 애니메이션 적용 여부
    */
-  toggle() {
+  toggle(animate = true) {
     const current = this.getResolved();
-    this.set(current === 'dark' ? 'light' : 'dark');
+    this.set(current === 'dark' ? 'light' : 'dark', true, animate);
+  }
+
+  /**
+   * 전환 효과 설정
+   * @param {string} transition - 전환 효과 타입
+   * @param {number} [duration] - 전환 시간 (ms)
+   */
+  setTransition(transition, duration) {
+    this.options.transition = transition;
+    if (duration !== undefined) {
+      this.options.transitionDuration = duration;
+    }
+  }
+
+  /**
+   * 특정 위치에서 원형 전환 효과 (클릭 위치 기반, 마스크 방식)
+   * @param {string} theme - 전환할 테마
+   * @param {number} x - 시작 X 좌표
+   * @param {number} y - 시작 Y 좌표
+   * @param {number} [duration] - 전환 시간
+   */
+  setWithCircleAt(theme, x, y, duration = this.options.transitionDuration) {
+    if (this._isTransitioning) return;
+    
+    const resolvedTheme = theme === 'system' ? this.getSystemTheme() : theme;
+    if (resolvedTheme === this.getResolved()) return;
+
+    this._isTransitioning = true;
+
+    const maxRadius = Math.ceil(
+      Math.sqrt(
+        Math.pow(Math.max(x, window.innerWidth - x), 2) +
+        Math.pow(Math.max(y, window.innerHeight - y), 2)
+      )
+    );
+
+    // 현재 테마 색상 (오버레이가 될 색상)
+    const currentTheme = this.getResolved();
+    const overlayColor = currentTheme === 'dark' ? '#111827' : '#ffffff';
+
+    // 1. 먼저 새 테마를 적용
+    this._currentTheme = theme;
+    this._applyThemeImmediate(resolvedTheme);
+    this._saveTheme(theme);
+    this._notifyListeners();
+
+    // 2. 이전 테마 색상으로 오버레이 생성
+    const overlay = this._createOverlay();
+    overlay.style.cssText = `
+      position: fixed;
+      inset: 0;
+      background: ${overlayColor};
+      z-index: 999999;
+      pointer-events: none;
+      clip-path: circle(${maxRadius}px at ${x}px ${y}px);
+      transition: clip-path ${duration}ms ease-out;
+    `;
+
+    document.body.appendChild(overlay);
+
+    // 3. 오버레이를 축소 → 새 테마가 드러남
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        overlay.style.clipPath = `circle(0px at ${x}px ${y}px)`;
+
+        setTimeout(() => {
+          overlay.remove();
+          this._isTransitioning = false;
+        }, duration);
+      });
+    });
+  }
+
+  /**
+   * 클릭 이벤트 기반 원형 전환
+   * @param {MouseEvent|TouchEvent} event - 클릭/터치 이벤트
+   * @param {string} [theme] - 전환할 테마 (생략 시 토글)
+   */
+  toggleWithEvent(event, theme) {
+    const target = theme || (this.getResolved() === 'dark' ? 'light' : 'dark');
+    
+    let x, y;
+    if (event.touches && event.touches[0]) {
+      x = event.touches[0].clientX;
+      y = event.touches[0].clientY;
+    } else {
+      x = event.clientX;
+      y = event.clientY;
+    }
+
+    this.setWithCircleAt(target, x, y);
   }
 
   /**
@@ -352,4 +690,4 @@ function initTheme(options = {}) {
 }
 
 export { Theme, createTheme, getTheme, initTheme };
-export default createTheme;
+export default { Theme, createTheme, getTheme, initTheme };
